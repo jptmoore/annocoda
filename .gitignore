@@ -93,3 +93,9 @@ VERSION.txt
 !components/dash-table/tests/assets/*.csv
 !components/dash-table/tests/selenium/assets/*.csv
 
+# my venv
+bin/
+etc/
+lib64
+pyvenv.cfg
+share/
