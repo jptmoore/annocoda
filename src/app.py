@@ -31,6 +31,7 @@ app.layout = html.Div(
         dash_table.DataTable(
             id="annotations",
             data=result,
+            style_header = {'display': 'none'},
             style_cell={"textAlign": "left"},
             style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
         ),
