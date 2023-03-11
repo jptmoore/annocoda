@@ -15,27 +15,68 @@ class Context:
 
 ctx = Context()
 
-app = Dash(__name__)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 ctx.logger = app.logger
 data = Data(ctx)
 result = []
 
+carousel = (
+    dbc.Carousel(
+        id="carousel",
+        style={"width": "100%"},
+        controls=True,
+        indicators=True,
+        items=[
+            {
+                "key": "foo",
+                "src": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Fat_cat%2C_asleep_%28319313958%29.jpg",
+                "img_style": {"height": "10%", "width": "10%"},
+            },
+            {
+                "key": "bar",
+                "src": "https://upload.wikimedia.org/wikipedia/commons/9/90/Crimean_Tom.jpg",
+                "img_style": {"height": "10%", "width": "10%"},
+            },
+            {
+                "key": "baz",
+                "src": "https://upload.wikimedia.org/wikipedia/commons/1/16/Stationmaster_NITAMA_20110105.jpg",
+                "img_style": {"height": "10%", "width": "10%"},
+            },
+        ],
+    ),
+)
 
 app.layout = html.Div(
+    className="p-5",
+    style={"margin-left": "100px", "margin-right": "100px"},
     children=[
         html.H1(children="Annocoder"),
-        html.Div(children="Search"),
-        dbc.Input(id="keywords", placeholder="keywords...", type="text"),
-        html.Button("Submit", id="search-button", n_clicks=0),
+        html.Div(children=carousel),
+        html.Div(
+            style={"margin-top": "15px"},
+            children=[
+                dbc.Input(
+                    id="keywords",
+                    placeholder="keywords...",
+                    type="text",
+                ),
+                html.Button(
+                    "Submit",
+                    id="search-button",
+                    n_clicks=0,
+                    style={"margin-top": "5px"},
+                ),
+            ],
+        ),
         dash_table.DataTable(
             id="annotations",
             data=result,
-            style_header = {'display': 'none'},
+            style_header={"display": "none"},
             style_cell={"textAlign": "left"},
             style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
         ),
-    ]
+    ],
 )
 
 

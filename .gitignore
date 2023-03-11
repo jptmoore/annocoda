@@ -99,3 +99,4 @@ etc/
 lib64
 pyvenv.cfg
 share/
+src/.vscode/
