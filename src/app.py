@@ -4,8 +4,7 @@ import dash_bootstrap_components as dbc
 from data import Data
 from components.carousel import carousel
 from components.annotation_table import annotation_table
-from components.search_input import search_input
-from components.search_button import search_button
+from components.search import search
 
 import logging
 
@@ -32,8 +31,7 @@ app.layout = html.Div(
     style={"margin-left": "20%", "margin-right": "20%"},
     children=[
         html.Div(children=carousel),
-        html.Div(children=search_input),
-        html.Div(children=search_button),
+        html.Div(children=search),
         html.Div(children=annotation_table(result)),
     ],
 )
