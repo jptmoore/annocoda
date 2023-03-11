@@ -47,42 +47,50 @@ carousel = (
     ),
 )
 
-app.layout = html.Div(
-    className="p-5",
-    style={"margin-left": "100px", "margin-right": "100px"},
-    children=[
-        html.Div(children=carousel),
-        html.Div(
-            style={"margin-top": "15px"},
-            children=[
-                dbc.Input(
-                    id="keywords",
-                    placeholder="keywords...",
-                    type="text",
-                ),
-                html.Button(
-                    "Submit",
-                    id="search-button",
-                    n_clicks=0,
-                    style={"margin-top": "5px"},
-                ),
-            ],
-        ),
-        dash_table.DataTable(
-            id="annotations",
-            data=result,
-            style_header={"display": "none"},
-            style_cell={"textAlign": "left"},
-            style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
-        ),
-    ],
+annotation_data = (
+    dash_table.DataTable(
+        id="annotation-data",
+        data=result,
+        style_header={"display": "none"},
+        style_cell={"textAlign": "left"},
+        style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
+    ),
 )
 
 
+search_input = (
+    dbc.Input(
+        id="search-input",
+        placeholder="keywords...",
+        type="text",
+        style={"margin-top": "5px"}
+    ),
+)
+
+search_button = (
+    html.Button(
+        "Submit",
+        id="search-button",
+        n_clicks=0,
+        style={"margin-top": "5px"},
+    ),
+)
+
+app.layout = html.Div(
+    className="p-5",
+    style={"margin-left": "20%", "margin-right": "20%"},
+    children=[
+        html.Div(children=carousel),
+        html.Div(children=search_input), 
+        html.Div(children=search_button),
+        html.Div(children=annotation_data),
+    ],
+)
+
 @app.callback(
-    Output("annotations", "data"),
+    Output("annotation-data", "data"),
     Input("search-button", "n_clicks"),
-    State("keywords", "value"),
+    State("search-input", "value"),
 )
 def update_output(n_clicks, value):
     if n_clicks > 0:
