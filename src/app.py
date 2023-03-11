@@ -51,7 +51,6 @@ app.layout = html.Div(
     className="p-5",
     style={"margin-left": "100px", "margin-right": "100px"},
     children=[
-        html.H1(children="Annocoder"),
         html.Div(children=carousel),
         html.Div(
             style={"margin-top": "15px"},
