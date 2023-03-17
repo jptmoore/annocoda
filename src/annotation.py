@@ -1,10 +1,9 @@
-import pandas as pd
 import requests
 from flask import abort
 from jsonpath_ng import parse
 
 
-class Data:
+class Annotation:
         
     def __init__(self, ctx):
         self.logger = ctx.logger
@@ -20,6 +19,7 @@ class Data:
             res_lis = map(lambda x: {'result': x}, lis)
         except Exception as e:
             self.logger.error(f"failed to get annotation text: {repr(e)}")
+            abort(400)
         else:
             return list(res_lis)
 
@@ -29,8 +29,8 @@ class Data:
             json = data.json()
             annotations = self.get_items_body_value(json)
         except Exception as e:
-            self.logger.error(f"failed to convert to DataFrame: {repr(e)}")
-            abort(500)
+            self.logger.error(f"failed to convert to json: {repr(e)}")
+            abort(400)
         else:
             return annotations
 
@@ -40,6 +40,10 @@ class Data:
             response = requests.get(url, verify=False, headers=headers)
         except Exception as e:
             self.logger.error(f"failed to get annotation: {repr(e)}")
-            abort(500)
+            abort(400)
+        if response.status_code != 200:
+            self.logger.error(f"failed to get annotation: {repr(e)}")
+            abort(response.status_code)
         else:
-            return self.parse(response)
+            content = self.parse(response)
+            return content

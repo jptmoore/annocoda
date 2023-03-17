@@ -1,7 +1,7 @@
 from dash import Dash, html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-from data import Data
+from annotation import Annotation
 from components.carousel import carousel
 from components.annotation_table import annotation_table
 from components.search import search
@@ -22,7 +22,7 @@ ctx = Context()
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 ctx.logger = app.logger
-data = Data(ctx)
+anno = Annotation(ctx)
 result = []
 
 
@@ -44,7 +44,7 @@ app.layout = html.Div(
 )
 def update_output(n_clicks, value):
     if n_clicks > 0:
-        result = data.get_annotation(
+        result = anno.get_annotation(
             url=f"https://miiify.rocks/iiif/content/search?q={value}"
         )
         return result
