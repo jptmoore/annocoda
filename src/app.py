@@ -44,7 +44,7 @@ app.layout = html.Div(
 )
 def update_output(n_clicks, value):
     if n_clicks > 0:
-        result = anno.get_annotation(
+        result = anno.search(
             url=f"https://miiify.rocks/iiif/content/search?q={value}"
         )
         return result
