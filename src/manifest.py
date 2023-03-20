@@ -37,17 +37,25 @@ class Manifest:
         dictionary = dict(zip(keys, values))
         self.data = dictionary
 
+    def carousel_data_template(self, key, value):
+        return {
+            "key": key,
+            "src": value,
+            "img_style": {"height": "10%", "width": "10%"},
+        }
+
     def make_carousel_data(self):
         result = []
         for key, value in self.data.items():
-            result.append(
-                {
-                    "key": key,
-                    "src": value,
-                    "img_style": {"height": "10%", "width": "10%"},
-                }
-            )
+            result.append(self.carousel_data_template(key, value))
         return result
+
+    def default(self):
+        item = self.carousel_data_template(
+            key="logo",
+            value="../assets/annocoda-high-resolution-logo-color-on-transparent-background.png",
+        )
+        return [item]
 
     def load_worker(self, data):
         try:
@@ -67,7 +75,7 @@ class Manifest:
             self.logger.error(f"failed to get manifest: {repr(e)}")
             abort(400)
         if response.status_code != 200:
-            self.logger.error(f"failed to get manifest: {repr(e)}")
+            self.logger.error(f"failed to get manifest")
             abort(response.status_code)
         else:
             result = self.load_worker(response)

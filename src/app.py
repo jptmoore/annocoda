@@ -27,31 +27,35 @@ ctx.logger = app.logger
 annotation = Annotation(ctx)
 manifest = Manifest(ctx)
 
-table_data = []
-carousel_data = manifest.load(url="https://miiify.rocks/manifest/cats")
+annotation_data = annotation.default()
+manifest_data = manifest.load(url="https://miiify.rocks/manifest/cats")
 
 app.layout = html.Div(
     className="p-5",
     style={"margin-left": "20%", "margin-right": "20%"},
     children=[
-        html.Div(children=carousel(carousel_data)),
+        html.Div(children=carousel(items=manifest.default())),
         html.Div(children=search),
-        html.Div(children=annotation_table(table_data)),
+        html.Div(children=annotation_table(data=annotation.default())),
     ],
 )
 
 
 @app.callback(
-    Output("annotation-data", "data"),
+    Output("table-data", "data"),
+    Output("carousel-data", "items"),
     Input("search-button", "n_clicks"),
     State("search-input", "value"),
 )
 def update_output(n_clicks, value):
     if n_clicks > 0:
-        table_data = annotation.search(
+        annotation_data = annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={value}"
         )
-        return table_data
+        return annotation_data, manifest_data
+    else:
+        return annotation.default(), manifest.default()
+    
 
 
 if __name__ == "__main__":

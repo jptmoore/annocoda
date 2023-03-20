@@ -43,6 +43,9 @@ class Annotation:
         values = self.data.values()
         result = map(lambda x: {'result': x}, values)
         return list(result)
+    
+    def default(self):
+        return []
 
     def search_worker(self, data):
         try:
@@ -63,7 +66,7 @@ class Annotation:
             self.logger.error(f"failed to get annotation: {repr(e)}")
             abort(400)
         if response.status_code != 200:
-            self.logger.error(f"failed to get annotation: {repr(e)}")
+            self.logger.error(f"failed to get annotation")
             abort(response.status_code)
         else:
             result = self.search_worker(response)

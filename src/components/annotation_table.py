@@ -4,7 +4,7 @@ from dash import dash_table
 def annotation_table(data):
     return (
         dash_table.DataTable(
-            id="annotation-data",
+            id="table-data",
             data=data,
             style_header={"display": "none"},
             style_cell={"textAlign": "left"},
