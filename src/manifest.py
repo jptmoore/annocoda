@@ -4,11 +4,63 @@ from jsonpath_ng import parse
 
 
 class Manifest:
-        
     def __init__(self, ctx):
         self.logger = ctx.logger
+        self.data = {}
 
-    def get_manifest(self, url):
+    def get_image_links(self, json):
+        try:
+            jsonpath_expression = parse("items[*].items[*].items[*].body.id")
+            result = [match.value for match in jsonpath_expression.find(json)]
+        except Exception as e:
+            self.logger.error(f"failed to get image links: {repr(e)}")
+            abort(400)
+        else:
+            return list(result)
+
+    def get_image_count(self, json):
+        return len(self.__get_image_links__(json))
+
+    def get_targets(self, json):
+        try:
+            jsonpath_expression = parse("items[*].items[*].items[*].target")
+            result = [match.value for match in jsonpath_expression.find(json)]
+        except Exception as e:
+            self.logger.error(f"failed to get targets: {repr(e)}")
+            abort(400)
+        else:
+            return list(result)
+
+    def make_dict(self, json):
+        keys = self.get_targets(json)
+        values = self.get_image_links(json)
+        dictionary = dict(zip(keys, values))
+        self.data = dictionary
+
+    def make_carousel_data(self):
+        result = []
+        for key, value in self.data.items():
+            result.append(
+                {
+                    "key": key,
+                    "src": value,
+                    "img_style": {"height": "10%", "width": "10%"},
+                }
+            )
+        return result
+
+    def load_worker(self, data):
+        try:
+            json = data.json()
+            self.make_dict(json)
+        except Exception as e:
+            self.logger.error(f"failed to process json: {repr(e)}")
+            abort(400)
+        else:
+            result = self.make_carousel_data()
+            return result
+
+    def load(self, url):
         try:
             response = requests.get(url)
         except Exception as e:
@@ -18,34 +70,5 @@ class Manifest:
             self.logger.error(f"failed to get manifest: {repr(e)}")
             abort(response.status_code)
         else:
-            content = response.json()
-            return content
-
-    def get_image_links(self, json):
-        try:
-            jsonpath_expression = parse("items[*].items[*].items[*].body.id")
-            lis = [match.value for match in jsonpath_expression.find(json)]
-        except Exception as e:
-            self.logger.error(f"failed to get image links: {repr(e)}")
-            abort(400)
-        else:
-            return lis
-
-    def get_image_count(self, json):
-        return len(self.__get_image_links__(json))
-    
-
-    def get_targets(self, json):
-        try:
-            jsonpath_expression = parse("items[*].items[*].items[*].target")
-            lis = [match.value for match in jsonpath_expression.find(json)]
-        except Exception as e:
-             self.logger.error(f"failed to get targets: {repr(e)}")
-             abort(400)
-        else:
-            return lis
-
-    def enumerated_data(self, json):
-        manifest_image_links = self.get_image_links(json)
-        manifest_targets = self.get_targets(json)
-        return enumerate(zip(manifest_image_links, manifest_targets))
+            result = self.load_worker(response)
+            return result
