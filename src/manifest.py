@@ -70,7 +70,7 @@ class Manifest:
 
     def load(self, url):
         try:
-            response = requests.get(url)
+            response = requests.get(url, verify=False)
         except Exception as e:
             self.logger.error(f"failed to get manifest: {repr(e)}")
             abort(400)
