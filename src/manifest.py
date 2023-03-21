@@ -44,9 +44,9 @@ class Manifest:
             "img_style": {"height": "10%", "width": "10%"},
         }
 
-    def make_carousel_data(self):
+    def make_carousel_data(self, data):
         result = []
-        for key, value in self.data.items():
+        for key, value in data.items():
             result.append(self.carousel_data_template(key, value))
         return result
 
@@ -65,8 +65,19 @@ class Manifest:
             self.logger.error(f"failed to process json: {repr(e)}")
             abort(400)
         else:
-            result = self.make_carousel_data()
+            result = self.make_carousel_data(self.data)
             return result
+
+
+
+    def filter(self, annotation):
+        dict1 = self.data
+        dict2 = annotation.data
+        res_dict = {i: dict1[i] for i in set(dict1.keys()).intersection(set(dict2.keys()))}
+        result = self.make_carousel_data(res_dict)
+        return result
+
+
 
     def load(self, url):
         try:

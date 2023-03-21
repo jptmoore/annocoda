@@ -7,13 +7,6 @@ from components.carousel import carousel
 from components.annotation_table import annotation_table
 from components.search import search
 
-import logging
-
-log_format = "%(asctime)s::%(levelname)s::%(message)s"
-logging.basicConfig(level="INFO", format=log_format)
-log = logging.getLogger()
-
-
 class Context:
     pass
 
@@ -21,7 +14,6 @@ class Context:
 ctx = Context()
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
 ctx.logger = app.logger
 
 annotation = Annotation(ctx)
@@ -52,7 +44,7 @@ def update_output(n_clicks, value):
         annotation_data = annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={value}"
         )
-        return annotation_data, manifest_data
+        return annotation_data, manifest.filter(annotation)
     else:
         return annotation.default(), manifest.default()
     
