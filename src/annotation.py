@@ -20,7 +20,7 @@ class Annotation:
             self.logger.error(f"failed to get annotation text: {repr(e)}")
             abort(400)
         else:
-            return list(result)
+            return result
 
     def get_items_target(self, json):
         try:
@@ -30,7 +30,7 @@ class Annotation:
             self.logger.error(f"failed to get annotation target: {repr(e)}")
             abort(400)
         else:
-            return list(result)
+            return result
 
     def make_dict(self, json):
         keys = self.get_items_target(json)

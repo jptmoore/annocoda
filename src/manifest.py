@@ -16,7 +16,7 @@ class Manifest:
             self.logger.error(f"failed to get image links: {repr(e)}")
             abort(400)
         else:
-            return list(result)
+            return result
 
     def get_image_count(self, json):
         return len(self.__get_image_links__(json))
@@ -29,7 +29,7 @@ class Manifest:
             self.logger.error(f"failed to get targets: {repr(e)}")
             abort(400)
         else:
-            return list(result)
+            return result
 
     def make_dict(self, json):
         keys = self.get_targets(json)
