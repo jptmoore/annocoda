@@ -46,6 +46,8 @@ def update_output(n_clicks, value):
         )
         annotation_targets = annotation.make_target_list()
         manifest_data = manifest.filter_result_data(annotation_targets)
+        manifest_targets = manifest.make_target_list()
+        # annotation_data = annotation.filter_result_data(manifest_targets)
         return annotation_data, manifest_data
     else:
         return annotation.default(), manifest.default()

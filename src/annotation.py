@@ -38,8 +38,8 @@ class Annotation:
         dictionary = dict(zip(keys, values))
         self.data = dictionary
 
-    def make_result_data(self):
-        values = self.data.values()
+    def make_result_data(self, data):
+        values = data.values()
         result = map(lambda x: {"result": x}, values)
         return list(result)
 
@@ -61,6 +61,13 @@ class Annotation:
         targets = map(self.remove_frag_selector, keys)
         return targets
 
+    def filter_result_data(self, manifest_targets):
+        data = self.data
+        filtered_data = dict((k, data[k]) for k in manifest_targets if k in data)
+        self.logger.info(filtered_data)
+        result = self.make_result_data(filtered_data)
+        return result
+
     def search_worker(self, data):
         try:
             json = data.json()
@@ -69,7 +76,7 @@ class Annotation:
             self.logger.error(f"failed to process json: {repr(e)}")
             abort(400)
         else:
-            result = self.make_result_data()
+            result = self.make_result_data(self.data)
             return result
 
     def search(self, url):

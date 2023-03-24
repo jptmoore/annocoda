@@ -61,10 +61,10 @@ class Manifest:
         targets = self.data.keys()
         return targets
 
+
     def filter_result_data(self, annotation_targets):
         data = self.data
         filtered_data = dict((k, data[k]) for k in annotation_targets if k in data)
-        self.logger.info(filtered_data)
         result = self.make_result_data(filtered_data)
         return result
 
