@@ -20,7 +20,7 @@ annotation = Annotation(ctx)
 manifest = Manifest(ctx)
 
 annotation_data = annotation.default()
-manifest_data = manifest.load(url="https://miiify.rocks/manifest/cats")
+manifest_data = manifest.load(url="https://miiify.rocks/manifest/rustic_walking_routes")
 
 app.layout = html.Div(
     className="p-5",
@@ -44,7 +44,9 @@ def update_output(n_clicks, value):
         annotation_data = annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={value}"
         )
-        return annotation_data, manifest.filter(annotation)
+        annotation_targets = annotation.make_target_list()
+        manifest_data = manifest.filter_result_data(annotation_targets)
+        return annotation_data, manifest_data
     else:
         return annotation.default(), manifest.default()
     

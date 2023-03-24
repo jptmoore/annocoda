@@ -44,7 +44,7 @@ class Manifest:
             "img_style": {"height": "10%", "width": "10%"},
         }
 
-    def make_carousel_data(self, data):
+    def make_result_data(self, data):
         result = []
         for key, value in data.items():
             result.append(self.carousel_data_template(key, value))
@@ -57,6 +57,17 @@ class Manifest:
         )
         return [item]
 
+    def make_target_list(self):
+        targets = self.data.keys()
+        return targets
+
+    def filter_result_data(self, annotation_targets):
+        data = self.data
+        filtered_data = dict((k, data[k]) for k in annotation_targets if k in data)
+        self.logger.info(filtered_data)
+        result = self.make_result_data(filtered_data)
+        return result
+
     def load_worker(self, data):
         try:
             json = data.json()
@@ -65,19 +76,8 @@ class Manifest:
             self.logger.error(f"failed to process json: {repr(e)}")
             abort(400)
         else:
-            result = self.make_carousel_data(self.data)
+            result = self.make_result_data(self.data)
             return result
-
-
-
-    def filter(self, annotation):
-        dict1 = self.data
-        dict2 = annotation.data
-        res_dict = {i: dict1[i] for i in set(dict1.keys()).intersection(set(dict2.keys()))}
-        result = self.make_carousel_data(res_dict)
-        return result
-
-
 
     def load(self, url):
         try:

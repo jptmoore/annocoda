@@ -4,7 +4,6 @@ from jsonpath_ng import parse
 
 
 class Annotation:
-        
     def __init__(self, ctx):
         self.logger = ctx.logger
         self.data = {}
@@ -22,7 +21,7 @@ class Annotation:
             abort(400)
         else:
             return list(result)
-        
+
     def get_items_target(self, json):
         try:
             jsonpath_expression = parse("items[*].target")
@@ -31,21 +30,36 @@ class Annotation:
             self.logger.error(f"failed to get annotation target: {repr(e)}")
             abort(400)
         else:
-            return list(result) 
-    
+            return list(result)
+
     def make_dict(self, json):
         keys = self.get_items_target(json)
         values = self.get_items_body_value(json)
         dictionary = dict(zip(keys, values))
         self.data = dictionary
 
-    def make_table_data(self):
+    def make_result_data(self):
         values = self.data.values()
-        result = map(lambda x: {'result': x}, values)
+        result = map(lambda x: {"result": x}, values)
         return list(result)
-    
+
     def default(self):
         return []
+
+    def remove_frag_selector(self, target):
+        res = target.split("#")
+        match res:
+            case [x, _]:
+                return x
+            case [x]:
+                return x
+            case _:
+                raise ValueError("failed to match target")
+
+    def make_target_list(self):
+        keys = self.data.keys()
+        targets = map(self.remove_frag_selector, keys)
+        return targets
 
     def search_worker(self, data):
         try:
@@ -55,7 +69,7 @@ class Annotation:
             self.logger.error(f"failed to process json: {repr(e)}")
             abort(400)
         else:
-            result = self.make_table_data()
+            result = self.make_result_data()
             return result
 
     def search(self, url):

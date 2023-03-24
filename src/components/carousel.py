@@ -7,6 +7,7 @@ def carousel(items):
             items=items,
             style={"width": "100%"},
             controls=True,
-            indicators=True
+            indicators=True,
+            variant="dark"
         ),
     )
