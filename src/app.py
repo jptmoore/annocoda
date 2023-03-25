@@ -7,6 +7,7 @@ from components.carousel import carousel
 from components.annotation_table import annotation_table
 from components.search import search
 
+
 class Context:
     pass
 
@@ -28,9 +29,24 @@ app.layout = html.Div(
     children=[
         html.Div(children=carousel(items=manifest.default())),
         html.Div(children=search),
+        html.Div(id="status-bar"),
         html.Div(children=annotation_table(data=annotation.default())),
     ],
 )
+
+
+@app.callback(
+    Output("status-bar", "children"),
+    Input("table-data", "active_cell"),
+    State("table-data", "data"),
+)
+def getActiveCell(active_cell, data):
+    if active_cell:
+        row = active_cell["row"]
+        cellData = data[row]["key"]
+        return html.P(f"{cellData}")
+    else:
+        return html.P("")
 
 
 @app.callback(
@@ -51,7 +67,6 @@ def update_output(n_clicks, value):
         return annotation_data, manifest_data
     else:
         return annotation.default(), manifest.default()
-    
 
 
 if __name__ == "__main__":

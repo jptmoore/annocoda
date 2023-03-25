@@ -39,8 +39,9 @@ class Annotation:
         self.data = dictionary
 
     def make_result_data(self, data):
+        keys = data.keys()
         values = data.values()
-        result = map(lambda x: {"result": x}, values)
+        result = map(lambda k,v: {"key": k, "value": v}, keys,values)
         return list(result)
 
     def default(self):
