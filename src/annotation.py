@@ -48,7 +48,7 @@ class Annotation:
 
     def remove_frag_selector(self, target):
         res = target.split("#")
-        match res:
+        match res: 
             case [x, _]:
                 return x
             case [x]:
@@ -62,10 +62,12 @@ class Annotation:
         return targets
 
     def filter_result_data(self, manifest_targets):
-        data = self.data
-        filtered_data = dict((k, data[k]) for k in manifest_targets if k in data)
-        self.logger.info(filtered_data)
-        result = self.make_result_data(filtered_data)
+        filtered_data = []
+        for (k, v) in self.data.items():
+            if self.remove_frag_selector(k) in manifest_targets:
+                filtered_data.append( (k, v) )
+        dictionary = dict(filtered_data)
+        result = self.make_result_data(dictionary)
         return result
 
     def search_worker(self, data):
