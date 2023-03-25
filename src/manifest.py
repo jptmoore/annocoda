@@ -7,7 +7,7 @@ class Manifest:
     def __init__(self, ctx):
         self.logger = ctx.logger
         self.data = {}
-        self.targets = []
+        self.current_targets = []
 
     def get_image_links(self, json):
         try:
@@ -78,7 +78,7 @@ class Manifest:
     def index_of_target(self, target):
         k = self.remove_frag_selector(target)
         try:
-            result = self.targets.index(k)
+            result = self.current_targets.index(k)
         except ValueError as e:
             self.logger.error(f"failed to find target: {repr(e)}")
             abort(500)        
@@ -88,7 +88,7 @@ class Manifest:
     def filter_result_data(self, annotation_targets):
         data = self.data
         filtered_data = dict((k, data[k]) for k in annotation_targets if k in data)
-        self.targets = list(filtered_data.keys())
+        self.current_targets = list(filtered_data.keys())
         result = self.make_result_data(filtered_data)
         return result
 

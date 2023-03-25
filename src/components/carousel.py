@@ -6,8 +6,9 @@ def carousel(items):
             id="carousel-data",
             items=items,
             style={"width": "100%"},
-            controls=True,
-            indicators=True,
-            variant="dark"
+            variant="dark",
+            controls=False,
+            indicators=False,
+            interval=None,
         ),
     )

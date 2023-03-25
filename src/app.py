@@ -29,14 +29,13 @@ app.layout = html.Div(
     children=[
         html.Div(children=carousel(items=manifest.default())),
         html.Div(children=search),
-        html.Div(id="status-bar"),
         html.Div(children=annotation_table(data=annotation.default())),
     ],
 )
 
 
 @app.callback(
-    Output("status-bar", "children"),
+    Output("carousel-data", "active_index"),
     Input("table-data", "active_cell"),
     State("table-data", "data"),
 )
@@ -45,9 +44,9 @@ def getActiveCell(active_cell, data):
         row = active_cell["row"]
         target = data[row]["key"]
         index = manifest.index_of_target(target)
-        return html.P(f"{index}")
+        return index
     else:
-        return html.P("")
+        return 0
 
 
 @app.callback(
