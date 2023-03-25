@@ -43,8 +43,9 @@ app.layout = html.Div(
 def getActiveCell(active_cell, data):
     if active_cell:
         row = active_cell["row"]
-        cellData = data[row]["key"]
-        return html.P(f"{cellData}")
+        target = data[row]["key"]
+        index = manifest.index_of_target(target)
+        return html.P(f"{index}")
     else:
         return html.P("")
 
