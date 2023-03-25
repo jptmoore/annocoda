@@ -44,18 +44,21 @@ class Manifest:
             "img_style": {"height": "10%", "width": "10%"},
         }
 
-    def make_result_data(self, data):
-        result = []
-        for key, value in data.items():
-            result.append(self.carousel_data_template(key, value))
-        return result
-
     def default(self):
         item = self.carousel_data_template(
             key="logo",
             value="../assets/annocoda-high-resolution-logo-color-on-transparent-background.png",
         )
         return [item]
+
+    def make_result_data(self, data):
+        result = []
+        for key, value in data.items():
+            result.append(self.carousel_data_template(key, value))
+        if result == []:
+            return self.default()
+        else:
+            return result
 
     def make_target_list(self):
         targets = self.data.keys()
