@@ -35,6 +35,7 @@ app.layout = dbc.Container(
                 html.Div(
                     children=annotation_table(data=annotation.default())),
             ],
+            style={"padding": "5%"}
         ),
     ],
     style={"margin": "2%"},
