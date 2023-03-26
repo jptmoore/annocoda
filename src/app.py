@@ -33,6 +33,13 @@ app.layout = html.Div(
     ],
 )
 
+@app.callback(
+    Output("table-data", "selected_cells"),
+    Output("table-data", "active_cell"),
+    Input("search-button", "n_clicks"),    
+)
+def clear(n_clicks):
+    return [], None
 
 @app.callback(
     Output("carousel-data", "active_index"),
