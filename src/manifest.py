@@ -48,7 +48,7 @@ class Manifest:
     def default(self):
         item = self.carousel_data_template(
             key="splash",
-            value="../assets/bike.jpeg",
+            value="../assets/splash.jpeg",
         )
         return [item]
 
