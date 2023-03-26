@@ -5,7 +5,7 @@ from annotation import Annotation
 from manifest import Manifest
 from components.carousel import carousel
 from components.annotation_table import annotation_table
-from components.search import search
+from components.navbar import navbar
 
 
 class Context:
@@ -23,23 +23,33 @@ manifest = Manifest(ctx)
 annotation_data = annotation.default()
 manifest_data = manifest.load(url="https://miiify.rocks/manifest/rustic_walking_routes")
 
-app.layout = html.Div(
-    className="p-5",
-    style={"margin-left": "20%", "margin-right": "20%"},
-    children=[
-        html.Div(children=carousel(items=manifest.default())),
-        html.Div(children=search),
-        html.Div(children=annotation_table(data=annotation.default())),
+
+app.layout = dbc.Container(
+    [
+        dbc.Stack(html.Div(children=navbar)),
+        html.P(),
+        dbc.Stack(
+            [
+                html.Div(
+                    children=carousel(items=manifest.default())),
+                html.Div(
+                    children=annotation_table(data=annotation.default())),
+            ],
+        ),
     ],
+    style={"margin": "2%", "border-style": "ridge"},
+    fluid="True"
 )
+
 
 @app.callback(
     Output("table", "selected_cells"),
     Output("table", "active_cell"),
-    Input("search-button", "n_clicks"),    
+    Input("search-button", "n_clicks"),
 )
 def clear(n_clicks):
     return [], None
+
 
 @app.callback(
     Output("carousel", "active_index"),

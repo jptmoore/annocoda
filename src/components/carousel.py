@@ -5,7 +5,6 @@ def carousel(items):
         dbc.Carousel(
             id="carousel",
             items=items,
-            style={"width": "100%"},
             variant="dark",
             controls=False,
             indicators=False,
