@@ -21,7 +21,7 @@ annotation = Annotation(ctx)
 manifest = Manifest(ctx)
 
 annotation_data = annotation.default()
-manifest_data = manifest.load(url="https://miiify.rocks/manifest/rustic_walking_routes")
+manifest_data = manifest.load(url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro")
 
 
 app.layout = dbc.Container(
@@ -86,6 +86,7 @@ def update_output(n_clicks, value):
     else:
         return annotation.default(), manifest.default()
 
+app.title = 'Annocoda'
 
 if __name__ == "__main__":
     app.run_server(debug=True)
