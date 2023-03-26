@@ -47,10 +47,10 @@ class Manifest:
 
     def default(self):
         item = self.carousel_data_template(
-            key="logo",
-            value="../assets/annocoda-high-resolution-logo-color-on-transparent-background.png",
+            key="splash",
+            value="",
         )
-        return [item]
+        return []
 
     def make_result_data(self, data):
         result = []

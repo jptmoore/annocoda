@@ -3,7 +3,7 @@ from dash import Input, Output, State, html
 from dash_bootstrap_components._components.Container import Container
 
 PLOTLY_LOGO = (
-    "../assets/annocoda-high-resolution-logo-color-on-transparent-background.png"
+    "../assets/annocoda-logo.png"
 )
 
 
@@ -29,7 +29,7 @@ navbar = dbc.Navbar(
             html.A(
                 dbc.Row(
                     [
-                        dbc.Col(html.Img(src=PLOTLY_LOGO, height="80px")),
+                        dbc.Col(html.Img(src=PLOTLY_LOGO, height="30px")),
                     ],
                     align="center",
                     className="g-0",
