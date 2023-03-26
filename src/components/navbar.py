@@ -2,9 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import Input, Output, State, html
 from dash_bootstrap_components._components.Container import Container
 
-logo = (
-    "../assets/annocoda-logo.png"
-)
+logo = "../assets/annocoda-logo.png"
 
 
 search_bar = dbc.Form(
@@ -23,20 +21,24 @@ search_bar = dbc.Form(
     )
 )
 
+image = (
+    html.A(
+        dbc.Row(
+            [
+                dbc.Col(html.Img(src=logo, height="30px")),
+            ],
+            align="center",
+            className="g-0",
+        ),
+        href="https://plotly.com",
+        style={"textDecoration": "none"},
+    ),
+)
+
 navbar = dbc.Navbar(
     dbc.Container(
         [
-            html.A(
-                dbc.Row(
-                    [
-                        dbc.Col(html.Img(src=logo, height="30px")),
-                    ],
-                    align="center",
-                    className="g-0",
-                ),
-                href="https://plotly.com",
-                style={"textDecoration": "none"},
-            ),
+            html.Div(children=image),
             html.Div(children=search_bar),
         ]
     ),
