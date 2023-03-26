@@ -34,17 +34,17 @@ app.layout = html.Div(
 )
 
 @app.callback(
-    Output("table-data", "selected_cells"),
-    Output("table-data", "active_cell"),
+    Output("table", "selected_cells"),
+    Output("table", "active_cell"),
     Input("search-button", "n_clicks"),    
 )
 def clear(n_clicks):
     return [], None
 
 @app.callback(
-    Output("carousel-data", "active_index"),
-    Input("table-data", "active_cell"),
-    State("table-data", "data"),
+    Output("carousel", "active_index"),
+    Input("table", "active_cell"),
+    State("table", "data"),
 )
 def getActiveCell(active_cell, data):
     if active_cell:
@@ -57,8 +57,8 @@ def getActiveCell(active_cell, data):
 
 
 @app.callback(
-    Output("table-data", "data"),
-    Output("carousel-data", "items"),
+    Output("table", "data"),
+    Output("carousel", "items"),
     Input("search-button", "n_clicks"),
     State("search-input", "value"),
 )

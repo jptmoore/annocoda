@@ -4,7 +4,7 @@ from dash import dash_table
 def annotation_table(data):
     return (
         dash_table.DataTable(
-            id="table-data",
+            id="table",
             data=data,
             style_header={"display": "none"},
             hidden_columns=['key'],
