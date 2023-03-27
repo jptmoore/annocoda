@@ -43,7 +43,7 @@ class Manifest:
         return {
             "key": key,
             "src": value,
-            "img_style": {"height": "10%", "width": "10%"},
+            #"img_style": {"height": "10%", "width": "10%"},
         }
 
     def default(self):

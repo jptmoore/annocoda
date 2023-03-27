@@ -26,21 +26,17 @@ manifest_data = manifest.load(url="https://miiify.rocks/manifest/diamond_jubilee
 
 app.layout = dbc.Container(
     [
-        dbc.Stack(html.Div(children=navbar)),
+        dbc.Stack(html.Div(navbar)),
         html.P(),
         dbc.Stack(
             [
-                html.Div(
-                    children=carousel(items=manifest.default())),
-                 html.Div(
-                    children=statusbar()),
-                html.Div(
-                    children=annotation_table(data=annotation.default())),
+                html.Div(carousel(items=manifest.default())),
+                html.Div(annotation_table(data=annotation.default())),
+                html.Div(statusbar()),
             ],
-            style={"padding": "5%"}
         ),
     ],
-    style={"margin": "2%"},
+    style={"margin-bottom": "5%", "margin-left": "5%", "margin-right": "5%"},
     fluid="True"
 )
 
