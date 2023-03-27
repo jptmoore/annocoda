@@ -6,7 +6,7 @@ from manifest import Manifest
 from components.carousel import carousel
 from components.annotation_table import annotation_table
 from components.navbar import navbar
-
+from components.statusbar import statusbar
 
 class Context:
     pass
@@ -32,6 +32,8 @@ app.layout = dbc.Container(
             [
                 html.Div(
                     children=carousel(items=manifest.default())),
+                 html.Div(
+                    children=statusbar()),
                 html.Div(
                     children=annotation_table(data=annotation.default())),
             ],
@@ -70,6 +72,7 @@ def getActiveCell(active_cell, data):
 @app.callback(
     Output("table", "data"),
     Output("carousel", "items"),
+    Output("status-bar", "children"),
     Input("search-button", "n_clicks"),
     State("search-input", "value"),
 )
@@ -82,9 +85,11 @@ def update_output(n_clicks, value):
         manifest_data = manifest.filter_result_data(annotation_targets)
         manifest_targets = manifest.make_target_list()
         annotation_data = annotation.filter_result_data(manifest_targets)
-        return annotation_data, manifest_data
+        count = len(annotation_data)
+        message = f"{count} records"
+        return annotation_data, manifest_data, message
     else:
-        return annotation.default(), manifest.default()
+        return annotation.default(), manifest.default(), None
 
 app.title = 'Annocoda'
 

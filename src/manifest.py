@@ -1,6 +1,7 @@
 import requests
 from flask import abort
 from jsonpath_ng import parse
+import dash_bootstrap_components as dbc
 
 
 class Manifest:
@@ -53,9 +54,10 @@ class Manifest:
         return [item]
     
     def nothing_found(self):
+        dbc.Alert("This is a primary alert", color="primary")
         item = self.carousel_data_template(
             key="nothing",
-            value="../assets/nothing.png",
+            value="../assets/nothing.jpeg",
         )
         return [item]
 
