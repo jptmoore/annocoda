@@ -30,6 +30,7 @@ app.layout = dbc.Container(
         dbc.Row(html.P()),
         dbc.Row(html.Div(carousel(items=manifest.default()))),
         dbc.Row(html.Div(annotation_table(data=annotation.default()))),
+        dbc.Row(html.P()),
         dbc.Row(html.Div(statusbar, style={'text-align':'center'})),
     ],
     style={"margin-top": "2%", "margin-bottom": "5%", "margin-left": "5%", "margin-right": "5%"},
