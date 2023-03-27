@@ -51,13 +51,20 @@ class Manifest:
             value="../assets/splash.jpeg",
         )
         return [item]
+    
+    def nothing_found(self):
+        item = self.carousel_data_template(
+            key="nothing",
+            value="../assets/nothing.png",
+        )
+        return [item]
 
     def make_result_data(self, data):
         result = []
         for key, value in data.items():
             result.append(self.carousel_data_template(key, value))
         if result == []:
-            return self.default()
+            return self.nothing_found()
         else:
             return result
 
