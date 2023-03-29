@@ -25,7 +25,7 @@ image = (
     html.A(
         dbc.Row(
             [
-                dbc.Col(html.Img(src=logo, height="30px")),
+                dbc.Col(html.Img(src=logo, height="30px", style={"padding-bottom": "5px"})),
             ],
             align="center",
             className="g-0",
