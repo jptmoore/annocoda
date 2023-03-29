@@ -3,5 +3,5 @@ from dash import html
 
 
 statusbar = html.H3(
-    dbc.Badge(pill=True, color="primary", className="me-1", id="status-bar")
+    dbc.Badge(color="primary", id="status-bar", n_clicks=0, className="me-1")
 )

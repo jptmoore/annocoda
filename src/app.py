@@ -29,14 +29,29 @@ app.layout = dbc.Container(
         dbc.Row(html.Div(navbar)),
         dbc.Row(html.P()),
         dbc.Row(html.Div(carousel(items=manifest.default()))),
-        dbc.Row(html.Div(annotation_table(data=annotation.default()))),
-        dbc.Row(html.P()),
+        dbc.Offcanvas(
+            dbc.Row(html.Div(annotation_table(data=annotation.default()))),
+            id="offcanvas-scrollable",
+            scrollable=True,
+            title="Annotations",
+            is_open=False,
+            placement="bottom",
+        ),
         dbc.Row(html.Div(statusbar, style={'text-align':'center'})),
     ],
     style={"margin-top": "2%", "margin-bottom": "5%", "margin-left": "5%", "margin-right": "5%"},
     fluid="True"
 )
 
+@app.callback(
+    Output("offcanvas-scrollable", "is_open"),
+    Input("status-bar", "n_clicks"),
+    State("offcanvas-scrollable", "is_open"),
+)
+def toggle_offcanvas_scrollable(n1, is_open):
+    if n1:
+        return not is_open
+    return is_open
 
 @app.callback(
     Output("table", "selected_cells"),
@@ -79,7 +94,7 @@ def update_output(n_clicks, value):
         manifest_targets = manifest.make_target_list()
         annotation_data = annotation.filter_result_data(manifest_targets)
         count = len(annotation_data)
-        message = f"{count} records"
+        message = f"{count} annotations"
         return annotation_data, manifest_data, message
     else:
         return annotation.default(), manifest.default(), None
