@@ -6,8 +6,8 @@ def carousel(items):
             id="carousel",
             items=items,
             variant="dark",
-            controls=False,
-            indicators=False,
+            controls=True,
+            indicators=True,
             interval=None,
         ),
     )
