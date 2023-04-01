@@ -45,13 +45,18 @@ app.layout = dbc.Container(
 
 @app.callback(
     Output("offcanvas-scrollable", "is_open"),
+    Output("table", "data"),
     Input("status-bar", "n_clicks"),
     State("offcanvas-scrollable", "is_open"),
+    State("carousel", "active_index"),
+    State("carousel", "items")
 )
-def toggle_offcanvas_scrollable(n1, is_open):
+def toggle_offcanvas_scrollable(n1, is_open, active_index, items):
     if n1:
-        return not is_open
-    return is_open
+        target = items[active_index].get("key")
+        data = annotation.filter_result_data([target])
+        return not is_open, data
+    return is_open, []
 
 @app.callback(
     Output("table", "selected_cells"),
@@ -78,7 +83,6 @@ def getActiveCell(active_cell, data):
 
 
 @app.callback(
-    Output("table", "data"),
     Output("carousel", "items"),
     Output("status-bar", "children"),
     Input("search-button", "n_clicks"),
@@ -95,9 +99,9 @@ def update_output(n_clicks, value):
         annotation_data = annotation.filter_result_data(manifest_targets)
         count = len(annotation_data)
         message = f"{count} annotations"
-        return annotation_data, manifest_data, message
+        return manifest_data, message
     else:
-        return annotation.default(), manifest.default(), None
+        return manifest.default(), None
 
 app.title = 'Annocoda'
 
