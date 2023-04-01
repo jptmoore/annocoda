@@ -76,6 +76,8 @@ def getActiveCell(active_cell, data):
     if active_cell:
         row = active_cell["row"]
         target = data[row]["key"]
+        box = manifest.get_frag_selector_cords(target)
+        print(box)
         index = manifest.index_of_target(target)
         return index
     else:

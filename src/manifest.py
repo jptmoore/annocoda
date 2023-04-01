@@ -73,7 +73,26 @@ class Manifest:
     def make_target_list(self):
         targets = self.data.keys()
         return targets
-    
+
+    def get_frag_selector_cords_worker(self, frag):
+        res = frag.split(',')
+        match res: 
+            case [_, x, y, w, h]:
+                return (x,y,w,h)
+            case _:
+                raise ValueError("failed to match cords")
+
+    def get_frag_selector_cords(self, target):
+        res = target.split('#xywh=')
+        match res: 
+            case [_, y]:
+                return y
+            case [_]:
+                return None
+            case _:
+                raise ValueError("failed to match target")
+
+
     def remove_frag_selector(self, target):
         res = target.split("#")
         match res: 
