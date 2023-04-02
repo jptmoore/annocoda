@@ -51,12 +51,13 @@ app.layout = dbc.Container(
     State("carousel", "active_index"),
     State("carousel", "items")
 )
-def toggle_offcanvas_scrollable(n1, is_open, active_index, items):
-    if n1:
+def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
+    if n_clicks:
         target = items[active_index].get("key")
-        data = annotation.filter_result_data([target])
-        return not is_open, data
-    return is_open, []
+        result = annotation.filter_result_data([target])
+        return not is_open, result
+    else:
+        return is_open, items
 
 @app.callback(
     Output("table", "selected_cells"),
@@ -69,16 +70,18 @@ def clear(n_clicks):
 
 @app.callback(
     Output("carousel", "active_index"),
+    Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
 )
-def getActiveCell(active_cell, data):
+def getActiveCell(items, active_cell, data):
     if active_cell:
         row = active_cell["row"]
         target = data[row]["key"]
         box = manifest.get_frag_selector_cords(target)
-        print(box)
         index = manifest.index_of_target(target)
+        src = items[index].get("src")
+        print("box:", box, "src:", src)
         return index
     else:
         return 0
