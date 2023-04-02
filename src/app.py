@@ -61,15 +61,15 @@ def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
 
 @app.callback(
     Output("table", "selected_cells"),
-    Output("table", "active_cell"),
     Input("search-button", "n_clicks"),
 )
 def clear(n_clicks):
-    return [], None
+    return []
 
 
 @app.callback(
     Output("carousel", "active_index"),
+    Output("table", "active_cell"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
@@ -82,9 +82,9 @@ def getActiveCell(items, active_cell, data):
         index = manifest.index_of_target(target)
         src = items[index].get("src")
         print("box:", box, "src:", src)
-        return index
+        return index, None
     else:
-        return 0
+        return 0, active_cell
 
 
 @app.callback(
