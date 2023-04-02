@@ -59,13 +59,13 @@ def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
     else:
         return is_open, items
 
+
 @app.callback(
     Output("table", "selected_cells"),
-    Input("search-button", "n_clicks"),
+    Input("offcanvas-scrollable", "is_open"),
 )
-def clear(n_clicks):
+def deselectRows(selected_cells):
     return []
-
 
 @app.callback(
     Output("carousel", "active_index"),
