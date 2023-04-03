@@ -89,11 +89,9 @@ def deselectRows(selected_cells):
 @app.callback(
     Output("carousel", "active_index"),
     Output("table", "active_cell"),
-    Output("carousel", "items", allow_duplicate=True),
     Input("carousel", "items"),
     Input("table", "active_cell"),
-    State("table", "data"),
-    prevent_initial_call=True,
+    State("table", "data")
 )
 def getActiveCell(items, active_cell, data):
     if active_cell:
@@ -103,9 +101,9 @@ def getActiveCell(items, active_cell, data):
         index = manifest.index_of_target(target)
         src = items[index].get("src")
         print("box:", box, "src:", src)
-        return index, None, items
+        return index, None
     else:
-        return 0, active_cell, items
+        return 0, active_cell
 
 
 @app.callback(
