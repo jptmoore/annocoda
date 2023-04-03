@@ -24,11 +24,36 @@ annotation_data = annotation.default()
 manifest_data = manifest.load(url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro")
 
 
+tab1_content = dbc.Card(
+    dbc.CardBody(
+        [
+            html.Div(carousel(items=manifest.default()))
+        ]
+    ),
+
+)
+
+tab2_content = dbc.Card(
+    dbc.CardBody(
+        [
+            html.P("This is tab 2!"),
+        ]
+    ),
+)
+
+
+tabs = dbc.Tabs(
+    [
+        dbc.Tab(tab1_content, label="Tab 1"),
+        dbc.Tab(tab2_content, label="Tab 2"),
+    ]
+)
+
 app.layout = dbc.Container(
     [
         dbc.Row(html.Div(navbar)),
         dbc.Row(html.P()),
-        dbc.Row(html.Div(carousel(items=manifest.default()))),
+        dbc.Row(html.Div(tabs)),
         dbc.Offcanvas(
             dbc.Row(html.Div(annotation_table(data=annotation.default()))),
             id="offcanvas-scrollable",
