@@ -29,10 +29,11 @@ manifest_data = manifest.load(
 
 tabs = dbc.Tabs(
     [
-        dbc.Tab(html.Div(carousel(items=manifest.default())), label="Tab 1", tab_id="tab-1"),
-        dbc.Tab(html.P("This is tab 2!"), label="Tab 2", tab_id="tab-2"),
+        dbc.Tab(html.Div(carousel(items=manifest.default())), tab_id="tab-1", disabled=True),
+        dbc.Tab(html.P("This is tab 2!"), tab_id="tab-2", disabled=True),
     ],
     id="tabs",
+    active_tab="tab-1"
 )
 
 app.layout = dbc.Container(
