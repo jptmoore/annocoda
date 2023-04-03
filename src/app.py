@@ -8,6 +8,7 @@ from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
 
+
 class Context:
     pass
 
@@ -21,32 +22,17 @@ annotation = Annotation(ctx)
 manifest = Manifest(ctx)
 
 annotation_data = annotation.default()
-manifest_data = manifest.load(url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro")
-
-
-tab1_content = dbc.Card(
-    dbc.CardBody(
-        [
-            html.Div(carousel(items=manifest.default()))
-        ]
-    ),
-
-)
-
-tab2_content = dbc.Card(
-    dbc.CardBody(
-        [
-            html.P("This is tab 2!"),
-        ]
-    ),
+manifest_data = manifest.load(
+    url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro"
 )
 
 
 tabs = dbc.Tabs(
     [
-        dbc.Tab(tab1_content, label="Tab 1"),
-        dbc.Tab(tab2_content, label="Tab 2"),
-    ]
+        dbc.Tab(html.Div(carousel(items=manifest.default())), label="Tab 1", tab_id="tab-1"),
+        dbc.Tab(html.P("This is tab 2!"), label="Tab 2", tab_id="tab-2"),
+    ],
+    id="tabs",
 )
 
 app.layout = dbc.Container(
@@ -62,11 +48,17 @@ app.layout = dbc.Container(
             is_open=False,
             placement="bottom",
         ),
-        dbc.Row(html.Div(statusbar, style={'text-align':'center'})),
+        dbc.Row(html.Div(statusbar, style={"text-align": "center"})),
     ],
-    style={"margin-top": "2%", "margin-bottom": "5%", "margin-left": "5%", "margin-right": "5%"},
-    fluid="True"
+    style={
+        "margin-top": "2%",
+        "margin-bottom": "5%",
+        "margin-left": "5%",
+        "margin-right": "5%",
+    },
+    fluid="True",
 )
+
 
 @app.callback(
     Output("offcanvas-scrollable", "is_open"),
@@ -74,7 +66,7 @@ app.layout = dbc.Container(
     Input("status-bar", "n_clicks"),
     State("offcanvas-scrollable", "is_open"),
     State("carousel", "active_index"),
-    State("carousel", "items")
+    State("carousel", "items"),
 )
 def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
     if n_clicks:
@@ -92,6 +84,7 @@ def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
 def deselectRows(selected_cells):
     return []
 
+
 @app.callback(
     Output("carousel", "active_index"),
     Output("table", "active_cell"),
@@ -99,7 +92,7 @@ def deselectRows(selected_cells):
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
-    prevent_initial_call=True
+    prevent_initial_call=True,
 )
 def getActiveCell(items, active_cell, data):
     if active_cell:
@@ -135,7 +128,8 @@ def update_output(n_clicks, value):
     else:
         return manifest.default(), None
 
-app.title = 'Annocoda'
+
+app.title = "Annocoda"
 
 if __name__ == "__main__":
-    app.run_server(host='0.0.0.0', debug=True)
+    app.run_server(host="0.0.0.0", debug=True)
