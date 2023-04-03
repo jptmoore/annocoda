@@ -62,6 +62,17 @@ app.layout = dbc.Container(
 
 
 @app.callback(
+    Output("tabs", "active_tab"),
+    Input("offcanvas-scrollable", "is_open"),
+)
+def selectTab(is_open):
+    if is_open:
+        return "tab-2"
+    else:
+        return "tab-1"
+
+
+@app.callback(
     Output("offcanvas-scrollable", "is_open"),
     Output("table", "data"),
     Input("status-bar", "n_clicks"),
