@@ -25,7 +25,7 @@ class Polygon:
         self.image = image
 
     def get_image(self, xywh):
-        box = self.draw_bounding_box(xywh)
+        self.draw_bounding_box(xywh)
         return {
             "key": "annotated",
             "src": self.image,

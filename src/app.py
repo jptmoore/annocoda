@@ -82,9 +82,13 @@ app.layout = dbc.Container(
 @app.callback(
     Output("tabs", "active_tab"),
     Input("offcanvas-scrollable", "is_open"),
+    State("carousel", "active_index"),
+    State("carousel", "items"),
 )
-def selectTab(is_open):
+def selectTab(is_open, active_index, items):
     if is_open:
+        image_url = items[active_index].get("src")
+        polygon.load_image(image_url)
         return "tab-2"
     else:
         return "tab-1"
@@ -127,6 +131,7 @@ def getActiveCell(items, active_cell, data):
         row = active_cell["row"]
         target = data[row]["key"]
         box = manifest.get_frag_selector_cords(target)
+        carousel_item = polygon.draw_bounding_box(box)
         index = manifest.index_of_target(target)
         src = items[index].get("src")
         print("box:", box, "src:", src)

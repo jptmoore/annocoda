@@ -86,7 +86,8 @@ class Manifest:
         res = target.split('#xywh=')
         match res: 
             case [_, y]:
-                return y
+                result = tuple(map(int, y.split(',')))
+                return result
             case [_]:
                 return None
             case _:
