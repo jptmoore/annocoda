@@ -3,6 +3,7 @@ from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 from annotation import Annotation
 from manifest import Manifest
+from polygon import Polygon
 from components.carousel import carousel
 from components.annotation_table import annotation_table
 from components.navbar import navbar
@@ -20,6 +21,7 @@ ctx.logger = app.logger
 
 annotation = Annotation(ctx)
 manifest = Manifest(ctx)
+polygon = Polygon(ctx)
 
 annotation_data = annotation.default()
 manifest_data = manifest.load(
