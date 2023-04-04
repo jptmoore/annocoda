@@ -27,13 +27,29 @@ manifest_data = manifest.load(
 )
 
 
+tab_style = {'border': '0'}
+
+
 tabs = dbc.Tabs(
     [
-        dbc.Tab(html.Div(carousel(items=manifest.default())), tab_id="tab-1", disabled=True),
-        dbc.Tab(html.P("This is tab 2!"), tab_id="tab-2", disabled=True),
+        dbc.Tab(
+            html.Div(carousel(items=manifest.default())),
+            tab_id="tab-1",
+            disabled=True,
+            active_tab_style=tab_style,
+            active_label_style=tab_style,
+        ),
+        dbc.Tab(
+            html.P("This is tab 2!"),
+            tab_id="tab-2",
+            disabled=True,
+            active_tab_style=tab_style,
+            active_label_style=tab_style,
+        ),
     ],
     id="tabs",
-    active_tab="tab-1"
+    active_tab="tab-1",
+    style=tab_style,
 )
 
 app.layout = dbc.Container(
@@ -102,7 +118,7 @@ def deselectRows(selected_cells):
     Output("table", "active_cell"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
-    State("table", "data")
+    State("table", "data"),
 )
 def getActiveCell(items, active_cell, data):
     if active_cell:
