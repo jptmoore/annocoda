@@ -5,6 +5,7 @@ from annotation import Annotation
 from manifest import Manifest
 from polygon import Polygon
 from components.carousel import carousel
+from components.carousel_polygon import carousel_polygon
 from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
@@ -29,7 +30,7 @@ manifest_data = manifest.load(
 )
 
 
-tab_style = {'border': '0'}
+tab_style = {'border': '0', 'display': 'none'}
 
 
 tabs = dbc.Tabs(
@@ -42,7 +43,7 @@ tabs = dbc.Tabs(
             active_label_style=tab_style,
         ),
         dbc.Tab(
-            html.P("This is tab 2!"),
+            html.Div(carousel_polygon(items=[])),
             tab_id="tab-2",
             disabled=True,
             active_tab_style=tab_style,
@@ -87,9 +88,10 @@ app.layout = dbc.Container(
 )
 def selectTab(is_open, active_index, items):
     if is_open:
-        image_url = items[active_index].get("src")
-        polygon.load_image(image_url)
-        print("loaded image")
+        # image_url = items[active_index].get("src")
+        print(items)
+        # carousel_item = polygon.load_image(image_url)
+        # print("loaded image")
         return "tab-2"
     else:
         return "tab-1"
@@ -123,6 +125,7 @@ def deselectRows(selected_cells):
 @app.callback(
     Output("carousel", "active_index"),
     Output("table", "active_cell"),
+    Output("carousel-polygon", "items"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
@@ -132,13 +135,13 @@ def getActiveCell(items, active_cell, data):
         row = active_cell["row"]
         target = data[row]["key"]
         box = manifest.get_frag_selector_cords(target)
-        carousel_item = polygon.get_image(box)
+        #carousel_item = polygon.get_image(box)
         index = manifest.index_of_target(target)
         src = items[index].get("src")
         print("box:", box, "src:", src)
-        return index, None
+        return index, None, manifest.default()
     else:
-        return 0, active_cell
+        return 0, active_cell, []
 
 
 @app.callback(
