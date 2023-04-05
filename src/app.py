@@ -1,11 +1,12 @@
 from dash import Dash, html
+from dash import dcc
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 from annotation import Annotation
 from manifest import Manifest
 from polygon import Polygon
 from components.carousel import carousel
-from components.carousel_polygon import carousel_polygon
+from components.carousel_tab2 import carousel_tab2
 from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
@@ -36,14 +37,14 @@ tab_style = {'border': '0', 'display': 'none'}
 tabs = dbc.Tabs(
     [
         dbc.Tab(
-            html.Div(carousel(items=manifest.default())),
+            html.Div(carousel(items=[])),
             tab_id="tab-1",
             disabled=True,
             active_tab_style=tab_style,
             active_label_style=tab_style,
         ),
         dbc.Tab(
-            html.Div(carousel_polygon(items=[])),
+            html.Div(carousel_tab2(items=[])),
             tab_id="tab-2",
             disabled=True,
             active_tab_style=tab_style,
@@ -82,21 +83,19 @@ app.layout = dbc.Container(
 
 @app.callback(
     Output("tabs", "active_tab"),
+    Output("carousel-tab2", "items"),
     Input("offcanvas-scrollable", "is_open"),
     State("carousel", "active_index"),
     State("carousel", "items"),
 )
 def selectTab(is_open, active_index, items):
     if is_open:
-        # image_url = items[active_index].get("src")
-        print(items)
-        # carousel_item = polygon.load_image(image_url)
-        # print("loaded image")
-        return "tab-2"
+        item = items[active_index]
+        return "tab-2", [item]
     else:
-        return "tab-1"
+        return "tab-1", []
 
-
+# open tray
 @app.callback(
     Output("offcanvas-scrollable", "is_open"),
     Output("table", "data"),
@@ -107,6 +106,7 @@ def selectTab(is_open, active_index, items):
 )
 def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
     if n_clicks:
+        print(items[active_index])
         target = items[active_index].get("key")
         result = annotation.filter_result_data([target])
         return not is_open, result
@@ -125,7 +125,6 @@ def deselectRows(selected_cells):
 @app.callback(
     Output("carousel", "active_index"),
     Output("table", "active_cell"),
-    Output("carousel-polygon", "items"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
@@ -139,9 +138,9 @@ def getActiveCell(items, active_cell, data):
         index = manifest.index_of_target(target)
         src = items[index].get("src")
         print("box:", box, "src:", src)
-        return index, None, manifest.default()
+        return index, None
     else:
-        return 0, active_cell, []
+        return 0, active_cell
 
 
 @app.callback(

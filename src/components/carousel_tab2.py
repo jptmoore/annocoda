@@ -1,9 +1,9 @@
 import dash_bootstrap_components as dbc
 
-def carousel_polygon(items):
+def carousel_tab2(items):
     return (
         dbc.Carousel(
-            id="carousel-polygon",
+            id="carousel-tab2",
             items=items,
             variant="dark",
             controls=True,
