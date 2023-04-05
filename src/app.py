@@ -145,11 +145,11 @@ def getActiveCell(items, active_cell, data):
         row = active_cell["row"]
         target = data[row]["key"]
         box = manifest.get_frag_selector_cords(target)
-        #carousel_item = polygon.get_image(box)
         index = manifest.index_of_target(target)
         src = items[index].get("src")
+        carousel_item = polygon.draw_bounding_box(src, box)
         print("box:", box, "src:", src)
-        return index, None, "tab-3", manifest.default()
+        return index, None, "tab-3", [carousel_item]
     else:
         return 0, active_cell, "tab-1", []
 
