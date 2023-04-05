@@ -7,6 +7,7 @@ from manifest import Manifest
 from polygon import Polygon
 from components.carousel import carousel
 from components.carousel_tab2 import carousel_tab2
+from components.carousel_tab3 import carousel_tab3
 from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
@@ -46,6 +47,13 @@ tabs = dbc.Tabs(
         dbc.Tab(
             html.Div(carousel_tab2(items=[])),
             tab_id="tab-2",
+            disabled=True,
+            active_tab_style=tab_style,
+            active_label_style=tab_style,
+        ),
+        dbc.Tab(
+            html.Div(carousel_tab3(items=[])),
+            tab_id="tab-3",
             disabled=True,
             active_tab_style=tab_style,
             active_label_style=tab_style,
@@ -125,9 +133,12 @@ def deselectRows(selected_cells):
 @app.callback(
     Output("carousel", "active_index"),
     Output("table", "active_cell"),
+    Output("tabs", "active_tab", allow_duplicate=True),
+    Output("carousel-tab3", "items"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
+    prevent_initial_call=True
 )
 def getActiveCell(items, active_cell, data):
     if active_cell:
@@ -138,9 +149,9 @@ def getActiveCell(items, active_cell, data):
         index = manifest.index_of_target(target)
         src = items[index].get("src")
         print("box:", box, "src:", src)
-        return index, None
+        return index, None, "tab-3", manifest.default()
     else:
-        return 0, active_cell
+        return 0, active_cell, "tab-1", []
 
 
 @app.callback(
