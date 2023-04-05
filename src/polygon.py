@@ -5,7 +5,7 @@ import numpy as np
 
 class Polygon:
     def __init__(self, ctx):
-        self.image = None
+        pass
 
     def load_image(self, url):
         resp = requests.get(url, stream=True).raw
@@ -15,12 +15,10 @@ class Polygon:
     def draw_bounding_box_worker(self, image, xywh):
         data = np.asarray(image)
         color = (255, 0, 0)
-        left,top,right,bottom = xywh
-        label = 'annotated'
-        imgHeight, imgWidth, _ = data.shape
-        thick = int((imgHeight + imgWidth) // 900)
-        cv2.rectangle(data,(left, top), (right, bottom), color, thick)
-        cv2.putText(data, label, (left, top - 12), 0, 1e-3 * imgHeight, color, thick//3)
+        x,y,w,h = xywh
+        height, width, _ = data.shape
+        thick = int((height + width) // 900)
+        cv2.rectangle(data,(x, y), (w, h), color, thick)
         return Image.fromarray(data)
 
 
