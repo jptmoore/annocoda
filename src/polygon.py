@@ -9,6 +9,10 @@ class Polygon:
         resp = self.session.get(url, stream=True).raw
         image = Image.open(resp)
         return image
+    
+    def get_image(self, url):
+        image = self.load_image(url)
+        return image
 
     def draw_bounding_box_worker(self, image, xywh):
         x, y, w, h = xywh
@@ -25,4 +29,4 @@ class Polygon:
     def draw_bounding_box(self, url, xywh):
         image = self.load_image(url)
         bounded_image = self.draw_bounding_box_worker(image, xywh)
-        return {"key": "annotated", "src": bounded_image}
+        return bounded_image

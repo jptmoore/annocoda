@@ -33,10 +33,11 @@ manifest_data = manifest.load(
     url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro"
 )
 
+card_1 = dbc.Card(dbc.CardImg(id="unbounded-image"))
+card_2 = dbc.Card(dbc.CardImg(id="bounded-image"))
+
 
 tab_style = {'border': '0', 'display': 'none'}
-
-
 tabs = dbc.Tabs(
     [
         dbc.Tab(
@@ -47,14 +48,14 @@ tabs = dbc.Tabs(
             active_label_style=tab_style,
         ),
         dbc.Tab(
-            html.Div(carousel_tab2(items=[])),
+            card_1,
             tab_id="tab-2",
             disabled=True,
             active_tab_style=tab_style,
             active_label_style=tab_style,
         ),
         dbc.Tab(
-            html.Div(carousel_tab3(items=[])),
+            card_2,
             tab_id="tab-3",
             disabled=True,
             active_tab_style=tab_style,
@@ -93,17 +94,20 @@ app.layout = dbc.Container(
 
 @app.callback(
     Output("tabs", "active_tab"),
-    Output("carousel-tab2", "items"),
+    Output("unbounded-image", "src"),
     Input("offcanvas-scrollable", "is_open"),
     State("carousel", "active_index"),
     State("carousel", "items"),
 )
 def selectTab(is_open, active_index, items):
     if is_open:
-        item = items[active_index]
-        return "tab-2", [item]
+        src = items[active_index].get("src")
+        image = polygon.get_image(src)
+        return "tab-2", image
+        # item = items[active_index]
+        # return "tab-2", [item]
     else:
-        return "tab-1", []
+        return "tab-1", None
 
 # open tray
 @app.callback(
@@ -136,7 +140,7 @@ def deselectRows(selected_cells):
     Output("carousel", "active_index"),
     Output("table", "active_cell"),
     Output("tabs", "active_tab", allow_duplicate=True),
-    Output("carousel-tab3", "items"),
+    Output("bounded-image", "src"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
@@ -149,11 +153,11 @@ def getActiveCell(items, active_cell, data):
         box = manifest.get_frag_selector_cords(target)
         index = manifest.index_of_target(target)
         src = items[index].get("src")
-        item = polygon.draw_bounding_box(src, box)
+        image = polygon.draw_bounding_box(src, box)
         print("box:", box, "src:", src)
-        return index, None, "tab-3", [item]
+        return index, None, "tab-3", image
     else:
-        return 0, active_cell, "tab-1", []
+        return 0, active_cell, "tab-1", None
 
 
 @app.callback(
