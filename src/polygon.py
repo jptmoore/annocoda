@@ -1,10 +1,9 @@
-import requests_cache
 from PIL import Image, ImageDraw
 
 
 class Polygon:
     def __init__(self, ctx):
-        self.session = requests_cache.CachedSession('image_cache')
+        self.session = ctx.session
 
     def load_image(self, url):
         resp = self.session.get(url, stream=True).raw

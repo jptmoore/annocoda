@@ -11,7 +11,7 @@ from components.carousel_tab3 import carousel_tab3
 from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
-
+import requests_cache
 
 class Context:
     pass
@@ -21,6 +21,8 @@ ctx = Context()
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 ctx.logger = app.logger
+ctx.session = requests_cache.CachedSession('image_cache')
+
 
 annotation = Annotation(ctx)
 manifest = Manifest(ctx)
