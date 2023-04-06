@@ -100,3 +100,6 @@ lib64
 pyvenv.cfg
 share/
 src/.vscode/
+
+# python requests cache
+src/image_cache.sqlite
