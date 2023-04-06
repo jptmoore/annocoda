@@ -132,7 +132,7 @@ def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
     Output("table", "selected_cells"),
     Input("offcanvas-scrollable", "is_open"),
 )
-def deselectRows(selected_cells):
+def deselectRows(is_open):
     return []
 
 
