@@ -1,7 +1,6 @@
-import cv2
 import requests
-from PIL import Image
-import numpy as np
+from PIL import Image, ImageDraw
+
 
 class Polygon:
     def __init__(self, ctx):
@@ -13,19 +12,18 @@ class Polygon:
         return image
 
     def draw_bounding_box_worker(self, image, xywh):
-        data = np.asarray(image)
-        color = (255, 0, 0)
-        x,y,w,h = xywh
-        height, width, _ = data.shape
-        thick = int((height + width) // 900)
-        cv2.rectangle(data,(x, y), (w, h), color, thick)
-        return Image.fromarray(data)
-
+        x, y, w, h = xywh
+        draw = ImageDraw.Draw(image)
+        padding = 10
+        draw.rectangle(
+            (x - padding, y - padding, x + w + padding, y + h + padding),
+            fill=None,
+            outline=(0, 0, 255),
+            width=5,
+        )
+        return image
 
     def draw_bounding_box(self, url, xywh):
         image = self.load_image(url)
         bounded_image = self.draw_bounding_box_worker(image, xywh)
-        return {
-             "key": "annotated",
-             "src": bounded_image
-        }
+        return {"key": "annotated", "src": bounded_image}
