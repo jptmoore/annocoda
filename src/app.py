@@ -34,14 +34,14 @@ manifest_data = manifest.load(
 
 card_1 = dbc.Card(
     [
-        dbc.CardHeader("This is the header"),
+        dbc.CardHeader(id="card-1"),
         dbc.CardImg(id="unbounded-image"),
     ]
 )
 
 card_2 = dbc.Card(
     [
-        dbc.CardHeader("This is the header"),
+        dbc.CardHeader(id="card-2"),
         dbc.CardImg(id="bounded-image"),
     ]
 )
@@ -51,7 +51,7 @@ tab_style = {"border": "0", "display": "none"}
 tabs = dbc.Tabs(
     [
         dbc.Tab(
-            html.Div(carousel(items=[])),
+            html.Div(carousel),
             tab_id="tab-1",
             disabled=True,
             active_tab_style=tab_style,
@@ -83,7 +83,7 @@ app.layout = dbc.Container(
         dbc.Row(html.P()),
         dbc.Row(html.Div(tabs)),
         dbc.Offcanvas(
-            dbc.Row(html.Div(annotation_table(data=annotation.default()))),
+            dbc.Row(html.Div(annotation_table)),
             id="offcanvas-scrollable",
             scrollable=True,
             title="Annotations",
@@ -124,6 +124,7 @@ def selectTab(is_open, active_index, items):
 @app.callback(
     Output("offcanvas-scrollable", "is_open"),
     Output("table", "data"),
+    Output("card-1", "children"),
     Input("status-bar", "n_clicks"),
     State("offcanvas-scrollable", "is_open"),
     State("carousel", "active_index"),
@@ -134,9 +135,9 @@ def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
         print(items[active_index])
         target = items[active_index].get("key")
         result = annotation.filter_result_data([target])
-        return not is_open, result
+        return not is_open, result, "test header 1"
     else:
-        return is_open, items
+        return is_open, items, None
 
 
 @app.callback(
@@ -152,6 +153,7 @@ def deselectRows(is_open):
     Output("table", "active_cell"),
     Output("tabs", "active_tab", allow_duplicate=True),
     Output("bounded-image", "src"),
+    Output("card-2", "children"),
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
@@ -166,9 +168,9 @@ def getActiveCell(items, active_cell, data):
         src = items[index].get("src")
         image = polygon.draw_bounding_box(src, box)
         print("box:", box, "src:", src)
-        return index, None, "tab-3", image
+        return index, None, "tab-3", image, "test header 2"
     else:
-        return 0, active_cell, "tab-1", None
+        return 0, active_cell, "tab-1", None, None
 
 
 @app.callback(
