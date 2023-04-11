@@ -13,6 +13,7 @@ from components.navbar import navbar
 from components.statusbar import statusbar
 import requests_cache
 
+
 class Context:
     pass
 
@@ -21,7 +22,7 @@ ctx = Context()
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 ctx.logger = app.logger
-ctx.session = requests_cache.CachedSession('image_cache')
+ctx.session = requests_cache.CachedSession("image_cache")
 
 
 annotation = Annotation(ctx)
@@ -33,11 +34,22 @@ manifest_data = manifest.load(
     url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro"
 )
 
-card_1 = dbc.Card(dbc.CardImg(id="unbounded-image"))
-card_2 = dbc.Card(dbc.CardImg(id="bounded-image"))
+card_1 = dbc.Card(
+    [
+        dbc.CardHeader("This is the header"),
+        dbc.CardImg(id="unbounded-image"),
+    ]
+)
+
+card_2 = dbc.Card(
+    [
+        dbc.CardHeader("This is the header"),
+        dbc.CardImg(id="bounded-image"),
+    ]
+)
 
 
-tab_style = {'border': '0', 'display': 'none'}
+tab_style = {"border": "0", "display": "none"}
 tabs = dbc.Tabs(
     [
         dbc.Tab(
@@ -109,6 +121,7 @@ def selectTab(is_open, active_index, items):
     else:
         return "tab-1", None
 
+
 # open tray
 @app.callback(
     Output("offcanvas-scrollable", "is_open"),
@@ -144,7 +157,7 @@ def deselectRows(is_open):
     Input("carousel", "items"),
     Input("table", "active_cell"),
     State("table", "data"),
-    prevent_initial_call=True
+    prevent_initial_call=True,
 )
 def getActiveCell(items, active_cell, data):
     if active_cell:
