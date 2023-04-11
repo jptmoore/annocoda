@@ -5,10 +5,10 @@ import dash_bootstrap_components as dbc
 from annotation import Annotation
 from manifest import Manifest
 from polygon import Polygon
-from components.carousel import carousel
 from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
+from components.tabs import tabs
 import requests_cache
 
 
@@ -32,50 +32,7 @@ manifest_data = manifest.load(
     url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro"
 )
 
-card_1 = dbc.Card(
-    [
-        dbc.CardHeader(id="card-1"),
-        dbc.CardImg(id="unbounded-image"),
-    ]
-)
 
-card_2 = dbc.Card(
-    [
-        dbc.CardHeader(id="card-2"),
-        dbc.CardImg(id="bounded-image"),
-    ]
-)
-
-
-tab_style = {"border": "0", "display": "none"}
-tabs = dbc.Tabs(
-    [
-        dbc.Tab(
-            html.Div(carousel),
-            tab_id="tab-1",
-            disabled=True,
-            active_tab_style=tab_style,
-            active_label_style=tab_style,
-        ),
-        dbc.Tab(
-            card_1,
-            tab_id="tab-2",
-            disabled=True,
-            active_tab_style=tab_style,
-            active_label_style=tab_style,
-        ),
-        dbc.Tab(
-            card_2,
-            tab_id="tab-3",
-            disabled=True,
-            active_tab_style=tab_style,
-            active_label_style=tab_style,
-        ),
-    ],
-    id="tabs",
-    active_tab="tab-1",
-    style=tab_style,
-)
 
 app.layout = dbc.Container(
     [
