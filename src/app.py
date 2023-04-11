@@ -6,8 +6,6 @@ from annotation import Annotation
 from manifest import Manifest
 from polygon import Polygon
 from components.carousel import carousel
-from components.carousel_tab2 import carousel_tab2
-from components.carousel_tab3 import carousel_tab3
 from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
