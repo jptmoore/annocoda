@@ -4,11 +4,13 @@ from components.annotation_table import annotation_table
 from components.navbar import navbar
 from components.statusbar import statusbar
 from components.tabs import tabs
+from components.alert import alert
+
 
 layout = dbc.Container(
     [
         dbc.Row(html.Div(navbar)),
-        dbc.Row(html.P()),
+        dbc.Row(html.Div(alert)),
         dbc.Row(html.Div(tabs)),
         dbc.Offcanvas(
             dbc.Row(html.Div(annotation_table)),
