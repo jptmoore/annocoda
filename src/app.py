@@ -8,34 +8,10 @@ from annotation import Annotation
 from manifest import Manifest
 from polygon import Polygon
 from callback import Callback
+from layout import layout
 import requests_cache
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-
-app.layout = dbc.Container(
-    [
-        dbc.Row(html.Div(navbar)),
-        dbc.Row(html.P()),
-        dbc.Row(html.Div(tabs)),
-        dbc.Offcanvas(
-            dbc.Row(html.Div(annotation_table)),
-            id="offcanvas-scrollable",
-            scrollable=True,
-            title="Annotations",
-            is_open=False,
-            placement="bottom",
-        ),
-        dbc.Row(html.Div(statusbar, style={"text-align": "center"})),
-    ],
-    style={
-        "margin-top": "2%",
-        "margin-bottom": "5%",
-        "margin-left": "5%",
-        "margin-right": "5%",
-    },
-    fluid="True",
-)
 
 
 class Context:
@@ -56,6 +32,7 @@ manifest_data = manifest.load(
 
 Callback(annotation, manifest, polygon).setup_callbacks()
 
+app.layout = layout
 app.title = "Annocoda"
 if __name__ == "__main__":
     app.run_server(debug=True)
