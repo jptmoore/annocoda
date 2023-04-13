@@ -87,7 +87,7 @@ class Callback:
             Input("search-button", "n_clicks"),
             State("search-input", "value"),
         )
-        def update_output(n_clicks, value):
+        def search(n_clicks, value):
             if n_clicks > 0:
                 annotation_data = self.annotation.search(
                     url=f"https://miiify.rocks/iiif/content/search?q={value}"

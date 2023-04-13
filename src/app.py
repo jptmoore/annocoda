@@ -21,12 +21,8 @@ annotation = Annotation(ctx)
 manifest = Manifest(ctx)
 polygon = Polygon(ctx)
 
-annotation_data = annotation.default()
-manifest_data = manifest.load(
-    url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro"
-)
-
 Callback(annotation, manifest, polygon).setup_callbacks()
+manifest.load(url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro")
 
 app.layout = layout
 app.title = "Annocoda"
