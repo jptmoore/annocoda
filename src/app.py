@@ -1,9 +1,5 @@
-from dash import Dash, html
+from dash import Dash
 import dash_bootstrap_components as dbc
-from components.annotation_table import annotation_table
-from components.navbar import navbar
-from components.statusbar import statusbar
-from components.tabs import tabs
 from annotation import Annotation
 from manifest import Manifest
 from polygon import Polygon
