@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw
 class Polygon:
     def __init__(self, ctx):
         self.session = ctx.session
+        self.logger = ctx.logger
 
     def load_image(self, url):
         resp = self.session.get(url, stream=True).raw

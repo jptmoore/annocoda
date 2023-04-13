@@ -6,9 +6,9 @@ import dash_bootstrap_components as dbc
 
 class Manifest:
     def __init__(self, ctx):
-        self.logger = ctx.logger
         self.data = {}
         self.current_targets = []
+        self.logger = ctx.logger
 
     def get_image_links(self, json):
         try:

@@ -5,8 +5,8 @@ from jsonpath_ng import parse
 
 class Annotation:
     def __init__(self, ctx):
-        self.logger = ctx.logger
         self.data = {}
+        self.logger = ctx.logger
 
     def basic_headers(self):
         dict = {}
