@@ -1,5 +1,4 @@
 import requests
-from flask import abort
 from jsonpath_ng import parse
 import dash_bootstrap_components as dbc
 
@@ -16,7 +15,7 @@ class Manifest:
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
             self.logger.error(f"failed to get image links: {repr(e)}")
-            abort(400)
+            return []
         else:
             return result
 
@@ -29,7 +28,7 @@ class Manifest:
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
             self.logger.error(f"failed to get targets: {repr(e)}")
-            abort(400)
+            return []
         else:
             return result
 
@@ -110,7 +109,7 @@ class Manifest:
             result = self.current_targets.index(k)
         except ValueError as e:
             self.logger.error(f"failed to find target: {repr(e)}")
-            abort(500)        
+            return None        
         return result
 
 
@@ -127,7 +126,7 @@ class Manifest:
             self.make_dict(json)
         except Exception as e:
             self.logger.error(f"failed to process json: {repr(e)}")
-            abort(400)
+            return None
         else:
             result = self.make_result_data(self.data)
             return result
@@ -137,10 +136,10 @@ class Manifest:
             response = requests.get(url, verify=False)
         except Exception as e:
             self.logger.error(f"failed to get manifest: {repr(e)}")
-            abort(400)
+            return None
         if response.status_code != 200:
             self.logger.error(f"failed to get manifest")
-            abort(response.status_code)
+            return None
         else:
             result = self.load_worker(response)
             return result
