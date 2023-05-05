@@ -6,6 +6,7 @@ class Annotation:
     def __init__(self, ctx):
         self.data = {}
         self.logger = ctx.logger
+        self.session = ctx.session
 
     def basic_headers(self):
         dict = {}
@@ -84,7 +85,7 @@ class Annotation:
     def search(self, url):
         headers = self.basic_headers()
         try:
-            response = requests.get(url, verify=False, headers=headers)
+            response = self.session.get(url, verify=False, headers=headers)
         except Exception as e:
             self.logger.error(f"failed to get annotation: {repr(e)}")
             return None
