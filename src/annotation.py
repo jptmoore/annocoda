@@ -14,7 +14,8 @@ class Annotation:
 
     def get_items_body_value(self, json):
         try:
-            jsonpath_expression = parse("items[*].body.value")
+            # need to unwrap from array first
+            jsonpath_expression = parse("[*].items[*].body.value")
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
             self.logger.error(f"failed to get annotation text: {repr(e)}")
@@ -24,7 +25,8 @@ class Annotation:
 
     def get_items_target(self, json):
         try:
-            jsonpath_expression = parse("items[*].target")
+            # need to unwrap from array first
+            jsonpath_expression = parse("[*].items[*].target")
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
             self.logger.error(f"failed to get annotation target: {repr(e)}")
@@ -71,9 +73,8 @@ class Annotation:
         result = self.make_result_data(dictionary)
         return result
 
-    def search_worker(self, data):
+    def search_result(self, json):
         try:
-            json = data.json()
             self.make_dict(json)
         except Exception as e:
             self.logger.error(f"failed to process json: {repr(e)}")
@@ -82,7 +83,7 @@ class Annotation:
             result = self.make_result_data(self.data)
             return result
 
-    def search(self, url):
+    def get_json(self, url):
         headers = self.basic_headers()
         try:
             response = self.session.get(url, verify=False, headers=headers)
@@ -93,5 +94,18 @@ class Annotation:
             self.logger.error(f"failed to get annotation")
             return None
         else:
-            result = self.search_worker(response)
+            result = response.json()
             return result
+
+    def search_worker(self, acc, url):
+        json = self.get_json(url)
+        acc.append(json)
+        if "next" in json:
+            next = json["next"]
+            self.search_worker(acc, next)
+
+    def search(self, url):
+        acc = []
+        self.search_worker(acc, url)
+        result = self.search_result(acc)
+        return result
