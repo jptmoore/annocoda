@@ -22,7 +22,7 @@ manifest = Manifest(ctx)
 polygon = Polygon(ctx)
 
 Callback(annotation, manifest, polygon).setup_callbacks()
-manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro"])
+manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro", "https://miiify.rocks/manifest/rustic_walking_routes"])
 
 app.layout = layout
 app.title = "Annocoda"
