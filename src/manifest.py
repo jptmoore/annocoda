@@ -8,10 +8,16 @@ class Manifest:
         self.data = {}
         self.current_targets = []
         self.logger = ctx.logger
+        self.session = ctx.session
+
+    def basic_headers(self):
+        dict = {}
+        return dict
 
     def get_image_links(self, json):
         try:
-            jsonpath_expression = parse("items[*].items[*].items[*].body.id")
+            # need to unwrap from array first
+            jsonpath_expression = parse("[*].items[*].items[*].items[*].body.id")
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
             self.logger.error(f"failed to get image links: {repr(e)}")
@@ -24,7 +30,8 @@ class Manifest:
 
     def get_targets(self, json):
         try:
-            jsonpath_expression = parse("items[*].items[*].items[*].target")
+            # need to unwrap from array first
+            jsonpath_expression = parse("[*].items[*].items[*].items[*].target")
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
             self.logger.error(f"failed to get targets: {repr(e)}")
@@ -120,9 +127,8 @@ class Manifest:
         result = self.make_result_data(filtered_data)
         return result
 
-    def load_worker(self, data):
+    def manifest_result(self, json):
         try:
-            json = data.json()
             self.make_dict(json)
         except Exception as e:
             self.logger.error(f"failed to process json: {repr(e)}")
@@ -131,15 +137,29 @@ class Manifest:
             result = self.make_result_data(self.data)
             return result
 
-    def load(self, url):
+    def get_json(self, url):
+        headers = self.basic_headers()
         try:
-            response = requests.get(url, verify=False)
+            response = self.session.get(url, verify=False, headers=headers)
         except Exception as e:
-            self.logger.error(f"failed to get manifest: {repr(e)}")
+            self.logger.error(f"failed to get annotation: {repr(e)}")
             return None
         if response.status_code != 200:
-            self.logger.error(f"failed to get manifest")
+            self.logger.error(f"failed to get annotation")
             return None
         else:
-            result = self.load_worker(response)
+            result = response.json()
             return result
+
+
+    def load_worker(self, urls):
+        acc = []
+        for url in urls:
+            json = self.get_json(url)
+            acc.append(json)
+        return acc
+
+    def load(self, urls):
+        acc = self.load_worker(urls)
+        result = self.manifest_result(acc)
+        return result
