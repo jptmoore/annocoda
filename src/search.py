@@ -8,8 +8,7 @@ class Search:
     
     def run(self):
         collection = self.manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro", "https://miiify.rocks/manifest/rustic_walking_routes"])
-
         self.dm.load_manifest(collection)
-        self.dm.print()        
+        return self.dm.to_dict()        
 
     

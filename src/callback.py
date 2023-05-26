@@ -8,6 +8,7 @@ class Callback:
         self.annotation = annotation
         self.polygon = polygon
         self.search = Search(ctx)
+        self.datamodel = ctx.datamodel
 
 
     def setup_callbacks(self):
@@ -91,8 +92,8 @@ class Callback:
         def search(n_clicks, value):
             if n_clicks > 0:
 
-                self.search.run()
-
+                collection = self.search.run()
+                #self.datamodel.print()
                 # annotation_data = self.annotation.search(
                 #     url=f"https://miiify.rocks/iiif/content/search?q={value}"
                 # )
@@ -105,6 +106,6 @@ class Callback:
                 # annotation_data = self.annotation.filter_result_data(manifest_targets)
                 # count = len(annotation_data)
                 # message = f"{count} annotations"
-                return [], "hackery"
+                return collection, "hackery"
             else:
                 return [], None

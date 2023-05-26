@@ -11,7 +11,7 @@ class Data:
         self.model = result
 
     def load_manifest(self, data):
-        self.model = pd.DataFrame(data)
+        self.model = pd.DataFrame.from_records(data)
 
     def count(self):
         result = len(self.model.index)
@@ -19,3 +19,7 @@ class Data:
 
     def print(self):
         print(self.model)
+
+    def to_dict(self):
+        result = self.model.to_dict('records')
+        return result
