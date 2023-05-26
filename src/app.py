@@ -17,18 +17,12 @@ class Context:
 ctx = Context()
 ctx.logger = app.logger
 ctx.session = requests_cache.CachedSession("image_cache")
+ctx.datamodel = Data()
 
 annotation = Annotation(ctx)
-manifest = Manifest(ctx)
 polygon = Polygon(ctx)
 
-collection = manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro", "https://miiify.rocks/manifest/rustic_walking_routes"])
-
-data = Data()
-data.load_manifest(collection)
-data.print()
-
-Callback(annotation, manifest, polygon, data).setup_callbacks()
+Callback(annotation, polygon, ctx).setup_callbacks()
 
 app.layout = layout
 app.title = "Annocoda"

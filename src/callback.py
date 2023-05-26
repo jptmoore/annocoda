@@ -1,13 +1,13 @@
 
 from dash import callback, State, Input, Output
+from search import Search
 
 
 class Callback:
-    def __init__(self, annotation, manifest, polygon, data):
+    def __init__(self, annotation, polygon, ctx):
         self.annotation = annotation
-        self.manifest = manifest
         self.polygon = polygon
-        self.data = data
+        self.search = Search(ctx)
 
 
     def setup_callbacks(self):
@@ -57,29 +57,29 @@ class Callback:
             return []
 
 
-        @callback(
-            Output("carousel", "active_index"),
-            Output("table", "active_cell"),
-            Output("tabs", "active_tab", allow_duplicate=True),
-            Output("bounded-image", "src"),
-            Output("card-2", "children"),
-            Input("carousel", "items"),
-            Input("table", "active_cell"),
-            State("table", "data"),
-            prevent_initial_call=True,
-        )
-        def getActiveCell(items, active_cell, data):
-            if active_cell:
-                row = active_cell["row"]
-                target = data[row]["key"]
-                box = self.manifest.get_frag_selector_cords(target)
-                index = self.manifest.index_of_target(target)
-                src = items[index].get("src")
-                image = self.polygon.draw_bounding_box(src, box)
-                print("box:", box, "src:", src)
-                return index, None, "tab-3", image, "test header 2"
-            else:
-                return 0, active_cell, "tab-1", None, None
+        # @callback(
+        #     Output("carousel", "active_index"),
+        #     Output("table", "active_cell"),
+        #     Output("tabs", "active_tab", allow_duplicate=True),
+        #     Output("bounded-image", "src"),
+        #     Output("card-2", "children"),
+        #     Input("carousel", "items"),
+        #     Input("table", "active_cell"),
+        #     State("table", "data"),
+        #     prevent_initial_call=True,
+        # )
+        # def getActiveCell(items, active_cell, data):
+        #     if active_cell:
+        #         row = active_cell["row"]
+        #         target = data[row]["key"]
+        #         box = self.manifest.get_frag_selector_cords(target)
+        #         index = self.manifest.index_of_target(target)
+        #         src = items[index].get("src")
+        #         image = self.polygon.draw_bounding_box(src, box)
+        #         print("box:", box, "src:", src)
+        #         return index, None, "tab-3", image, "test header 2"
+        #     else:
+        #         return 0, active_cell, "tab-1", None, None
 
 
         @callback(
@@ -90,18 +90,21 @@ class Callback:
         )
         def search(n_clicks, value):
             if n_clicks > 0:
-                annotation_data = self.annotation.search(
-                    url=f"https://miiify.rocks/iiif/content/search?q={value}"
-                )
-                self.data.merge_annotation(annotation_data)
-                print(annotation_data)
-                self.data.print()
-                annotation_targets = self.annotation.make_target_list()
-                manifest_data = self.manifest.filter_result_data(annotation_targets)
-                manifest_targets = self.manifest.make_target_list()
-                annotation_data = self.annotation.filter_result_data(manifest_targets)
-                count = len(annotation_data)
-                message = f"{count} annotations"
-                return manifest_data, message
+
+                self.search.run()
+
+                # annotation_data = self.annotation.search(
+                #     url=f"https://miiify.rocks/iiif/content/search?q={value}"
+                # )
+                # self.data.merge_annotation(annotation_data)
+                # print(annotation_data)
+                # self.data.print()
+                # annotation_targets = self.annotation.make_target_list()
+                # manifest_data = self.manifest.filter_result_data(annotation_targets)
+                # manifest_targets = self.manifest.make_target_list()
+                # annotation_data = self.annotation.filter_result_data(manifest_targets)
+                # count = len(annotation_data)
+                # message = f"{count} annotations"
+                return [], "hackery"
             else:
-                return self.manifest.default(), None
+                return [], None
