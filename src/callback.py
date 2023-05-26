@@ -3,10 +3,11 @@ from dash import callback, State, Input, Output
 
 
 class Callback:
-    def __init__(self, annotation, manifest, polygon):
+    def __init__(self, annotation, manifest, polygon, data):
         self.annotation = annotation
         self.manifest = manifest
         self.polygon = polygon
+        self.data = data
 
 
     def setup_callbacks(self):
@@ -92,6 +93,9 @@ class Callback:
                 annotation_data = self.annotation.search(
                     url=f"https://miiify.rocks/iiif/content/search?q={value}"
                 )
+                self.data.merge_annotation(annotation_data)
+                print(annotation_data)
+                self.data.print()
                 annotation_targets = self.annotation.make_target_list()
                 manifest_data = self.manifest.filter_result_data(annotation_targets)
                 manifest_targets = self.manifest.make_target_list()

@@ -5,6 +5,7 @@ from manifest import Manifest
 from polygon import Polygon
 from callback import Callback
 from layout import layout
+from data import Data
 import requests_cache
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -21,8 +22,13 @@ annotation = Annotation(ctx)
 manifest = Manifest(ctx)
 polygon = Polygon(ctx)
 
-Callback(annotation, manifest, polygon).setup_callbacks()
-manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro", "https://miiify.rocks/manifest/rustic_walking_routes"])
+collection = manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro", "https://miiify.rocks/manifest/rustic_walking_routes"])
+
+data = Data()
+data.load_manifest(collection)
+data.print()
+
+Callback(annotation, manifest, polygon, data).setup_callbacks()
 
 app.layout = layout
 app.title = "Annocoda"
