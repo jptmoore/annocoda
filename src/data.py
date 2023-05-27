@@ -7,7 +7,7 @@ class Data:
 
     def merge_annotation(self, data):
         df = pd.DataFrame(data)
-        result = pd.merge(self.model, df, how="left", on=["key"])
+        result = pd.merge(self.model, df, how="inner", on=["key"])
         self.model = result
 
     def load_manifest(self, data):

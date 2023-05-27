@@ -92,7 +92,7 @@ class Callback:
         def search(n_clicks, value):
             if n_clicks > 0:
 
-                collection = self.search.run()
+                result = self.search.query(value)
                 #self.datamodel.print()
                 # annotation_data = self.annotation.search(
                 #     url=f"https://miiify.rocks/iiif/content/search?q={value}"
@@ -105,7 +105,7 @@ class Callback:
                 # manifest_targets = self.manifest.make_target_list()
                 # annotation_data = self.annotation.filter_result_data(manifest_targets)
                 # count = len(annotation_data)
-                # message = f"{count} annotations"
-                return collection, "hackery"
+                message = f"{self.search.count()} annotations"
+                return result, message
             else:
                 return [], None

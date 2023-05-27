@@ -40,14 +40,16 @@ class Annotation:
         dictionary = dict(zip(keys, values))
         self.data = dictionary
 
-    def make_result_data(self, data):
-        keys = data.keys()
-        values = data.values()
-        result = map(lambda k,v: {"key": k, "value": v}, keys,values)
-        return list(result)
-
-    def default(self):
-        return []
+    def get_frag_selector_cords(self, target):
+        res = target.split('#xywh=')
+        match res: 
+            case [_, y]:
+                result = tuple(map(int, y.split(',')))
+                return result
+            case [_]:
+                return None
+            case _:
+                raise ValueError("failed to match target")
 
     def remove_frag_selector(self, target):
         res = target.split("#")
@@ -58,6 +60,15 @@ class Annotation:
                 return x
             case _:
                 raise ValueError("failed to match target")
+
+    def make_result_data(self, data):
+        keys = data.keys()
+        values = data.values()
+        result = map(lambda k,v: {"key": self.remove_frag_selector(k), "value": v, "frag_selector": self.get_frag_selector_cords(k)}, keys,values)
+        return list(result)
+
+    def default(self):
+        return []
 
     def make_target_list(self):
         keys = self.data.keys()
