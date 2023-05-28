@@ -43,7 +43,7 @@ class Callback:
         def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
             if n_clicks:
                 target = items[active_index].get("key")
-                result = self.datamodel.filter(target)
+                result = self.datamodel.filter_on_key(target)
                 #result = self.annotation.filter_result_data([target])
                 return not is_open, result, "test header 1"
             else:
@@ -73,12 +73,14 @@ class Callback:
             if active_cell:
                 row = active_cell["row"]
                 target = data[row]["key"]
-                box = self.manifest.get_frag_selector_cords(target)
-                index = self.manifest.index_of_target(target)
-                src = items[index].get("src")
+                box = self.datamodel.get_frag_selector(target)
+                src = self.datamodel.get_src(target)
+                # box = self.manifest.get_frag_selector_cords(target)
+                #index = self.manifest.index_of_target(target)
+                # src = items[index].get("src")
                 image = self.polygon.draw_bounding_box(src, box)
                 print("box:", box, "src:", src)
-                return index, None, "tab-3", image, "test header 2"
+                return row, None, "tab-3", image, "test header 2"
             else:
                 return 0, active_cell, "tab-1", None, None
 

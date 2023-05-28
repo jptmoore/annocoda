@@ -20,10 +20,21 @@ class Data:
     def print(self):
         print(self.model)
 
-    def filter(self, key):
-         records = self.model.loc[self.model['key'] == key, ['value']]
+
+    def filter_on_key(self, key):
+         records = self.model.loc[self.model['key'] == key, ['key', 'value']]
          result = records.to_dict('records')
          return result
+
+# need to refactor this!
+
+    def get_frag_selector(self, key):
+        records = self.model.loc[self.model['key'] == key, ['frag_selector']]
+        return records.loc[0]['frag_selector']
+    
+    def get_src(self, key):
+        records = self.model.loc[self.model['key'] == key, ['src']]
+        return records.loc[0]['src']    
 
     def to_dict(self):
         result = self.model.to_dict('records')
