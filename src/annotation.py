@@ -64,7 +64,7 @@ class Annotation:
     def make_result_data(self, data):
         keys = data.keys()
         values = data.values()
-        result = map(lambda k,v: {"key": self.remove_frag_selector(k), "value": v, "frag_selector": self.get_frag_selector_cords(k)}, keys,values)
+        result = map(lambda k,v: {"key": self.remove_frag_selector(k), "value": v, "frag_selector": self.get_frag_selector_cords(k)}, keys,values)      
         return list(result)
 
     def default(self):

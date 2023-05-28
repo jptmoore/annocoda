@@ -20,6 +20,11 @@ class Data:
     def print(self):
         print(self.model)
 
+    def filter(self, key):
+         records = self.model.loc[self.model['key'] == key, ['value']]
+         result = records.to_dict('records')
+         return result
+
     def to_dict(self):
         result = self.model.to_dict('records')
         return result

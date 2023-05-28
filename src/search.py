@@ -16,7 +16,7 @@ class Search:
         )
         self.datamodel.merge_annotation(annotation_data)
         result = self.datamodel.to_dict()
-        print(result)
+        print(self.datamodel.print())
         return result
 
     def count(self):
