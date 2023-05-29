@@ -33,6 +33,7 @@ class Callback:
         # open tray
         @callback(
             Output("offcanvas-scrollable", "is_open"),
+            Output("carousel", "active_index"),
             Output("table", "data"),
             Output("card-1", "children"),
             Input("status-bar", "n_clicks"),
@@ -45,9 +46,9 @@ class Callback:
                 target = items[active_index].get("key")
                 result = self.datamodel.filter_on_key(target)
                 #result = self.annotation.filter_result_data([target])
-                return not is_open, result, "test header 1"
+                return not is_open, active_index, result, "test header 1"
             else:
-                return is_open, items, None
+                return is_open, 0, items, None
 
 
         @callback(
@@ -59,30 +60,29 @@ class Callback:
 
 
         @callback(
-            Output("carousel", "active_index"),
             Output("table", "active_cell"),
             Output("tabs", "active_tab", allow_duplicate=True),
             Output("bounded-image", "src"),
             Output("card-2", "children"),
-            Input("carousel", "items"),
             Input("table", "active_cell"),
             State("table", "data"),
             prevent_initial_call=True,
         )
-        def getActiveCell(items, active_cell, data):
+        def getActiveCell(active_cell, data):
             if active_cell:
                 row = active_cell["row"]
                 target = data[row]["key"]
+                print("target:", target, "row:", row)
                 box = self.datamodel.get_frag_selector(target)
+                print("-------------------")
                 src = self.datamodel.get_src(target)
-                # box = self.manifest.get_frag_selector_cords(target)
-                #index = self.manifest.index_of_target(target)
-                # src = items[index].get("src")
+                print("-------------------")
                 image = self.polygon.draw_bounding_box(src, box)
                 print("box:", box, "src:", src)
-                return row, None, "tab-3", image, "test header 2"
+                print("active_cell:", active_cell)
+                return None, "tab-3", image, "test header 2"
             else:
-                return 0, active_cell, "tab-1", None, None
+                return active_cell, "tab-1", None, None
 
 
         @callback(
