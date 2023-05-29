@@ -36,6 +36,8 @@ class Data:
         records = self.model.loc[self.model['key'] == key, ['src']]
         return records.loc[0]['src']    
 
-    def to_dict(self):
-        result = self.model.to_dict('records')
+    def get_records(self):
+        df = self.model.drop_duplicates(subset=["key"]) 
+        result = df.to_dict('records')
+        print(result)
         return result

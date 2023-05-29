@@ -15,7 +15,7 @@ class Search:
             url=f"https://miiify.rocks/iiif/content/search?q={value}"
         )
         self.datamodel.merge_annotation(annotation_data)
-        result = self.datamodel.to_dict()
+        result = self.datamodel.get_records()
         print(self.datamodel.print())
         return result
 
