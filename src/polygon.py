@@ -7,7 +7,6 @@ class Polygon:
 
     def load_image(self, url):
         resp = self.session.get(url, stream=True).raw
-        print(f'From cache: {resp}')
         image = Image.open(resp)
         return image
     

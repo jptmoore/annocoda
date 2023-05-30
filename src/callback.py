@@ -72,14 +72,10 @@ class Callback:
             if active_cell:
                 row = active_cell["row"]
                 target = data[row]["key"]
-                print("target:", target, "row:", row)
-                box = self.datamodel.get_frag_selector(target)
-                print("-------------------")
-                src = self.datamodel.get_src(target)
-                print("-------------------")
+                rows = self.datamodel.get_rows(target)
+                box = rows[row]['frag_selector']
+                src = rows[row]['src']
                 image = self.polygon.draw_bounding_box(src, box)
-                print("box:", box, "src:", src)
-                print("active_cell:", active_cell)
                 return None, "tab-3", image, "test header 2"
             else:
                 return active_cell, "tab-1", None, None

@@ -26,18 +26,15 @@ class Data:
          result = records.to_dict('records')
          return result
 
-    def get_frag_selector(self, key):
-        records = self.model.loc[self.model['key'] == key, ['frag_selector']]
-        return records.loc[0]['frag_selector']
-    
-    def get_src(self, key):
-        records = self.model.loc[self.model['key'] == key, ['src']]
-        return records.loc[0]['src']    
+    def get_rows(self, target):
+        records = self.model.loc[self.model['key'] == target]
+        result = records.to_dict('records')
+        return result
+       
 
     def get_records(self):
         df = self.model.drop_duplicates(subset=["key"]) 
         result = df.to_dict('records')
-        print(result)
         return result
     
 
