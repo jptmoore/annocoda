@@ -1,11 +1,15 @@
 
 from dash import callback, State, Input, Output
 from controller import Controller
+from layout import layout
 
 class View:
     def __init__(self, ctx):
         self.controller = Controller(ctx)
+        self.setup_callbacks()
 
+    def layout(self):
+        return layout
 
     def setup_callbacks(self):
         @callback(
