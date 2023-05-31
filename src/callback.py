@@ -2,13 +2,8 @@
 from dash import callback, State, Input, Output
 from search import Search
 
-from annotation import Annotation
-from polygon import Polygon
-
 class Callback:
     def __init__(self, ctx):
-        self.annotation = Annotation(ctx)
-        self.polygon = Polygon(ctx)
         self.search = Search(ctx)
 
 
@@ -23,7 +18,7 @@ class Callback:
         def selectTab(is_open, active_index, items):
             if is_open:
                 src = items[active_index].get("src")
-                image = self.polygon.get_image(src)
+                image = self.search.polygon.get_image(src)
                 return "tab-2", image
                 # item = items[active_index]
                 # return "tab-2", [item]
@@ -46,7 +41,6 @@ class Callback:
             if n_clicks:
                 target = items[active_index].get("key")
                 result = self.search.filter_on_key(target)
-                #result = self.annotation.filter_result_data([target])
                 return not is_open, active_index, result, "test header 1"
             else:
                 return is_open, 0, items, None
@@ -76,7 +70,7 @@ class Callback:
                 rows = self.search.get_rows(target)
                 box = rows[row]['frag_selector']
                 src = rows[row]['src']
-                image = self.polygon.draw_bounding_box(src, box)
+                image = self.search.polygon.draw_bounding_box(src, box)
                 return None, "tab-3", image, "test header 2"
             else:
                 return active_cell, "tab-1", None, None
