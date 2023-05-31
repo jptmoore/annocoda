@@ -8,7 +8,6 @@ class Callback:
         self.annotation = annotation
         self.polygon = polygon
         self.search = Search(ctx)
-        self.datamodel = ctx.datamodel
 
 
     def setup_callbacks(self):
@@ -44,7 +43,7 @@ class Callback:
         def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
             if n_clicks:
                 target = items[active_index].get("key")
-                result = self.datamodel.filter_on_key(target)
+                result = self.search.filter_on_key(target)
                 #result = self.annotation.filter_result_data([target])
                 return not is_open, active_index, result, "test header 1"
             else:
@@ -72,7 +71,7 @@ class Callback:
             if active_cell:
                 row = active_cell["row"]
                 target = data[row]["key"]
-                rows = self.datamodel.get_rows(target)
+                rows = self.search.get_rows(target)
                 box = rows[row]['frag_selector']
                 src = rows[row]['src']
                 image = self.polygon.draw_bounding_box(src, box)

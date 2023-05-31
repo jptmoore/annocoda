@@ -17,7 +17,6 @@ class Context:
 ctx = Context()
 ctx.logger = app.logger
 ctx.session = requests_cache.CachedSession("image_cache")
-ctx.datamodel = Data()
 
 annotation = Annotation(ctx)
 polygon = Polygon(ctx)

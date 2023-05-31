@@ -4,7 +4,7 @@ from annotation import Annotation
 
 class Search:
     def __init__(self, ctx):
-        self.datamodel = ctx.datamodel
+        self.datamodel = Data()
         self.manifest = Manifest(ctx)
         self.annotation = Annotation(ctx)
     
@@ -19,7 +19,14 @@ class Search:
         return result
 
     def count(self):
-        result = self.datamodel.count()
-        return result      
+        return self.datamodel.count()
 
-    
+    def filter_on_key(self, key):
+        return self.datamodel.filter_on_key(key)
+
+    def get_rows(self, target):
+        return self.datamodel.get_rows(target)
+       
+
+    def get_records(self):
+        return self.datamodel.get_records()
