@@ -1,6 +1,6 @@
 from dash import Dash
 import dash_bootstrap_components as dbc
-from callback import Callback
+from view import View
 from layout import layout
 import requests_cache
 
@@ -14,7 +14,7 @@ ctx = Context()
 ctx.logger = app.logger
 ctx.session = requests_cache.CachedSession("image_cache")
 
-Callback(ctx).setup_callbacks()
+View(ctx).setup_callbacks()
 
 app.layout = layout
 app.title = "Annocoda"

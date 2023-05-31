@@ -1,10 +1,10 @@
 
 from dash import callback, State, Input, Output
-from search import Search
+from controller import Controller
 
-class Callback:
+class View:
     def __init__(self, ctx):
-        self.search = Search(ctx)
+        self.controller = Controller(ctx)
 
 
     def setup_callbacks(self):
@@ -18,7 +18,7 @@ class Callback:
         def selectTab(is_open, active_index, items):
             if is_open:
                 src = items[active_index].get("src")
-                image = self.search.polygon.get_image(src)
+                image = self.controller.polygon.get_image(src)
                 return "tab-2", image
                 # item = items[active_index]
                 # return "tab-2", [item]
@@ -40,7 +40,7 @@ class Callback:
         def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
             if n_clicks:
                 target = items[active_index].get("key")
-                result = self.search.filter_on_key(target)
+                result = self.controller.filter_on_key(target)
                 return not is_open, active_index, result, "test header 1"
             else:
                 return is_open, 0, items, None
@@ -67,10 +67,10 @@ class Callback:
             if active_cell:
                 row = active_cell["row"]
                 target = data[row]["key"]
-                rows = self.search.get_rows(target)
+                rows = self.controller.get_rows(target)
                 box = rows[row]['frag_selector']
                 src = rows[row]['src']
-                image = self.search.polygon.draw_bounding_box(src, box)
+                image = self.controller.polygon.draw_bounding_box(src, box)
                 return None, "tab-3", image, "test header 2"
             else:
                 return active_cell, "tab-1", None, None
@@ -84,8 +84,8 @@ class Callback:
         )
         def search(n_clicks, value):
             if n_clicks > 0:
-                result = self.search.query(value)
-                message = f"{self.search.count()} images"
+                result = self.controller.query(value)
+                message = f"{self.controller.count()} images"
                 return result, message
             else:
                 return [], None
