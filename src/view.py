@@ -6,12 +6,12 @@ from layout import layout
 class View:
     def __init__(self, ctx):
         self.controller = Controller(ctx)
-        self.setup_callbacks()
+        self.callbacks()
 
     def layout(self):
         return layout
 
-    def setup_callbacks(self):
+    def callbacks(self):
         @callback(
             Output("tabs", "active_tab"),
             Output("unbounded-image", "src"),
