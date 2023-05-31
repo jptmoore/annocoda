@@ -14,7 +14,8 @@ class Model:
         self.model = pd.DataFrame.from_records(data)
 
     def count(self):
-        result = len(self.model.index)
+        df = self.model.drop_duplicates(subset=["key"]) 
+        result = len(df.index)
         return result
 
     def print(self):
