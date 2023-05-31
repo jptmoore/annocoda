@@ -2,11 +2,13 @@
 from dash import callback, State, Input, Output
 from search import Search
 
+from annotation import Annotation
+from polygon import Polygon
 
 class Callback:
-    def __init__(self, annotation, polygon, ctx):
-        self.annotation = annotation
-        self.polygon = polygon
+    def __init__(self, ctx):
+        self.annotation = Annotation(ctx)
+        self.polygon = Polygon(ctx)
         self.search = Search(ctx)
 
 
