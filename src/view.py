@@ -44,7 +44,7 @@ class View:
         def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
             if n_clicks:
                 target = items[active_index].get("key")
-                result = self.controller.filter_on_key(target)
+                result = self.controller.get_annotations(target)
                 return not is_open, active_index, result, "test header 1"
             else:
                 return is_open, 0, items, None
@@ -74,7 +74,7 @@ class View:
                 rows = self.controller.get_rows(target)
                 box = rows[row]['frag_selector']
                 src = rows[row]['src']
-                image = self.controller.polygon.draw_bounding_box(src, box)
+                image = self.controller.get_box(src, box)
                 return None, "tab-3", image, "test header 2"
             else:
                 return active_cell, "tab-1", None, None
@@ -89,7 +89,7 @@ class View:
         def search(n_clicks, value):
             if n_clicks > 0:
                 result = self.controller.query(value)
-                message = f"{self.controller.count()} images"
+                message = f"{self.controller.get_image_count()} images"
                 return result, message
             else:
                 return [], None

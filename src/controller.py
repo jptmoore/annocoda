@@ -21,20 +21,20 @@ class Controller:
         result = self.model.get_records()
         return result
 
-    def count(self):
+    def get_image_count(self):
         return self.model.count()
 
-    def filter_on_key(self, key):
+    def get_annotations(self, key):
         return self.model.filter_on_key(key)
 
     def get_rows(self, target):
         return self.model.get_rows(target)
        
-    def get_records(self):
-        return self.model.get_records()
+    # def get_records(self):
+    #     return self.model.get_records()
     
     def get_image(self, src):
         return self.polygon.get_image(src)
     
-    def draw_bounding_box(self, url, xywh):
-        return self.draw_bounding_box(url, xywh)
+    def get_box(self, url, xywh):
+        return self.polygon.draw_bounding_box(url, xywh)
