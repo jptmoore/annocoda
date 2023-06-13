@@ -6,9 +6,13 @@ class Model:
         self.model = None
 
     def merge_annotation(self, data):
-        df = pd.DataFrame(data)
-        result = pd.merge(self.model, df, how="inner", on=["key"])
-        self.model = result
+        # no search matches means empty dataframe
+        if data == []:
+            self.model = pd.DataFrame()
+        else:
+            df = pd.DataFrame(data)
+            result = pd.merge(self.model, df, how="inner", on=["key"])
+            self.model = result
 
     def load_manifest(self, data):
         self.model = pd.DataFrame.from_records(data)
@@ -34,8 +38,11 @@ class Model:
        
 
     def get_records(self):
-        df = self.model.drop_duplicates(subset=["key"]) 
-        result = df.to_dict('records')
-        return result
+        if self.model.empty:
+            return []
+        else:
+            df = self.model.drop_duplicates(subset=["key"]) 
+            result = df.to_dict('records')
+            return result
     
 
