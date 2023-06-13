@@ -17,9 +17,14 @@ class Model:
     def load_manifest(self, data):
         self.model = pd.DataFrame.from_records(data)
 
-    def count(self):
+    def image_count(self):
         df = self.model.drop_duplicates(subset=["key"]) 
         result = len(df.index)
+        return result
+
+    def annotation_count(self, key):
+        records = self.model.loc[self.model['key'] == key]
+        result = len(records)
         return result
 
     def print(self):

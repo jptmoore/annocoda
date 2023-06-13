@@ -22,7 +22,10 @@ class Controller:
         return result
 
     def get_image_count(self):
-        return self.model.count()
+        return self.model.image_count()
+    
+    def get_annotation_count(self, target):
+        return self.model.annotation_count(target)
 
     def get_annotations(self, key):
         return self.model.filter_on_key(key)
