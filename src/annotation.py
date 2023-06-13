@@ -70,20 +70,6 @@ class Annotation:
     def default(self):
         return []
 
-    def make_target_list(self):
-        keys = self.data.keys()
-        targets = map(self.remove_frag_selector, keys)
-        return targets
-
-    def filter_result_data(self, manifest_targets):
-        filtered_data = []
-        for (k, v) in self.data.items():
-            if self.remove_frag_selector(k) in manifest_targets:
-                filtered_data.append( (k, v) )
-        dictionary = dict(filtered_data)
-        result = self.make_result_data(dictionary)
-        return result
-
     def search_result(self, json):
         try:
             self.make_dict(json)
