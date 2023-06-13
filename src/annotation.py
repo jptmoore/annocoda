@@ -1,4 +1,3 @@
-import requests
 from jsonpath_ng import parse
 
 
