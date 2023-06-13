@@ -87,7 +87,7 @@ class View:
             State("search-input", "value"),
         )
         def search(n_clicks, value):
-            if n_clicks > 0:
+            if n_clicks > 0 and value != None:
                 result = self.controller.query(value)
                 message = f"{self.controller.get_image_count()} images"
                 return result, message
