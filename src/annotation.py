@@ -1,4 +1,3 @@
-import requests
 from jsonpath_ng import parse
 
 
@@ -40,14 +39,16 @@ class Annotation:
         dictionary = dict(zip(keys, values))
         self.data = dictionary
 
-    def make_result_data(self, data):
-        keys = data.keys()
-        values = data.values()
-        result = map(lambda k,v: {"key": k, "value": v}, keys,values)
-        return list(result)
-
-    def default(self):
-        return []
+    def get_frag_selector_cords(self, target):
+        res = target.split('#xywh=')
+        match res: 
+            case [_, y]:
+                result = tuple(map(int, y.split(',')))
+                return result
+            case [_]:
+                return None
+            case _:
+                raise ValueError("failed to match target")
 
     def remove_frag_selector(self, target):
         res = target.split("#")
@@ -59,19 +60,14 @@ class Annotation:
             case _:
                 raise ValueError("failed to match target")
 
-    def make_target_list(self):
-        keys = self.data.keys()
-        targets = map(self.remove_frag_selector, keys)
-        return targets
+    def make_result_data(self, data):
+        keys = data.keys()
+        values = data.values()
+        result = map(lambda k,v: {"key": self.remove_frag_selector(k), "value": v, "frag_selector": self.get_frag_selector_cords(k)}, keys,values)      
+        return list(result)
 
-    def filter_result_data(self, manifest_targets):
-        filtered_data = []
-        for (k, v) in self.data.items():
-            if self.remove_frag_selector(k) in manifest_targets:
-                filtered_data.append( (k, v) )
-        dictionary = dict(filtered_data)
-        result = self.make_result_data(dictionary)
-        return result
+    def default(self):
+        return []
 
     def search_result(self, json):
         try:

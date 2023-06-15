@@ -1,15 +1,17 @@
 
 from dash import callback, State, Input, Output
+from controller import Controller
+from layout import layout
 
+class View:
+    def __init__(self, ctx):
+        self.controller = Controller(ctx)
+        self.callbacks()
 
-class Callback:
-    def __init__(self, annotation, manifest, polygon):
-        self.annotation = annotation
-        self.manifest = manifest
-        self.polygon = polygon
+    def layout(self):
+        return layout
 
-
-    def setup_callbacks(self):
+    def callbacks(self):
         @callback(
             Output("tabs", "active_tab"),
             Output("unbounded-image", "src"),
@@ -20,7 +22,7 @@ class Callback:
         def selectTab(is_open, active_index, items):
             if is_open:
                 src = items[active_index].get("src")
-                image = self.polygon.get_image(src)
+                image = self.controller.polygon.get_image(src)
                 return "tab-2", image
                 # item = items[active_index]
                 # return "tab-2", [item]
@@ -31,6 +33,7 @@ class Callback:
         # open tray
         @callback(
             Output("offcanvas-scrollable", "is_open"),
+            Output("carousel", "active_index"),
             Output("table", "data"),
             Output("card-1", "children"),
             Input("status-bar", "n_clicks"),
@@ -40,12 +43,11 @@ class Callback:
         )
         def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
             if n_clicks:
-                print(items[active_index])
                 target = items[active_index].get("key")
-                result = self.annotation.filter_result_data([target])
-                return not is_open, result, "test header 1"
+                result = self.controller.get_annotations(target)
+                return not is_open, active_index, result, "test header 1"
             else:
-                return is_open, items, None
+                return is_open, 0, items, None
 
 
         @callback(
@@ -57,28 +59,25 @@ class Callback:
 
 
         @callback(
-            Output("carousel", "active_index"),
             Output("table", "active_cell"),
             Output("tabs", "active_tab", allow_duplicate=True),
             Output("bounded-image", "src"),
             Output("card-2", "children"),
-            Input("carousel", "items"),
             Input("table", "active_cell"),
             State("table", "data"),
             prevent_initial_call=True,
         )
-        def getActiveCell(items, active_cell, data):
+        def getActiveCell(active_cell, data):
             if active_cell:
                 row = active_cell["row"]
                 target = data[row]["key"]
-                box = self.manifest.get_frag_selector_cords(target)
-                index = self.manifest.index_of_target(target)
-                src = items[index].get("src")
-                image = self.polygon.draw_bounding_box(src, box)
-                print("box:", box, "src:", src)
-                return index, None, "tab-3", image, "test header 2"
+                rows = self.controller.get_rows(target)
+                box = rows[row]['frag_selector']
+                src = rows[row]['src']
+                image = self.controller.get_box(src, box)
+                return None, "tab-3", image, "test header 2"
             else:
-                return 0, active_cell, "tab-1", None, None
+                return active_cell, "tab-1", None, None
 
 
         @callback(
@@ -88,16 +87,9 @@ class Callback:
             State("search-input", "value"),
         )
         def search(n_clicks, value):
-            if n_clicks > 0:
-                annotation_data = self.annotation.search(
-                    url=f"https://miiify.rocks/iiif/content/search?q={value}"
-                )
-                annotation_targets = self.annotation.make_target_list()
-                manifest_data = self.manifest.filter_result_data(annotation_targets)
-                manifest_targets = self.manifest.make_target_list()
-                annotation_data = self.annotation.filter_result_data(manifest_targets)
-                count = len(annotation_data)
-                message = f"{count} annotations"
-                return manifest_data, message
+            if n_clicks > 0 and value != None:
+                result = self.controller.query(value)
+                message = f"{self.controller.get_image_count()} images"
+                return result, message
             else:
-                return self.manifest.default(), None
+                return [], None
