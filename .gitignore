@@ -102,4 +102,4 @@ share/
 src/.vscode/
 
 # python requests cache
-src/image_cache.sqlite
+*.sqlite

@@ -85,7 +85,7 @@ class Manifest:
     def get_json(self, url):
         headers = self.basic_headers()
         try:
-            response = self.session.get(url, verify=False, headers=headers)
+            response = self.session.get(url, headers=headers)
         except Exception as e:
             self.logger.error(f"failed to get annotation: {repr(e)}")
             return None
