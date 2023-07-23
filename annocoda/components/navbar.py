@@ -8,18 +8,22 @@ logo = "../assets/annocoda-logo.png"
 search_bar = dbc.Form(
     dbc.Row(
         [
+            dbc.Label("Manifest", width="auto"),
             dbc.Col(
-                dbc.Input(id="search-input", type="search", placeholder="keywords"),
+                dbc.Input(id="manifest-input", placeholder="Enter URL"),
                 className="me-3",
             ),
+            dbc.Label("Search", width="auto"),
             dbc.Col(
-                dbc.Button("Search", id="search-button", color="primary", n_clicks=0),
-                width="auto",
+                dbc.Input(id="search-input", placeholder="Enter keywords"),
+                className="me-3",
             ),
+            dbc.Col(dbc.Button("Submit", id="search-button", color="primary", n_clicks=0), width="auto"),
         ],
         className="g-2",
     )
 )
+
 
 image = (
     html.A(
