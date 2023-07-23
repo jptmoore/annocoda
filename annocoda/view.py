@@ -85,10 +85,11 @@ class View:
             Output("status-bar", "children"),
             Input("search-button", "n_clicks"),
             State("search-input", "value"),
+            State("manifest-input", "value"),
         )
-        def search(n_clicks, value):
-            if n_clicks > 0 and value != None:
-                result = self.controller.query(value)
+        def search(n_clicks, search_value, manifest_value):
+            if n_clicks > 0 and search_value != None:
+                result = self.controller.query(search_value, manifest_value)
                 message = f"{self.controller.get_image_count()} images"
                 return result, message
             else:
