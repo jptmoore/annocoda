@@ -99,7 +99,6 @@ class View:
                 if count == 0:
                     return "tab-4", [], ""
                 else:
-                    message = f"{count} images"
-                    return "tab-1", result, message
+                    return "tab-1", result, "view annotations"
             else:
                 return "tab-0", [], ""
