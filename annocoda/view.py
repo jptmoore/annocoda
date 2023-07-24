@@ -95,5 +95,11 @@ class View:
         def search(n_clicks, search_value, manifest_value):
             if n_clicks > 0 and search_value != None:
                 result = self.controller.query(search_value, manifest_value)
-                message = f"{self.controller.get_image_count()} images"
-                return "tab-1", result, message
+                count = self.controller.get_image_count()
+                if count == 0:
+                    return "tab-4", [], ""
+                else:
+                    message = f"{count} images"
+                    return "tab-1", result, message
+            else:
+                return "tab-0", [], ""

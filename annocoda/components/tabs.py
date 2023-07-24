@@ -4,6 +4,7 @@ from dash import html
 from components.carousel import carousel
 from components.cards import card_1, card_2
 from components.splash import splash
+from components.inform import inform
 
 
 tab_style = {"border": "0", "display": "none"}
@@ -29,6 +30,12 @@ tabs = dbc.Tabs(
             card_2,
             tab_id="tab-3",
             disabled=True,
+        ),
+        dbc.Tab(
+            inform,
+            tab_id="tab-4",
+            disabled=True,
+            style={"padding": "150px"}
         ),
     ],
     id="tabs",
