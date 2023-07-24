@@ -18,16 +18,25 @@ class View:
             Input("offcanvas-scrollable", "is_open"),
             State("carousel", "active_index"),
             State("carousel", "items"),
+            State("tabs", "active_tab")
         )
-        def selectTab(is_open, active_index, items):
-            if is_open:
-                src = items[active_index].get("src")
-                image = self.controller.polygon.get_image(src)
-                return "tab-2", image
-                # item = items[active_index]
-                # return "tab-2", [item]
-            else:
-                return "tab-1", None
+        def selectTab(is_open, active_index, items, active_tab):
+            match active_tab:
+                case "tab-0":
+                    return active_tab, None
+                case "tab-1":
+                    if is_open:
+                        print(active_tab)
+                        src = items[active_index].get("src")
+                        image = self.controller.polygon.get_image(src)
+                        return "tab-1", image
+                case "tab-2":
+                    print(active_tab)
+                    return "tab-1", None
+                case "tab-3":
+                    print(active_tab)
+                    return "tab-1", None
+
 
 
         # open tray
@@ -76,21 +85,18 @@ class View:
                 src = rows[row]['src']
                 image = self.controller.get_box(src, box)
                 return None, "tab-3", image, "test header 2"
-            else:
-                return active_cell, "tab-1", None, None
-
 
         @callback(
+            Output("tabs", "active_tab", allow_duplicate=True),
             Output("carousel", "items"),
             Output("status-bar", "children"),
             Input("search-button", "n_clicks"),
             State("search-input", "value"),
             State("manifest-input", "value"),
+            prevent_initial_call=True,
         )
         def search(n_clicks, search_value, manifest_value):
             if n_clicks > 0 and search_value != None:
                 result = self.controller.query(search_value, manifest_value)
                 message = f"{self.controller.get_image_count()} images"
-                return result, message
-            else:
-                return [], None
+                return "tab-1", result, message

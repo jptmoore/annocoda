@@ -3,11 +3,19 @@ import dash_bootstrap_components as dbc
 from dash import html
 from components.carousel import carousel
 from components.cards import card_1, card_2
+from components.splash import splash
 
 
 tab_style = {"border": "0", "display": "none"}
 tabs = dbc.Tabs(
     [
+        dbc.Tab(
+            html.Div(splash),
+            tab_id="tab-0",
+            disabled=True,
+            active_tab_style=tab_style,
+            active_label_style=tab_style,
+        ),
         dbc.Tab(
             html.Div(carousel),
             tab_id="tab-1",
@@ -31,6 +39,6 @@ tabs = dbc.Tabs(
         ),
     ],
     id="tabs",
-    active_tab="tab-1",
+    active_tab="tab-0",
     style=tab_style,
 )
