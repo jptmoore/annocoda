@@ -4,16 +4,14 @@ from dash import html
 splash = html.Div(
     dbc.Container(
         [
-            html.H1("Jumbotron", className="display-3"),
+            html.H1("Getting started", className="display-3"),
             html.P(
-                "Use Containers to create a jumbotron to call attention to "
-                "featured content or information.",
+                "Some blurb",
                 className="lead",
             ),
             html.Hr(className="my-2"),
             html.P(
-                "Use utility classes for typography and spacing to suit the "
-                "larger container."
+                "blurb blurb blurb blurb blurb blurb"
             ),
             html.P(
                 dbc.Button("Learn more", color="primary"), className="lead"
@@ -22,6 +20,6 @@ splash = html.Div(
         fluid=True,
         className="py-3",
     ),
-    className="p-3 bg-light rounded-3",
+    className="p-3 rounded-3",
 )
 
