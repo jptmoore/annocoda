@@ -1,4 +1,7 @@
 import dash_bootstrap_components as dbc
+from components.statusbar import statusbar
+from dash import html
+
 
 carousel = (
     dbc.Carousel(
@@ -9,4 +12,5 @@ carousel = (
         indicators=True,
         interval=None,
     ),
+    html.Div(statusbar),
 )
