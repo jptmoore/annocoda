@@ -26,15 +26,12 @@ class View:
                     return active_tab, None
                 case "tab-1":
                     if is_open:
-                        print(active_tab)
                         src = items[active_index].get("src")
                         image = self.controller.polygon.get_image(src)
                         return "tab-1", image
                 case "tab-2":
-                    print(active_tab)
                     return "tab-1", None
                 case "tab-3":
-                    print(active_tab)
                     return "tab-1", None
 
 
