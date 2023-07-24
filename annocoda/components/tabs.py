@@ -10,14 +10,14 @@ tab_style = {"border": "0", "display": "none"}
 tabs = dbc.Tabs(
     [
         dbc.Tab(
-            html.Div(splash),
+            splash,
             tab_id="tab-0",
             disabled=True,
             active_tab_style=tab_style,
             active_label_style=tab_style,
         ),
         dbc.Tab(
-            html.Div(carousel),
+            carousel,
             tab_id="tab-1",
             disabled=True,
             active_tab_style=tab_style,
