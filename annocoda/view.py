@@ -28,7 +28,7 @@ class View:
                     if is_open:
                         src = items[active_index].get("src")
                         image = self.controller.polygon.get_image(src)
-                        return "tab-1", image
+                        return "tab-2", image
                 case "tab-2":
                     return "tab-1", None
                 case "tab-3":
