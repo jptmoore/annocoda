@@ -14,7 +14,7 @@ tabs = dbc.Tabs(
             splash,
             tab_id="tab-0",
             disabled=True,
-            style={"padding": "150px"}
+            style={"padding": "50px"}
         ),
         dbc.Tab(
             carousel,
