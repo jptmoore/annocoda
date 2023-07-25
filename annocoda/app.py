@@ -12,9 +12,7 @@ ctx = Context()
 ctx.logger = app.logger
 ctx.session = requests_cache.CachedSession("image_cache")
 
-view = View(ctx)
-
-app.layout = view.layout()
+app.layout = View(ctx).layout()
 app.title = "Annocoda"
 
 if __name__ == "__main__":
