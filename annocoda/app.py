@@ -1,16 +1,11 @@
 from dash import Dash
 import dash_bootstrap_components as dbc
 from view import View
-import requests_cache
+from context import Context
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-class Context:
-    pass
-
-ctx = Context()
-ctx.logger = app.logger
-ctx.session = requests_cache.CachedSession("image_cache")
+ctx = Context(logger=app.logger)
 
 app.layout = View(ctx).layout()
 app.title = "Annocoda"
