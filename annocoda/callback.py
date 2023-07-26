@@ -30,7 +30,7 @@ def setup_callbacks(controller):
         Output("carousel", "active_index"),
         Output("table", "data"),
         Output("card-1", "children"),
-        Input("status-bar", "n_clicks"),
+        Input("annotation-button", "n_clicks"),
         State("offcanvas-scrollable", "is_open"),
         State("carousel", "active_index"),
         State("carousel", "items"),
@@ -72,7 +72,6 @@ def setup_callbacks(controller):
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),
         Output("carousel", "items"),
-        Output("status-bar", "children"),
         Input("search-button", "n_clicks"),
         State("search-input", "value"),
         State("manifest-input", "value"),
@@ -83,8 +82,8 @@ def setup_callbacks(controller):
             result = controller.query(search_value, manifest_value)
             count = controller.get_image_count()
             if count == 0:
-                return "tab-4", [], ""
+                return "tab-4", []
             else:
-                return "tab-1", result, "view annotations"
+                return "tab-1", result
         else:
-            return "tab-0", [], ""
+            return "tab-0", []

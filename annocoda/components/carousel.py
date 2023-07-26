@@ -1,5 +1,4 @@
 import dash_bootstrap_components as dbc
-from components.statusbar import statusbar
 from dash import html
 
 
@@ -12,5 +11,14 @@ carousel = (
         indicators=True,
         interval=None,
     ),
-    html.Div(statusbar),
+    html.Div(
+        dbc.Button(
+            "view annotations",
+            color="primary",
+            id="annotation-button",
+            outline=True,
+            n_clicks=0,
+            className="d-grid gap-2 col-6 mx-auto",
+        )
+    ),
 )
