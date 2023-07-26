@@ -1,5 +1,7 @@
 from dash import callback, State, Input, Output
+from dash import no_update
 from dash.exceptions import PreventUpdate
+
 
 def setup_callbacks(controller):
 
@@ -15,14 +17,17 @@ def setup_callbacks(controller):
     def handle_tab(is_open, active_index, items, active_tab):
         match active_tab:
             case "tab-0":
-                return "tab-0", None, "undefined"
+                return "tab-0", no_update, no_update
             case "tab-1":
                 if is_open:
                     src = items[active_index].get("src")
                     image = controller.polygon.get_image(src)
                     return "tab-2", image, "test header 1"
+                else:
+                    return "tab-1", no_update, no_update
             case "tab-2":
-                return "tab-1", None, "undefined"
+                    return "tab-1", no_update, no_update
+                    
 
     # open tray
     @callback(
@@ -67,6 +72,9 @@ def setup_callbacks(controller):
             src = rows[row]["src"]
             image = controller.get_box(src, box)
             return None, "tab-2", image, "test header 2"
+        else:
+            raise PreventUpdate
+        
 
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),
