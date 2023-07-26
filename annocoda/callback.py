@@ -1,4 +1,5 @@
 from dash import callback, State, Input, Output
+from dash.exceptions import PreventUpdate
 
 def setup_callbacks(controller):
 
@@ -14,7 +15,7 @@ def setup_callbacks(controller):
     def handle_tab(is_open, active_index, items, active_tab):
         match active_tab:
             case "tab-0":
-                return active_tab, None, "undefined"
+                return "tab-0", None, "undefined"
             case "tab-1":
                 if is_open:
                     src = items[active_index].get("src")
