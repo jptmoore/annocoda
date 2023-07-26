@@ -10,7 +10,7 @@ def setup_callbacks(controller):
         State("carousel", "items"),
         State("tabs", "active_tab"),
     )
-    def selectTab(is_open, active_index, items, active_tab):
+    def select_tab(is_open, active_index, items, active_tab):
         match active_tab:
             case "tab-0":
                 return active_tab, None
@@ -35,11 +35,11 @@ def setup_callbacks(controller):
         State("carousel", "active_index"),
         State("carousel", "items"),
     )
-    def toggle_offcanvas_scrollable(n_clicks, is_open, active_index, items):
+    def toggle_tray(n_clicks, is_open, active_index, items):
         if n_clicks:
             target = items[active_index].get("key")
-            result = controller.get_annotations(target)
-            return not is_open, active_index, result, "test header 1"
+            annotations = controller.get_annotations(target)
+            return not is_open, active_index, annotations, "test header 1"
         else:
             return is_open, 0, items, None
 
@@ -47,7 +47,7 @@ def setup_callbacks(controller):
         Output("table", "selected_cells"),
         Input("offcanvas-scrollable", "is_open"),
     )
-    def deselectRows(is_open):
+    def deselect_annotation(is_open):
         return []
 
     @callback(
@@ -59,7 +59,7 @@ def setup_callbacks(controller):
         State("table", "data"),
         prevent_initial_call=True,
     )
-    def getActiveCell(active_cell, data):
+    def get_annotation_data(active_cell, data):
         if active_cell:
             row = active_cell["row"]
             target = data[row]["key"]
