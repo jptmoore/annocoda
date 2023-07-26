@@ -4,32 +4,30 @@ def setup_callbacks(controller):
 
     @callback(
         Output("tabs", "active_tab"),
-        Output("unbounded-image", "src"),
+        Output("image", "src"),
+        Output("image-header", "children"),
         Input("offcanvas-scrollable", "is_open"),
         State("carousel", "active_index"),
         State("carousel", "items"),
         State("tabs", "active_tab"),
     )
-    def select_tab(is_open, active_index, items, active_tab):
+    def handle_tab(is_open, active_index, items, active_tab):
         match active_tab:
             case "tab-0":
-                return active_tab, None
+                return active_tab, None, "undefined"
             case "tab-1":
                 if is_open:
                     src = items[active_index].get("src")
                     image = controller.polygon.get_image(src)
-                    return "tab-2", image
+                    return "tab-2", image, "test header 1"
             case "tab-2":
-                return "tab-1", None
-            case "tab-3":
-                return "tab-1", None
+                return "tab-1", None, "undefined"
 
     # open tray
     @callback(
         Output("offcanvas-scrollable", "is_open"),
         Output("carousel", "active_index"),
         Output("table", "data"),
-        Output("card-1", "children"),
         Input("annotation-button", "n_clicks"),
         State("offcanvas-scrollable", "is_open"),
         State("carousel", "active_index"),
@@ -39,9 +37,9 @@ def setup_callbacks(controller):
         if n_clicks:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(target)
-            return not is_open, active_index, annotations, "test header 1"
+            return not is_open, active_index, annotations
         else:
-            return is_open, 0, items, None
+            return is_open, 0, items
 
     @callback(
         Output("table", "selected_cells"),
@@ -53,8 +51,8 @@ def setup_callbacks(controller):
     @callback(
         Output("table", "active_cell"),
         Output("tabs", "active_tab", allow_duplicate=True),
-        Output("bounded-image", "src"),
-        Output("card-2", "children"),
+        Output("image", "src", allow_duplicate=True),
+        Output("image-header", "children", allow_duplicate=True),
         Input("table", "active_cell"),
         State("table", "data"),
         prevent_initial_call=True,
@@ -67,7 +65,7 @@ def setup_callbacks(controller):
             box = rows[row]["frag_selector"]
             src = rows[row]["src"]
             image = controller.get_box(src, box)
-            return None, "tab-3", image, "test header 2"
+            return None, "tab-2", image, "test header 2"
 
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),

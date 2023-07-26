@@ -1,8 +1,7 @@
 
 import dash_bootstrap_components as dbc
-from dash import html
 from components.carousel import carousel
-from components.cards import card_1, card_2
+from components.cards import card_1
 from components.splash import splash
 from components.inform import inform
 
@@ -24,11 +23,6 @@ tabs = dbc.Tabs(
         dbc.Tab(
             card_1,
             tab_id="tab-2",
-            disabled=True,
-        ),
-        dbc.Tab(
-            card_2,
-            tab_id="tab-3",
             disabled=True,
         ),
         dbc.Tab(
