@@ -52,7 +52,10 @@ def setup_callbacks(controller):
         Input("offcanvas-scrollable", "is_open"),
     )
     def deselect_annotation(is_open):
-        return []
+        if is_open:
+            return []
+        else:
+            return no_update
 
     @callback(
         Output("table", "active_cell"),
