@@ -11,28 +11,28 @@ tabs = dbc.Tabs(
     [
         dbc.Tab(
             splash,
-            tab_id="tab-0",
+            tab_id="splash-tab",
             disabled=True,
             style={"padding": "50px"}
         ),
         dbc.Tab(
             carousel,
-            tab_id="tab-1",
+            tab_id="carousel-tab",
             disabled=True,
         ),
         dbc.Tab(
             card_1,
-            tab_id="tab-2",
+            tab_id="image-tab",
             disabled=True,
         ),
         dbc.Tab(
             inform,
-            tab_id="tab-4",
+            tab_id="status-tab",
             disabled=True,
             style={"padding": "150px"}
         ),
     ],
     id="tabs",
-    active_tab="tab-0",
+    active_tab="splash-tab",
     style=tab_style,
 )

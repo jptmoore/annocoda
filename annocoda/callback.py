@@ -16,17 +16,17 @@ def setup_callbacks(controller):
     )
     def handle_tab(is_open, active_index, items, active_tab):
         match active_tab:
-            case "tab-0":
-                return "tab-0", no_update, no_update
-            case "tab-1":
+            case "splash-tab":
+                return "splash-tab", no_update, no_update
+            case "carousel-tab":
                 if is_open:
                     src = items[active_index].get("src")
                     image = controller.polygon.get_image(src)
-                    return "tab-2", image, "test header 1"
+                    return "image-tab", image, "test header 1"
                 else:
-                    return "tab-1", no_update, no_update
-            case "tab-2":
-                    return "tab-1", no_update, no_update
+                    return "carousel-tab", no_update, no_update
+            case "image-tab":
+                    return "carousel-tab", no_update, no_update
                     
 
     # open tray
@@ -74,7 +74,7 @@ def setup_callbacks(controller):
             box = rows[row]["frag_selector"]
             src = rows[row]["src"]
             image = controller.get_box(src, box)
-            return None, "tab-2", image, "test header 2"
+            return None, "image-tab", image, "test header 2"
         else:
             raise PreventUpdate
         
@@ -92,8 +92,8 @@ def setup_callbacks(controller):
             result = controller.query(search_value, manifest_value)
             count = controller.get_image_count()
             if count == 0:
-                return "tab-4", []
+                return "status-tab", []
             else:
-                return "tab-1", result
+                return "carousel-tab", result
         else:
-            return "tab-0", []
+            return "splash-tab", []
