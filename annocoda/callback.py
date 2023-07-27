@@ -18,7 +18,7 @@ def setup_callbacks(controller):
             case "splash-tab":
                 return "splash-tab", no_update, no_update
             case "carousel-tab":
-                if is_open:
+                if is_open and active_index:
                     src = items[active_index].get("src")
                     image = controller.polygon.get_image(src)
                     return "image-tab", image, "test header 1"
@@ -31,7 +31,6 @@ def setup_callbacks(controller):
 
     @callback(
         Output("tray", "is_open"),
-        Output("carousel", "active_index"),
         Output("annotation-table", "data"),
         Input("annotation-button", "n_clicks"),
         State("tray", "is_open"),
@@ -42,9 +41,9 @@ def setup_callbacks(controller):
         if n_clicks:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(target)
-            return not is_open, active_index, annotations
+            return not is_open, annotations
         else:
-            return is_open, 0, items
+            return is_open, items
 
     @callback(
         Output("annotation-table", "selected_cells"),

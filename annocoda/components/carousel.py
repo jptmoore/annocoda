@@ -6,6 +6,7 @@ carousel = (
     dbc.Carousel(
         id="carousel",
         items=[],
+        active_index=0,
         variant="dark",
         controls=True,
         indicators=True,
