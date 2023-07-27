@@ -3,7 +3,7 @@ from dash import dash_table
 
 annotation_table = (
     dash_table.DataTable(
-        id="table",
+        id="annotation-table",
         data=[],
         style_header={"display": "none"},
         hidden_columns=["key"],

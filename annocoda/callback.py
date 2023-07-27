@@ -33,7 +33,7 @@ def setup_callbacks(controller):
     @callback(
         Output("offcanvas-scrollable", "is_open"),
         Output("carousel", "active_index"),
-        Output("table", "data"),
+        Output("annotation-table", "data"),
         Input("annotation-button", "n_clicks"),
         State("offcanvas-scrollable", "is_open"),
         State("carousel", "active_index"),
@@ -48,7 +48,7 @@ def setup_callbacks(controller):
             return is_open, 0, items
 
     @callback(
-        Output("table", "selected_cells"),
+        Output("annotation-table", "selected_cells"),
         Input("offcanvas-scrollable", "is_open"),
     )
     def deselect_annotation(is_open):
@@ -58,12 +58,12 @@ def setup_callbacks(controller):
             return no_update
 
     @callback(
-        Output("table", "active_cell"),
+        Output("annotation-table", "active_cell"),
         Output("tabs", "active_tab", allow_duplicate=True),
         Output("image", "src", allow_duplicate=True),
         Output("image-header", "children", allow_duplicate=True),
-        Input("table", "active_cell"),
-        State("table", "data"),
+        Input("annotation-table", "active_cell"),
+        State("annotation-table", "data"),
         prevent_initial_call=True,
     )
     def get_annotation_data(active_cell, data):
