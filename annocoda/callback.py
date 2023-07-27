@@ -58,7 +58,7 @@ def setup_callbacks(controller):
         if is_open:
             return [], None
         else:
-            return no_update
+            raise PreventUpdate
 
     @callback(
         Output("image", "src", allow_duplicate=True),
