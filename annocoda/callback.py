@@ -9,7 +9,7 @@ def setup_callbacks(controller):
         Output("tabs", "active_tab"),
         Output("image", "src"),
         Output("image-header", "children"),
-        Input("offcanvas-scrollable", "is_open"),
+        Input("tray", "is_open"),
         State("carousel", "active_index"),
         State("carousel", "items"),
         State("tabs", "active_tab"),
@@ -31,11 +31,11 @@ def setup_callbacks(controller):
 
     # open tray
     @callback(
-        Output("offcanvas-scrollable", "is_open"),
+        Output("tray", "is_open"),
         Output("carousel", "active_index"),
         Output("annotation-table", "data"),
         Input("annotation-button", "n_clicks"),
-        State("offcanvas-scrollable", "is_open"),
+        State("tray", "is_open"),
         State("carousel", "active_index"),
         State("carousel", "items"),
     )
@@ -49,7 +49,7 @@ def setup_callbacks(controller):
 
     @callback(
         Output("annotation-table", "selected_cells"),
-        Input("offcanvas-scrollable", "is_open"),
+        Input("tray", "is_open"),
     )
     def deselect_annotation(is_open):
         if is_open:

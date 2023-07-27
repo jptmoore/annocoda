@@ -6,7 +6,7 @@ from components.annotation_table import annotation_table
 
 tray = dbc.Offcanvas(
     html.Div(annotation_table),
-    id="offcanvas-scrollable",
+    id="tray",
     scrollable=True,
     title="Annotations",
     is_open=False,
