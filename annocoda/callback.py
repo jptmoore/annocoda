@@ -4,7 +4,6 @@ from dash.exceptions import PreventUpdate
 
 
 def setup_callbacks(controller):
-
     @callback(
         Output("tabs", "active_tab"),
         Output("image", "src"),
@@ -26,12 +25,10 @@ def setup_callbacks(controller):
                 else:
                     return "carousel-tab", no_update, no_update
             case "image-tab":
-                    return "carousel-tab", no_update, no_update
+                return "carousel-tab", no_update, no_update
             case _:
                 raise PreventUpdate
-                    
 
-    # open tray
     @callback(
         Output("tray", "is_open"),
         Output("carousel", "active_index"),
@@ -78,7 +75,6 @@ def setup_callbacks(controller):
             return image, "test header 2"
         else:
             raise PreventUpdate
-        
 
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),
@@ -93,8 +89,8 @@ def setup_callbacks(controller):
             items = controller.query(search_value, manifest_value)
             count = controller.get_image_count()
             if count == 0:
-                return "status-tab", []
+                return "status-tab", no_update
             else:
                 return "carousel-tab", items
         else:
-            return "splash-tab", []
+            raise PreventUpdate
