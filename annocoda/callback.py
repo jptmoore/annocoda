@@ -27,6 +27,8 @@ def setup_callbacks(controller):
                     return "carousel-tab", no_update, no_update
             case "image-tab":
                     return "carousel-tab", no_update, no_update
+            case _:
+                raise PreventUpdate
                     
 
     # open tray
@@ -49,17 +51,16 @@ def setup_callbacks(controller):
 
     @callback(
         Output("annotation-table", "selected_cells"),
+        Output("annotation-table", "active_cell"),
         Input("tray", "is_open"),
     )
     def deselect_annotation(is_open):
         if is_open:
-            return []
+            return [], None
         else:
             return no_update
 
     @callback(
-        Output("annotation-table", "active_cell"),
-        Output("tabs", "active_tab", allow_duplicate=True),
         Output("image", "src", allow_duplicate=True),
         Output("image-header", "children", allow_duplicate=True),
         Input("annotation-table", "active_cell"),
@@ -74,7 +75,7 @@ def setup_callbacks(controller):
             box = rows[row]["frag_selector"]
             src = rows[row]["src"]
             image = controller.get_box(src, box)
-            return None, "image-tab", image, "test header 2"
+            return image, "test header 2"
         else:
             raise PreventUpdate
         
@@ -89,11 +90,11 @@ def setup_callbacks(controller):
     )
     def search(n_clicks, search_value, manifest_value):
         if n_clicks > 0 and search_value != None:
-            result = controller.query(search_value, manifest_value)
+            items = controller.query(search_value, manifest_value)
             count = controller.get_image_count()
             if count == 0:
                 return "status-tab", []
             else:
-                return "carousel-tab", result
+                return "carousel-tab", items
         else:
             return "splash-tab", []
