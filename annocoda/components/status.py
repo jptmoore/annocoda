@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import html
 
-inform = html.Div(
+status = html.Div(
     dbc.Container(
         [
             html.H1("Ouch", className="display-3"),

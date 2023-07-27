@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 from components.carousel import carousel
 from components.cards import image_card
 from components.splash import splash
-from components.inform import inform
+from components.status import status
 
 
 tab_style = {"border": "0", "display": "none"}
@@ -26,7 +26,7 @@ tabs = dbc.Tabs(
             disabled=True,
         ),
         dbc.Tab(
-            inform,
+            status,
             tab_id="status-tab",
             disabled=True,
             style={"padding": "150px"}
