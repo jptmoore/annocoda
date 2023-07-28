@@ -5,45 +5,34 @@ from dash.exceptions import PreventUpdate
 
 def setup_callbacks(controller):
     @callback(
-        Output("tabs", "active_tab"),
+        Output("tabs", "active_tab", allow_duplicate=True),
+        Output("annotation-table", "data"),
         Output("image", "src"),
         Output("image-header", "children"),
-        Input("tray", "is_open"),
-        State("carousel", "active_index"),
-        State("carousel", "items"),
-        State("tabs", "active_tab"),
-    )
-    def handle_tab(is_open, active_index, items, active_tab):
-        match active_tab:
-            case "splash-tab":
-                return "splash-tab", no_update, no_update
-            case "carousel-tab":
-                if is_open and active_index:
-                    src = items[active_index].get("src")
-                    image = controller.polygon.get_image(src)
-                    return "image-tab", image, "test header 1"
-                else:
-                    return "carousel-tab", no_update, no_update
-            case "image-tab":
-                return "carousel-tab", no_update, no_update
-            case _:
-                raise PreventUpdate
-
-    @callback(
-        Output("tray", "is_open"),
-        Output("annotation-table", "data"),
         Input("annotation-button", "n_clicks"),
-        State("tray", "is_open"),
         State("carousel", "active_index"),
         State("carousel", "items"),
+        prevent_initial_call=True,
     )
-    def toggle_tray(n_clicks, is_open, active_index, items):
+    def view_annotations(n_clicks, active_index, items):
         if n_clicks:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(target)
-            return not is_open, annotations
+            src = items[active_index].get("src")
+            image = controller.polygon.get_image(src)
+            return "image-tab", annotations, image, "header 1"
         else:
-            return is_open, items
+            raise PreventUpdate
+
+    @callback(
+        Output("tray", "is_open"),
+        Input("annotation-button", "n_clicks"),
+        State("tray", "is_open"),
+    )
+    def toggle_tray(n_clicks, is_open):
+        if n_clicks:
+            return not is_open
+        return is_open
 
     @callback(
         Output("annotation-table", "selected_cells"),
@@ -55,6 +44,22 @@ def setup_callbacks(controller):
             return [], None
         else:
             raise PreventUpdate
+
+    @callback(
+        Output("tabs", "active_tab", allow_duplicate=True),
+        Input("tray", "is_open"),
+        State("tabs", "active_tab"),
+        prevent_initial_call=True,
+    )
+    def switch_tab(is_open, tab):
+        match tab:
+            case "image-tab":
+                if not is_open:
+                    return "carousel-tab"
+                else:
+                    return no_update
+            case _:
+                return no_update
 
     @callback(
         Output("image", "src", allow_duplicate=True),
@@ -71,7 +76,7 @@ def setup_callbacks(controller):
             box = rows[row]["frag_selector"]
             src = rows[row]["src"]
             image = controller.get_box(src, box)
-            return image, "test header 2"
+            return image, "header 2"
         else:
             raise PreventUpdate
 
