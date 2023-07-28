@@ -5,24 +5,44 @@ from dash.exceptions import PreventUpdate
 
 def setup_callbacks(controller):
     @callback(
-        Output("tabs", "active_tab", allow_duplicate=True),
-        Output("annotation-table", "data"),
         Output("image", "src"),
         Output("image-header", "children"),
         Input("annotation-button", "n_clicks"),
         State("carousel", "active_index"),
         State("carousel", "items"),
-        prevent_initial_call=True,
     )
-    def view_annotations(n_clicks, active_index, items):
+    def display_image(n_clicks, active_index, items):
+        if n_clicks:
+            src = items[active_index].get("src")
+            image = controller.polygon.get_image(src)
+            return image, "header 1"
+        else:
+            raise PreventUpdate
+
+    @callback(
+        Output("annotation-table", "data"),
+        Input("annotation-button", "n_clicks"),
+        State("carousel", "active_index"),
+        State("carousel", "items"),
+    )
+    def display_annotations(n_clicks, active_index, items):
         if n_clicks:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(target)
-            src = items[active_index].get("src")
-            image = controller.polygon.get_image(src)
-            return "image-tab", annotations, image, "header 1"
+            return annotations
         else:
-            raise PreventUpdate
+            return no_update
+
+    @callback(
+        Output("tabs", "active_tab", allow_duplicate=True),
+        Input("annotation-button", "n_clicks"),
+        prevent_initial_call=True,
+    )
+    def annotation_button(n_clicks):
+        if n_clicks:
+            return "image-tab"
+        else:
+            raise no_update
 
     @callback(
         Output("tray", "is_open"),
@@ -68,7 +88,7 @@ def setup_callbacks(controller):
         State("annotation-table", "data"),
         prevent_initial_call=True,
     )
-    def get_annotation_data(active_cell, data):
+    def display_selected_annotation_image(active_cell, data):
         if active_cell:
             row = active_cell["row"]
             target = data[row]["key"]
@@ -88,7 +108,7 @@ def setup_callbacks(controller):
         State("manifest-input", "value"),
         prevent_initial_call=True,
     )
-    def search(n_clicks, search_value, manifest_value):
+    def search_button(n_clicks, search_value, manifest_value):
         if n_clicks > 0 and search_value != None:
             items = controller.query(search_value, manifest_value)
             count = controller.get_image_count()
