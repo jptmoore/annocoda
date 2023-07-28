@@ -109,7 +109,7 @@ def setup_callbacks(controller):
         prevent_initial_call=True,
     )
     def search_button(n_clicks, search_value, manifest_value):
-        if n_clicks > 0 and search_value != None:
+        if n_clicks and search_value != None and search_value != "":
             items = controller.query(search_value, manifest_value)
             count = controller.get_image_count()
             if count == 0:

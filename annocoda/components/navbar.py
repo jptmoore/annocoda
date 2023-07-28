@@ -10,15 +10,26 @@ search_bar = dbc.Form(
         [
             dbc.Label("Manifest", width="auto"),
             dbc.Col(
-                dbc.Input(id="manifest-input", placeholder="Enter URL"),
+                dbc.Input(
+                    id="manifest-input",
+                    required=True,
+                    placeholder="Enter URL",
+                ),
                 className="me-3",
             ),
             dbc.Label("Search", width="auto"),
             dbc.Col(
-                dbc.Input(id="search-input", placeholder="Enter keywords"),
+                dbc.Input(
+                    id="search-input",
+                    required=True,
+                    placeholder="Enter keywords",
+                ),
                 className="me-3",
             ),
-            dbc.Col(dbc.Button("Submit", id="search-button", color="primary", n_clicks=0), width="auto"),
+            dbc.Col(
+                dbc.Button("Submit", id="search-button", color="primary", n_clicks=0),
+                width="auto",
+            ),
         ],
         className="g-2",
     )
@@ -29,7 +40,9 @@ image = (
     html.A(
         dbc.Row(
             [
-                dbc.Col(html.Img(src=logo, height="30px", style={"padding-bottom": "5px"})),
+                dbc.Col(
+                    html.Img(src=logo, height="30px", style={"padding-bottom": "5px"})
+                ),
             ],
             align="center",
             className="g-0",
