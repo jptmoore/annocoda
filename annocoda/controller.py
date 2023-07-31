@@ -2,19 +2,19 @@ from model import Model
 from manifest import Manifest
 from annotation import Annotation
 from polygon import Polygon
+from parse import Parse
 
 
 class Controller:
     def __init__(self, ctx):
         self.ctx = ctx
         self.model = Model()
-        self.manifest = Manifest(ctx)
         self.annotation = Annotation(ctx)
         self.polygon = Polygon(ctx)
+        self.parse = Parse(ctx)
     
     def query(self, search_value, manifest_value):
-        self.ctx.logger.info(manifest_value)
-        manifest_data = self.manifest.load(urls=["https://miiify.rocks/manifest/diamond_jubilee_of_the_metro", "https://miiify.rocks/manifest/rustic_walking_routes"])
+        manifest_data = self.parse.run(url=manifest_value)
         self.model.load_manifest(manifest_data)
         annotation_data = self.annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={search_value}"
