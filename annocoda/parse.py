@@ -19,7 +19,7 @@ class ParseError(Exception):
 
 class Parse:
     def __init__(self, ctx):
-        self.ctx = ctx
+        self.session = ctx.session
         self.data = []
 
     def __data_template(self, key, value):
