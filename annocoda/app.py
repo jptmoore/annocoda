@@ -10,5 +10,7 @@ ctx = Context(logger=app.logger)
 app.layout = View(ctx).layout()
 app.title = "Annocoda"
 
+server = app.server
+
 if __name__ == "__main__":
     app.run_server(host='0.0.0.0', debug=True)

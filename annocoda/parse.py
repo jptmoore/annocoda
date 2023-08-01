@@ -12,17 +12,6 @@ from pydantic import Extra
 
 Annotation.Config.extra = Extra.allow
 
-import requests_cache
-
-
-class Context:
-    pass
-
-
-ctx = Context()
-ctx.session = requests_cache.CachedSession("annocoda_cache")
-
-
 class ParseError(Exception):
     def __init__(self, message):
         super().__init__(message)
@@ -49,7 +38,7 @@ class Parse:
     def __get_json(self, url):
         headers = self.__basic_headers()
         try:
-            response = self.ctx.session.get(url, verify=False, headers=headers)
+            response = self.session.get(url, headers=headers, verify=False)
         except Exception as e:
             raise ParseError("failed to fetch json")
         if response.status_code != 200:
