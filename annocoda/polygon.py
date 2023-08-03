@@ -6,7 +6,7 @@ class Polygon:
         self.logger = ctx.logger
 
     def load_image(self, url):
-        resp = self.session.get(url, stream=True).raw
+        resp = self.session.get(url, stream=True, verify=False).raw
         image = Image.open(resp)
         return image
     
