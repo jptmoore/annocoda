@@ -103,3 +103,6 @@ src/.vscode/
 
 # python requests cache
 *.sqlite
+
+# editor
+.vscode/

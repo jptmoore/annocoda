@@ -27,8 +27,9 @@ def setup_callbacks(controller):
     )
     def display_annotations(n_clicks, active_index, items):
         if n_clicks:
+            print(items)
             target = items[active_index].get("key")
-            annotations = controller.get_annotations(target)
+            annotations = controller.get_annotations(items, target)
             return annotations
         else:
             return no_update
@@ -92,7 +93,7 @@ def setup_callbacks(controller):
         if active_cell:
             row = active_cell["row"]
             target = data[row]["key"]
-            rows = controller.get_rows(target)
+            rows = controller.get_rows(data, target)
             box = rows[row]["frag_selector"]
             src = rows[row]["src"]
             image = controller.get_box(src, box)
@@ -111,7 +112,7 @@ def setup_callbacks(controller):
     def search_button(n_clicks, search_value, manifest_value):
         if n_clicks and search_value != None and search_value != "":
             items = controller.query(search_value, manifest_value)
-            count = controller.get_image_count()
+            count = controller.get_image_count(items)
             if count == 0:
                 return "status-tab", no_update
             else:
