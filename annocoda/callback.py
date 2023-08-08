@@ -128,6 +128,6 @@ def setup_callbacks(controller):
         if count == 0:
             return "status-tab", no_update
         else:
-            # we need remove dups in data
-            print("need to remove dups in data for carousel")
-            return "carousel-tab", data
+            # we need remove dups in data model
+            result = controller.get_carousel_items(data)
+            return "carousel-tab", result

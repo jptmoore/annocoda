@@ -55,6 +55,12 @@ class Model:
         records = model.loc[self.model["key"] == target]
         result = records.to_dict("records")
         return result
+    
+    def remove_dups(self, data):
+        model = pd.DataFrame.from_records(data)
+        df = model.drop_duplicates(subset=["key"])
+        result = df.to_dict("records")
+        return result        
 
     def get_records(self, model):
         if model.empty:

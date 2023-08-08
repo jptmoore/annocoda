@@ -21,6 +21,10 @@ class Controller:
         result_df = self.model.merge_annotation(manifest_df, annotation_data)
         result = self.model.get_records(result_df)
         return result
+    
+
+    def get_carousel_items(self, data):
+        return self.model.remove_dups(data)
 
     def get_image_count(self, items):
         return len(items)
