@@ -1,4 +1,5 @@
 import dash_bootstrap_components as dbc
+from dash import dcc
 from components.tray import tray
 from components.navbar import navbar
 from components.tabs import tabs
@@ -7,6 +8,7 @@ from components.tabs import tabs
 def setup_layout():
     return dbc.Container(
         [
+            dcc.Store(id='storage'),
             dbc.Row(navbar),
             dbc.Row(tabs),
             dbc.Row(tray),

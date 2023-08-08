@@ -103,20 +103,31 @@ def setup_callbacks(controller):
             raise PreventUpdate
 
     @callback(
-        Output("tabs", "active_tab", allow_duplicate=True),
-        Output("carousel", "items"),
+        Output("storage", "data"),
         Input("search-button", "n_clicks"),
         State("search-input", "value"),
         State("manifest-input", "value"),
-        prevent_initial_call=True,
     )
-    def search_button(n_clicks, search_value, manifest_value):
+    def submit_button(n_clicks, search_value, manifest_value):
         if n_clicks and search_value != None and search_value != "":
-            items = controller.query(search_value, manifest_value)
-            count = controller.get_image_count(items)
-            if count == 0:
-                return "status-tab", no_update
-            else:
-                return "carousel-tab", items
+            data = controller.query(search_value, manifest_value)
+            print("storing data")
+            return data
         else:
             raise PreventUpdate
+
+
+    @callback(
+        Output("tabs", "active_tab", allow_duplicate=True),
+        Output("carousel", "items"),
+        Input("storage", "data"),
+        prevent_initial_call=True,
+    )
+    def submit_button_worker(data):
+        count = controller.get_image_count(data)
+        if count == 0:
+            return "status-tab", no_update
+        else:
+            # we need remove dups in data
+            print("need to remove dups in data for carousel")
+            return "carousel-tab", data
