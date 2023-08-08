@@ -24,11 +24,12 @@ def setup_callbacks(controller):
         Input("annotation-button", "n_clicks"),
         State("carousel", "active_index"),
         State("carousel", "items"),
+        State("storage", "data"),
     )
-    def display_annotations(n_clicks, active_index, items):
+    def display_annotations(n_clicks, active_index, items, data):
         if n_clicks:
             target = items[active_index].get("key")
-            annotations = controller.get_annotations(items, target)
+            annotations = controller.get_annotations(data, target)
             return annotations
         else:
             return no_update
@@ -86,17 +87,17 @@ def setup_callbacks(controller):
         Output("image-header", "children", allow_duplicate=True),
         Input("annotation-table", "active_cell"),
         State("annotation-table", "data"),
-        State("carousel", "items"),
+        State("storage", "data"),
         prevent_initial_call=True,
     )
-    def display_selected_annotation_image(active_cell, data, items):
+    def display_selected_annotation_image(active_cell, table_data, storage_data):
         if active_cell:
             row = active_cell["row"]
-            target = data[row]["key"]
-            #rows = controller.get_rows(data, target)
-            #box = rows[row]["frag_selector"]
-            #src = rows[row]["src"]
-            src,box = controller.get_image_details(items, target, row)
+            target = table_data[row]["key"]
+            rows = controller.get_rows(storage_data, target)
+            box = rows[row]["frag_selector"]
+            src = rows[row]["src"]
+            #src,box = controller.get_image_details(items, target, row)
             image = controller.get_box(src, box)
             return image, "header 2"
         else:

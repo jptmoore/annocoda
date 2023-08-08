@@ -51,8 +51,9 @@ class Model:
         result = records.to_dict("records")
         return result
 
-    def get_rows(self, model, target):
-        records = model.loc[self.model["key"] == target]
+    def get_rows(self, data, target):
+        model = pd.DataFrame.from_records(data)
+        records = model.loc[model["key"] == target]
         result = records.to_dict("records")
         return result
     
