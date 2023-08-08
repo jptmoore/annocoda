@@ -26,20 +26,8 @@ class Controller:
     def get_carousel_items(self, data):
         return self.model.remove_dups(data)
 
-    def get_image_count(self, items):
-        return len(items)
-        #return self.model.image_count(items)
-    
-    def get_annotation_count(self, items, target):
-        return self.model.annotation_count(items, target)
-
     def get_annotations(self, items, target):
-        return self.model.filter_annotations(items, target)
-        #return self.model.filter_on_key(items, key)
-
-    def get_image_details(self, items, target, index):
-        return self.model.filter_image_details(items, target, index)
-        #return self.model.filter_on_key(items, key)
+        return self.model.filter_on_key(items, target)
 
     def get_rows(self, items, target):
         return self.model.get_rows(items, target)

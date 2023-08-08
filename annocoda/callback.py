@@ -125,8 +125,7 @@ def setup_callbacks(controller):
         prevent_initial_call=True,
     )
     def submit_button_worker(data):
-        count = controller.get_image_count(data)
-        if count == 0:
+        if len(data) == 0:
             return "status-tab", no_update
         else:
             # we need remove dups in data model
