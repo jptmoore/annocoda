@@ -29,10 +29,10 @@ class Model:
         result = records.to_dict("records")
         return result
     
-    def remove_dups(self, data):
+    def get_carousel_items(self, data):
         model = pd.DataFrame.from_records(data)
         df = model.drop_duplicates(subset=["key"])
-        result = df.to_dict("records")
+        result = df[['key', 'src']].to_dict("records")
         return result        
 
     def get_records(self, model):

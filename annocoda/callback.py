@@ -130,4 +130,5 @@ def setup_callbacks(controller):
         else:
             # we need remove dups in data model
             result = controller.get_carousel_items(data)
+            print(result)
             return "carousel-tab", result

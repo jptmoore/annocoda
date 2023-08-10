@@ -24,7 +24,7 @@ class Controller:
     
 
     def get_carousel_items(self, data):
-        return self.model.remove_dups(data)
+        return self.model.get_carousel_items(data)
 
     def get_annotations(self, items, target):
         return self.model.filter_on_key(items, target)
