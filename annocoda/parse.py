@@ -47,6 +47,26 @@ class Parse:
             result = response.json()
             return result
 
+    def __handle_body_as_list(self, target, body):
+        for item in body:
+            if "value" in item:
+                self.data.append((target, item["value"]))
+
+    def __handle_body_as_object(self, target, body):
+        self.data.append((target, body.id))
+
+
+    def __match_annotation(self, x):
+        match x:
+            case Annotation(target=target, body=body, motivation=motivation) if motivation in ["painting"]:
+                if type(body) is list:
+                    self.__handle_body_as_list(target, body)
+                else:
+                    self.__handle_body_as_object(target, body)
+            case _:
+                raise ParseError("failed to find annotation")
+
+
     def __match_annotation(self, x):
         match x:
             case Annotation(target=target, body=body):
