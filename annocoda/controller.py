@@ -31,12 +31,9 @@ class Controller:
 
     def get_image_details(self, items, target, row):
         return self.model.get_image_details(items, target, row)
-       
-    # def get_records(self):
-    #     return model.get_records()
     
     def get_image(self, src):
         return self.polygon.get_image(src)
     
-    def get_box(self, url, xywh):
-        return self.polygon.draw_bounding_box(url, xywh)
+    def get_image_with_box(self, url, xywh):
+        return self.polygon.get_image_with_box(url, xywh)

@@ -95,7 +95,7 @@ def setup_callbacks(controller):
             row = active_cell["row"]
             target = table_data[row]["key"]
             src,frag_selector = controller.get_image_details(storage_data, target, row)
-            image = controller.get_box(src, frag_selector)
+            image = controller.get_image_with_box(src, frag_selector)
             return image, "header 2"
         else:
             raise PreventUpdate
