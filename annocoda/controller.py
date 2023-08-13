@@ -29,8 +29,8 @@ class Controller:
     def get_annotations(self, items, target):
         return self.model.filter_on_key(items, target)
 
-    def get_rows(self, items, target):
-        return self.model.get_rows(items, target)
+    def get_rows(self, items, target, row):
+        return self.model.get_rows(items, target, row)
        
     # def get_records(self):
     #     return model.get_records()

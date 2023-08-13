@@ -94,11 +94,8 @@ def setup_callbacks(controller):
         if active_cell:
             row = active_cell["row"]
             target = table_data[row]["key"]
-            rows = controller.get_rows(storage_data, target)
-            box = rows[row]["frag_selector"]
-            src = rows[row]["src"]
-            #src,box = controller.get_image_details(items, target, row)
-            image = controller.get_box(src, box)
+            src,frag_selector = controller.get_rows(storage_data, target, row)
+            image = controller.get_box(src, frag_selector)
             return image, "header 2"
         else:
             raise PreventUpdate
@@ -111,9 +108,8 @@ def setup_callbacks(controller):
     )
     def submit_button(n_clicks, search_value, manifest_value):
         if n_clicks and search_value != None and search_value != "":
-            data = controller.query(search_value, manifest_value)
-            print("storing data")
-            return data
+            result = controller.query(search_value, manifest_value)
+            return result
         else:
             raise PreventUpdate
 
@@ -128,7 +124,5 @@ def setup_callbacks(controller):
         if len(data) == 0:
             return "status-tab", no_update
         else:
-            # we need remove dups in data model
             result = controller.get_carousel_items(data)
-            print(result)
             return "carousel-tab", result

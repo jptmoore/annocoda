@@ -23,10 +23,12 @@ class Model:
         result = records.to_dict("records")
         return result
 
-    def get_rows(self, data, target):
+    def get_rows(self, data, target, row):
         model = pd.DataFrame.from_records(data)
-        records = model.loc[model["key"] == target]
-        result = records.to_dict("records")
+        records = model.loc[model["key"] == target, ["src", "frag_selector"]]
+        src = records.iloc[row]['src']
+        frag_selector = records.iloc[row]['frag_selector']
+        result = (src, frag_selector)
         return result
     
     def get_carousel_items(self, data):
