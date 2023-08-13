@@ -15,7 +15,7 @@ def setup_callbacks(controller):
         if n_clicks:
             src = items[active_index].get("src")
             image = controller.polygon.get_image(src)
-            return image, "header 1"
+            return image, f"{src}"
         else:
             raise PreventUpdate
 
@@ -32,7 +32,7 @@ def setup_callbacks(controller):
             annotations = controller.get_annotations(storage_data, target)
             return annotations
         else:
-            return no_update
+            raise PreventUpdate
 
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),
@@ -43,7 +43,7 @@ def setup_callbacks(controller):
         if n_clicks:
             return "image-tab"
         else:
-            raise no_update
+            raise PreventUpdate
 
     @callback(
         Output("tray", "is_open"),
@@ -78,9 +78,9 @@ def setup_callbacks(controller):
                 if not is_open:
                     return "carousel-tab"
                 else:
-                    return no_update
+                    raise PreventUpdate
             case _:
-                return no_update
+                raise PreventUpdate
 
     @callback(
         Output("image", "src", allow_duplicate=True),
@@ -95,8 +95,11 @@ def setup_callbacks(controller):
             row = active_cell["row"]
             target = table_data[row]["key"]
             src,frag_selector = controller.get_image_details(storage_data, target, row)
-            image = controller.get_image_with_box(src, frag_selector)
-            return image, "header 2"
+            if frag_selector == None:
+                raise PreventUpdate
+            else:
+                image = controller.get_image_with_box(src, frag_selector)
+                return image, f"{src}"
         else:
             raise PreventUpdate
 
