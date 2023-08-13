@@ -14,7 +14,7 @@ class Model:
             result = pd.merge(manifest_df, annotation_df, how="inner", on=["key"])
             return result
 
-    def load_manifest(self, data):
+    def get_manifest(self, data):
         return pd.DataFrame.from_records(data)
 
     def get_annotations(self, data, key):

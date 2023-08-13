@@ -13,13 +13,13 @@ class Controller:
         self.parse = Parse(ctx)
     
     def query(self, search_value, manifest_value):
-        manifest_data = self.parse.run(url=manifest_value)
-        manifest_df = self.model.load_manifest(manifest_data)
-        annotation_data = self.annotation.search(
+        data = self.parse.run(url=manifest_value)
+        manifest = self.model.get_manifest(data)
+        annotations = self.annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={search_value}"
         )
-        result_df = self.model.merge_annotation(manifest_df, annotation_data)
-        result = self.model.get_records(result_df)
+        df = self.model.merge_annotation(manifest, annotations)
+        result = self.model.get_records(df)
         return result
     
 
