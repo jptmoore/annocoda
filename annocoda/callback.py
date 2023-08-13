@@ -24,11 +24,12 @@ def setup_callbacks(controller):
         Input("annotation-button", "n_clicks"),
         State("carousel", "active_index"),
         State("carousel", "items"),
+        State("storage", "data"),
     )
-    def display_annotations(n_clicks, active_index, items):
+    def display_annotations(n_clicks, active_index, items, storage_data):
         if n_clicks:
             target = items[active_index].get("key")
-            annotations = controller.get_annotations(target)
+            annotations = controller.get_annotations(storage_data, target)
             return annotations
         else:
             return no_update
@@ -86,35 +87,42 @@ def setup_callbacks(controller):
         Output("image-header", "children", allow_duplicate=True),
         Input("annotation-table", "active_cell"),
         State("annotation-table", "data"),
+        State("storage", "data"),
         prevent_initial_call=True,
     )
-    def display_selected_annotation_image(active_cell, data):
+    def display_selected_annotation_image(active_cell, table_data, storage_data):
         if active_cell:
             row = active_cell["row"]
-            target = data[row]["key"]
-            rows = controller.get_rows(target)
-            box = rows[row]["frag_selector"]
-            src = rows[row]["src"]
-            image = controller.get_box(src, box)
+            target = table_data[row]["key"]
+            src,frag_selector = controller.get_image_details(storage_data, target, row)
+            image = controller.get_image_with_box(src, frag_selector)
             return image, "header 2"
         else:
             raise PreventUpdate
 
     @callback(
-        Output("tabs", "active_tab", allow_duplicate=True),
-        Output("carousel", "items"),
+        Output("storage", "data"),
         Input("search-button", "n_clicks"),
         State("search-input", "value"),
         State("manifest-input", "value"),
-        prevent_initial_call=True,
     )
-    def search_button(n_clicks, search_value, manifest_value):
+    def submit_button(n_clicks, search_value, manifest_value):
         if n_clicks and search_value != None and search_value != "":
-            items = controller.query(search_value, manifest_value)
-            count = controller.get_image_count()
-            if count == 0:
-                return "status-tab", no_update
-            else:
-                return "carousel-tab", items
+            result = controller.query(search_value, manifest_value)
+            return result
         else:
             raise PreventUpdate
+
+
+    @callback(
+        Output("tabs", "active_tab", allow_duplicate=True),
+        Output("carousel", "items"),
+        Input("storage", "data"),
+        prevent_initial_call=True,
+    )
+    def submit_button_worker(storage_data):
+        if len(storage_data) == 0:
+            return "status-tab", no_update
+        else:
+            result = controller.get_carousel_items(storage_data)
+            return "carousel-tab", result

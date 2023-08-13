@@ -14,7 +14,7 @@ class Polygon:
         image = self.load_image(url)
         return image
 
-    def draw_bounding_box_worker(self, image, xywh):
+    def __get_image_with_box_worker(self, image, xywh):
         x, y, w, h = xywh
         draw = ImageDraw.Draw(image)
         padding = 10
@@ -26,7 +26,7 @@ class Polygon:
         )
         return image
 
-    def draw_bounding_box(self, url, xywh):
+    def get_image_with_box(self, url, xywh):
         image = self.load_image(url)
-        bounded_image = self.draw_bounding_box_worker(image, xywh)
+        bounded_image = self.__get_image_with_box_worker(image, xywh)
         return bounded_image
