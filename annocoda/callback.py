@@ -26,10 +26,10 @@ def setup_callbacks(controller):
         State("carousel", "items"),
         State("storage", "data"),
     )
-    def display_annotations(n_clicks, active_index, items, data):
+    def display_annotations(n_clicks, active_index, items, storage_data):
         if n_clicks:
             target = items[active_index].get("key")
-            annotations = controller.get_annotations(data, target)
+            annotations = controller.get_annotations(storage_data, target)
             return annotations
         else:
             return no_update
@@ -94,7 +94,7 @@ def setup_callbacks(controller):
         if active_cell:
             row = active_cell["row"]
             target = table_data[row]["key"]
-            src,frag_selector = controller.get_rows(storage_data, target, row)
+            src,frag_selector = controller.get_image_details(storage_data, target, row)
             image = controller.get_box(src, frag_selector)
             return image, "header 2"
         else:
@@ -120,9 +120,9 @@ def setup_callbacks(controller):
         Input("storage", "data"),
         prevent_initial_call=True,
     )
-    def submit_button_worker(data):
-        if len(data) == 0:
+    def submit_button_worker(storage_data):
+        if len(storage_data) == 0:
             return "status-tab", no_update
         else:
-            result = controller.get_carousel_items(data)
+            result = controller.get_carousel_items(storage_data)
             return "carousel-tab", result

@@ -23,7 +23,7 @@ class Model:
         result = records.to_dict("records")
         return result
 
-    def get_rows(self, data, target, row):
+    def get_image_details(self, data, target, row):
         model = pd.DataFrame.from_records(data)
         records = model.loc[model["key"] == target, ["src", "frag_selector"]]
         src = records.iloc[row]['src']
