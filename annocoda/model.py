@@ -17,7 +17,7 @@ class Model:
     def load_manifest(self, data):
         return pd.DataFrame.from_records(data)
 
-    def filter_on_key(self, data, key):
+    def get_annotations(self, data, key):
         model = pd.DataFrame.from_records(data)
         records = model.loc[model["key"] == key, ["key", "value"]]
         result = records.to_dict("records")

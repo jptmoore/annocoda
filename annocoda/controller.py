@@ -27,7 +27,7 @@ class Controller:
         return self.model.get_carousel_items(data)
 
     def get_annotations(self, items, target):
-        return self.model.filter_on_key(items, target)
+        return self.model.get_annotations(items, target)
 
     def get_image_details(self, items, target, row):
         return self.model.get_image_details(items, target, row)
