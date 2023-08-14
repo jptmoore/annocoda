@@ -40,14 +40,14 @@ class Parse:
         try:
             response = self.session.get(url, headers=headers, verify=False)
         except Exception as e:
-            raise ParseError("failed to fetch json")
+            raise ParseError(f"failed to fetch json: {repr(e)}")
         if response.status_code != 200:
             raise ParseError("failed to get a 200 response code")
         else:
             try:
                 result = response.json()
             except Exception as e:
-                raise ParseError("failed to parse json")
+                raise ParseError(f"failed to parse json: {repr(e)}")
             else:
                 return result
 
