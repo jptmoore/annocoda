@@ -2,7 +2,7 @@ from manifest import Manifest
 from model import Model
 from annotation import Annotation
 from polygon import Polygon
-from parse import Parse
+from parse import Parse, ParseError
 
 class Controller:
     def __init__(self, ctx):
@@ -13,7 +13,10 @@ class Controller:
         self.parse = Parse(ctx)
     
     def query(self, search_value, manifest_value):
-        data = self.parse.run(url=manifest_value)
+        try:
+            data = self.parse.run(url=manifest_value)
+        except ParseError as e:
+            return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
         annotations = self.annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={search_value}"

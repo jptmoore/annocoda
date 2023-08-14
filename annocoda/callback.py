@@ -124,8 +124,11 @@ def setup_callbacks(controller):
         prevent_initial_call=True,
     )
     def submit_button_worker(storage_data):
-        if len(storage_data) == 0:
-            return "status-tab", no_update
-        else:
-            result = controller.get_carousel_items(storage_data)
-            return "carousel-tab", result
+        match storage_data:
+            case {'error': message}:
+                return "status-tab", no_update
+            case []:
+                return "status-tab", no_update
+            case [_, *_]:
+                result = controller.get_carousel_items(storage_data)
+                return "carousel-tab", result

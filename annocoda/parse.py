@@ -44,8 +44,12 @@ class Parse:
         if response.status_code != 200:
             raise ParseError("failed to get a 200 response code")
         else:
-            result = response.json()
-            return result
+            try:
+                result = response.json()
+            except Exception as e:
+                raise ParseError("failed to parse json")
+            else:
+                return result
 
     def __handle_body_as_list(self, target, body):
         for item in body:
@@ -182,12 +186,9 @@ class Parse:
                 raise ParseError("failed to find collection or manifest")
 
 
-    def run(self, url: str) -> list[dict] | ParseError:
-        try:
-            self.__run_worker(url)
-            return self.__get_data()
-        except ParseError as e:
-            return e
+    def run(self, url: str) -> list[dict]:
+        self.__run_worker(url)
+        return self.__get_data()
 
 # p = Parse(ctx)
 # result = p.run(url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro")
