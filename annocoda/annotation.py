@@ -1,6 +1,10 @@
 from jsonpath_ng import parse
 
 
+class AnnotationError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
 class Annotation:
     def __init__(self, ctx):
         self.data = {}
@@ -17,8 +21,7 @@ class Annotation:
             jsonpath_expression = parse("[*].items[*].body.value")
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
-            self.logger.error(f"failed to get annotation text: {repr(e)}")
-            return []
+            raise AnnotationError(f"failed to get annotation text: {repr(e)}")
         else:
             return result
 
@@ -28,8 +31,7 @@ class Annotation:
             jsonpath_expression = parse("[*].items[*].target")
             result = [match.value for match in jsonpath_expression.find(json)]
         except Exception as e:
-            self.logger.error(f"failed to get annotation target: {repr(e)}")
-            return []
+            raise AnnotationError(f"failed to get annotation target: {repr(e)}")
         else:
             return result
 
@@ -48,7 +50,7 @@ class Annotation:
             case [_]:
                 return None
             case _:
-                raise ValueError("failed to match target")
+                raise AnnotationError("failed to match target")
 
     def remove_frag_selector(self, target):
         res = target.split("#")
@@ -58,7 +60,7 @@ class Annotation:
             case [x]:
                 return x
             case _:
-                raise ValueError("failed to match target")
+                raise AnnotationError("failed to match target")
 
     def make_result_data(self, data):
         keys = data.keys()
@@ -73,8 +75,7 @@ class Annotation:
         try:
             self.make_dict(json)
         except Exception as e:
-            self.logger.error(f"failed to process json: {repr(e)}")
-            return None
+            raise AnnotationError(f"failed to process json: {repr(e)}")
         else:
             result = self.make_result_data(self.data)
             return result
@@ -84,14 +85,16 @@ class Annotation:
         try:
             response = self.session.get(url, headers=headers, verify=False)
         except Exception as e:
-            self.logger.error(f"failed to get annotation: {repr(e)}")
-            return None
+            raise AnnotationError(f"failed to get annotation: {repr(e)}")
         if response.status_code != 200:
-            self.logger.error(f"failed to get annotation")
-            return None
+            raise AnnotationError(f"failed to get annotation")
         else:
-            result = response.json()
-            return result
+            try:
+                result = response.json()
+            except Exception as e:
+                raise AnnotationError(f"failed to parse json: {repr(e)}")
+            else:
+                return result
 
     def search_worker(self, acc, url):
         json = self.get_json(url)

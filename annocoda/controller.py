@@ -1,6 +1,6 @@
 from manifest import Manifest
 from model import Model
-from annotation import Annotation
+from annotation import Annotation, AnnotationError
 from polygon import Polygon
 from parse import Parse, ParseError
 
@@ -17,9 +17,11 @@ class Controller:
             data = self.parse.run(url=manifest_value)
         except ParseError as e: return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
-        annotations = self.annotation.search(
-            url=f"https://miiify.rocks/iiif/content/search?q={search_value}"
-        )
+        try:
+            annotations = self.annotation.search(
+                url=f"https://miiify.rocks/iiif/content/search?q={search_value}"
+            )
+        except AnnotationError as e: return {"error": repr(e)}        
         df = self.model.merge_annotation(manifest, annotations)
         result = self.model.get_records(df)
         return result
