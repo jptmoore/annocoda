@@ -5,6 +5,7 @@ status = html.Div(
     dbc.Container(
         [
             html.H1("No results", className="display-3"),
+            html.Hr(className="my-2"),
             html.P(
                 id="status-message",
                 className="lead",
