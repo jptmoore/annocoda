@@ -119,6 +119,7 @@ def setup_callbacks(controller):
 
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),
+        Output("status-message", "children"),
         Output("carousel", "items"),
         Input("storage", "data"),
         prevent_initial_call=True,
@@ -126,9 +127,9 @@ def setup_callbacks(controller):
     def submit_button_worker(storage_data):
         match storage_data:
             case {'error': message}:
-                return "status-tab", no_update
+                return "status-tab", message, no_update
             case []:
-                return "status-tab", no_update
+                return "status-tab", "The keywords you supplied did not provide any matches", no_update
             case [_, *_]:
                 result = controller.get_carousel_items(storage_data)
-                return "carousel-tab", result
+                return "carousel-tab", no_update, result

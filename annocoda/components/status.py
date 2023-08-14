@@ -4,17 +4,10 @@ from dash import html
 status = html.Div(
     dbc.Container(
         [
-            html.H1("Ouch", className="display-3"),
+            html.H1("No results", className="display-3"),
             html.P(
-                "Some blurb",
+                id="status-message",
                 className="lead",
-            ),
-            html.Hr(className="my-2"),
-            html.P(
-                "blurb blurb blurb blurb blurb blurb"
-            ),
-            html.P(
-                dbc.Button("Learn more", color="primary"), className="lead"
             ),
         ],
         fluid=True,

@@ -15,8 +15,7 @@ class Controller:
     def query(self, search_value, manifest_value):
         try:
             data = self.parse.run(url=manifest_value)
-        except ParseError as e:
-            return {"error": repr(e)}
+        except ParseError as e: return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
         annotations = self.annotation.search(
             url=f"https://miiify.rocks/iiif/content/search?q={search_value}"
