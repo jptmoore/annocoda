@@ -1,7 +1,7 @@
 from manifest import Manifest
 from model import Model
 from annotation import Annotation, AnnotationError
-from polygon import Polygon
+from polygon import Polygon, PolygonError
 from parse import Parse, ParseError
 
 class Controller:
@@ -37,7 +37,15 @@ class Controller:
         return self.model.get_image_details(items, target, row)
     
     def get_image(self, src):
-        return self.polygon.get_image(src)
+        try:
+            result = self.polygon.get_image(src)
+        except PolygonError as e: 
+            return None
+        return result
     
     def get_image_with_box(self, url, xywh):
-        return self.polygon.get_image_with_box(url, xywh)
+        try:
+            result = self.polygon.get_image_with_box(url, xywh)
+        except PolygonError as e: 
+            return None
+        return result

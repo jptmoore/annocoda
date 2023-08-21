@@ -14,8 +14,11 @@ def setup_callbacks(controller):
     def display_image(n_clicks, active_index, items):
         if n_clicks:
             src = items[active_index].get("src")
-            image = controller.polygon.get_image(src)
-            return image, f"{src}"
+            image = controller.get_image(src)
+            if image == None:
+                return image, f"{src} ** unable to display this image **"
+            else: 
+                return image, f"{src}"
         else:
             raise PreventUpdate
 
@@ -99,7 +102,10 @@ def setup_callbacks(controller):
                 raise PreventUpdate
             else:
                 image = controller.get_image_with_box(src, frag_selector)
-                return image, f"{src}"
+                if image == None:
+                    return image, f"{src} ** unable to display this image **"
+                else:
+                    return image, f"{src}"
         else:
             raise PreventUpdate
 

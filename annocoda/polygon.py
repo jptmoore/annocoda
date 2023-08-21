@@ -1,13 +1,20 @@
 from PIL import Image, ImageDraw
 
+class PolygonError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
 class Polygon:
     def __init__(self, ctx):
         self.session = ctx.session
         self.logger = ctx.logger
 
     def load_image(self, url):
-        resp = self.session.get(url, stream=True, verify=False).raw
-        image = Image.open(resp)
+        try:
+            resp = self.session.get(url, stream=True, verify=False).raw
+            image = Image.open(resp)
+        except Exception as e:
+            raise PolygonError(f"failed to load image: {repr(e)}")
         return image
     
     def get_image(self, url):
