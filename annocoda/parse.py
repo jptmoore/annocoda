@@ -7,6 +7,7 @@ from iiif_prezi3 import (
     CanvasRef,
     Annotation,
     AnnotationPage,
+    ServiceItem
 )
 from pydantic import Extra
 
@@ -166,28 +167,57 @@ class Parse:
             case _:
                 raise ParseError("failed to find collection items")
 
+
+    def __match_service_item(self, x):
+        match x:
+            case ServiceItem(id=id, type='SearchService2'):
+                return id
+            case _:
+                return None
+
+
+    def __match_service(self, x):
+        result = []
+        match x.service:
+            case [*xs]:
+                for x in xs:
+                    service = self.__match_service_item(x)
+                    if service != None: result.append(service)
+            case _:
+                raise ParseError("requires a v2 search service defined at manifest or collection level")
+        match result:
+            case [x]:
+                return x
+            case [*xs]:
+                raise ParseError("only supports a single v2 search service per manifest or collection")
+
+
     def __run_collection(self, json):
         collection = Collection(**json)
+        search_service = self.__match_service(collection)
         self.__match_collection(collection)
+        return search_service
 
     def __run_manifest(self, json):
         manifest = Manifest(**json)
+        search_service = self.__match_service(manifest)
         self.__match_manifest(manifest)
+        return search_service
 
     def __run_worker(self, url):
         self.data = []
         json = self.__get_json(url)
         match json["type"]:
             case "Collection":
-                self.__run_collection(json)
+                return self.__run_collection(json)
             case "Manifest":
-                self.__run_manifest(json)
+                return self.__run_manifest(json)
             case _:
                 raise ParseError("failed to find collection or manifest")
 
 
     def run(self, url: str) -> list[dict]:
-        self.__run_worker(url)
+        search_service = self.__run_worker(url)
         return self.__get_data()
 
 # p = Parse(ctx)
