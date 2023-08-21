@@ -216,9 +216,10 @@ class Parse:
                 raise ParseError("failed to find collection or manifest")
 
 
-    def run(self, url: str) -> list[dict]:
+    def run(self, url: str) -> (str, list[dict]):
         search_service = self.__run_worker(url)
-        return self.__get_data()
+        data = self.__get_data()
+        return search_service, data
 
 # p = Parse(ctx)
 # result = p.run(url="https://miiify.rocks/manifest/diamond_jubilee_of_the_metro")

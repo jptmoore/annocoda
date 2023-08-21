@@ -14,12 +14,12 @@ class Controller:
     
     def query(self, search_value, manifest_value):
         try:
-            data = self.parse.run(url=manifest_value)
+            search_service, data = self.parse.run(url=manifest_value)
         except ParseError as e: return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
         try:
             annotations = self.annotation.search(
-                url=f"https://miiify.rocks/iiif/content/search?q={search_value}"
+                url=f"{search_service}?q={search_value}"
             )
         except AnnotationError as e: return {"error": repr(e)}        
         df = self.model.merge_annotation(manifest, annotations)
