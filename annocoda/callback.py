@@ -4,23 +4,6 @@ from dash.exceptions import PreventUpdate
 
 
 def setup_callbacks(controller):
-    @callback(
-        Output("image", "src"),
-        Output("image-header", "children"),
-        Input("annotation-button", "n_clicks"),
-        State("carousel", "active_index"),
-        State("carousel", "items"),
-    )
-    def display_image(n_clicks, active_index, items):
-        if n_clicks:
-            src = items[active_index].get("src")
-            image = controller.get_image(src)
-            if image == None:
-                return image, f"{src} ** unable to display this image **"
-            else: 
-                return image, f"{src}"
-        else:
-            raise PreventUpdate
 
     @callback(
         Output("annotation-table", "data"),
@@ -34,17 +17,6 @@ def setup_callbacks(controller):
             target = items[active_index].get("key")
             annotations = controller.get_annotations(storage_data, target)
             return annotations
-        else:
-            raise PreventUpdate
-
-    @callback(
-        Output("tabs", "active_tab", allow_duplicate=True),
-        Input("annotation-button", "n_clicks"),
-        prevent_initial_call=True,
-    )
-    def annotation_button(n_clicks):
-        if n_clicks:
-            return "image-tab"
         else:
             raise PreventUpdate
 
@@ -87,7 +59,8 @@ def setup_callbacks(controller):
 
     @callback(
         Output("image", "src", allow_duplicate=True),
-        Output("image-header", "children", allow_duplicate=True),
+        Output("tabs", "active_tab", allow_duplicate=True),
+        Output("status-message", "children", allow_duplicate=True),
         Input("annotation-table", "active_cell"),
         State("annotation-table", "data"),
         State("storage", "data"),
@@ -103,9 +76,9 @@ def setup_callbacks(controller):
             else:
                 image = controller.get_image_with_box(src, frag_selector)
                 if image == None:
-                    return image, f"{src} ** unable to display this image **"
+                    return image, "status-tab", "failed to load image"
                 else:
-                    return image, f"{src}"
+                    return image, "image-tab", no_update
         else:
             raise PreventUpdate
 

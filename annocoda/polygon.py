@@ -9,18 +9,11 @@ class Polygon:
         self.session = ctx.session
         self.logger = ctx.logger
 
-    def load_image(self, url):
-        try:
-            resp = self.session.get(url, stream=True, verify=False).raw
-            image = Image.open(resp)
-        except Exception as e:
-            raise PolygonError(f"failed to load image: {repr(e)}")
+    def __load_image(self, url):
+        resp = self.session.get(url, stream=True, verify=False).raw
+        image = Image.open(resp)
         return image
     
-    def get_image(self, url):
-        image = self.load_image(url)
-        return image
-
     def __get_image_with_box_worker(self, image, xywh):
         x, y, w, h = xywh
         draw = ImageDraw.Draw(image)
@@ -34,6 +27,9 @@ class Polygon:
         return image
 
     def get_image_with_box(self, url, xywh):
-        image = self.load_image(url)
-        bounded_image = self.__get_image_with_box_worker(image, xywh)
+        try:
+            image = self.__load_image(url)
+            bounded_image = self.__get_image_with_box_worker(image, xywh)
+        except Exception as e:
+            raise PolygonError(f"failed to load image: {repr(e)}")        
         return bounded_image
