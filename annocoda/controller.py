@@ -1,13 +1,13 @@
 from manifest import Manifest
 from model import Model
-from annotation import Annotation, AnnotationError
+from annotation_search import AnnotationSearch, AnnotationSearchError
 from polygon import Polygon, PolygonError
 from parse import Parse, ParseError
 
 class Controller:
     def __init__(self, ctx):
         self.ctx = ctx
-        self.annotation = Annotation(ctx)
+        self.annotation = AnnotationSearch(ctx)
         self.polygon = Polygon(ctx)
         self.model = Model()
         self.parse = Parse(ctx)
@@ -18,10 +18,10 @@ class Controller:
         except ParseError as e: return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
         try:
-            annotations = self.annotation.search(
+            annotations = self.annotation.run(
                 url=f"{search_service}?q={search_value}"
             )
-        except AnnotationError as e: return {"error": repr(e)}        
+        except AnnotationSearchError as e: return {"error": repr(e)}        
         df = self.model.merge_annotation(manifest, annotations)
         result = self.model.get_records(df)
         return result
