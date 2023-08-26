@@ -31,7 +31,7 @@ MarkupSafe==2.1.2
 matplotlib-inline==0.1.6
 mypy-extensions==1.0.0
 nest-asyncio==1.5.6
-numpy==1.24.2
+numpy==1.25.2
 opencv-python==4.7.0.72
 packaging==23.0
 pandas==1.5.3
