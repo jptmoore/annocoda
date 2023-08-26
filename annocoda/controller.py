@@ -1,8 +1,8 @@
-from manifest import Manifest
 from model import Model
 from annotation_search import AnnotationSearch, AnnotationSearchError
 from polygon import Polygon, PolygonError
 from parse import Parse, ParseError
+from pydantic import ValidationError
 
 class Controller:
     def __init__(self, ctx):
@@ -15,13 +15,13 @@ class Controller:
     def query(self, search_value, manifest_value):
         try:
             search_service, data = self.parse.run(url=manifest_value)
-        except ParseError as e: return {"error": repr(e)}
+        except (ParseError, ValidationError) as e: return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
         try:
             annotations = self.annotation.run(
                 url=f"{search_service}?q={search_value}"
             )
-        except AnnotationSearchError as e: return {"error": repr(e)}        
+        except (AnnotationSearchError, ValidationError) as e: return {"error": repr(e)}        
         df = self.model.merge_annotation(manifest, annotations)
         result = self.model.get_records(df)
         return result
