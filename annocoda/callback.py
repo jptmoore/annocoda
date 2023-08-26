@@ -13,7 +13,7 @@ def setup_callbacks(controller):
         State("storage", "data"),
     )
     def display_annotations(n_clicks, active_index, items, storage_data):
-        if n_clicks:
+        if n_clicks and len(items) > 0:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(storage_data, target)
             return annotations
@@ -100,15 +100,16 @@ def setup_callbacks(controller):
         Output("tabs", "active_tab", allow_duplicate=True),
         Output("status-message", "children"),
         Output("carousel", "items"),
+        Output("carousel", "active_index"),
         Input("storage", "data"),
         prevent_initial_call=True,
     )
     def submit_button_worker(storage_data):
         match storage_data:
             case {'error': message}:
-                return "status-tab", message, no_update
+                return "status-tab", message, no_update, no_update
             case []:
-                return "status-tab", "The keywords you supplied did not provide any matches", no_update
+                return "status-tab", "The keywords you supplied did not provide any matches", no_update, no_update
             case [_, *_]:
                 result = controller.get_carousel_items(storage_data)
-                return "carousel-tab", no_update, result
+                return "carousel-tab", no_update, result, 0
