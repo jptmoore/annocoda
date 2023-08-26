@@ -123,6 +123,7 @@ class AnnotationSearch:
                 raise AnnotationSearchError("failed to find annotation page")
 
     def run_worker(self, url):
+        self.data = []
         json = self.__get_json(url)
         ap = AnnotationPage(**json)
         self.__match_annotation_content_item(ap)
