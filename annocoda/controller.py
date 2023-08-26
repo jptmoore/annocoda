@@ -7,18 +7,17 @@ from pydantic import ValidationError
 class Controller:
     def __init__(self, ctx):
         self.ctx = ctx
-        self.annotation = AnnotationSearch(ctx)
-        self.polygon = Polygon(ctx)
         self.model = Model()
-        self.parse = Parse(ctx)
     
     def query(self, search_value, manifest_value):
+        annotation_search = AnnotationSearch(self.ctx)
+        parse = Parse(self.ctx)
         try:
-            search_service, data = self.parse.run(url=manifest_value)
+            search_service, data = parse.run(url=manifest_value)
         except (ParseError, ValidationError) as e: return {"error": repr(e)}
         manifest = self.model.get_manifest(data)
         try:
-            annotations = self.annotation.run(
+            annotations = annotation_search.run(
                 url=f"{search_service}?q={search_value}"
             )
         except (AnnotationSearchError, ValidationError) as e: return {"error": repr(e)}        
@@ -36,16 +35,10 @@ class Controller:
     def get_image_details(self, items, target, row):
         return self.model.get_image_details(items, target, row)
     
-    def get_image(self, src):
-        try:
-            result = self.polygon.get_image(src)
-        except PolygonError as e: 
-            return None
-        return result
-    
     def get_image_with_box(self, url, xywh):
+        polygon = Polygon(self.ctx)
         try:
-            result = self.polygon.get_image_with_box(url, xywh)
+            result = polygon.get_image_with_box(url, xywh)
         except PolygonError as e: 
             return None
         return result
