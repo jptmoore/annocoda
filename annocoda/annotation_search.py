@@ -56,7 +56,7 @@ class AnnotationSearch:
         )
         return list(result)
 
-    def get_json(self, url):
+    def __get_json(self, url):
         headers = self.basic_headers()
         try:
             response = self.session.get(url, headers=headers, verify=False)
@@ -117,8 +117,7 @@ class AnnotationSearch:
             case AnnotationPage(id=id, type="AnnotationPage", items=items):
                 match items:
                     case []:
-                        ap = self.__get_annotation_page_content(id)
-                        self.__match_annotation_content_item(ap)
+                        pass
                     case [*xs]:
                         self.__match_wc3_annotations(xs)
             case AnnotationPageRef(id=id):
@@ -128,7 +127,7 @@ class AnnotationSearch:
                 raise AnnotationSearchError("failed to find annotation page")
 
     def run_worker(self, url):
-        json = self.get_json(url)
+        json = self.__get_json(url)
         ap = AnnotationPage(**json)
         self.__match_annotation_content_item(ap)
         if "next" in json:
