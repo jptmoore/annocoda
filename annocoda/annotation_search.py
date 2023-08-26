@@ -3,10 +3,6 @@ from iiif_prezi3 import (
     AnnotationPage,
     AnnotationPageRef,
 )
-from pydantic import Extra
-
-Annotation.Config.extra = Extra.allow
-
 
 class AnnotationSearchError(Exception):
     def __init__(self, message):
