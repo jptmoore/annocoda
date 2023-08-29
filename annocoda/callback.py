@@ -96,10 +96,13 @@ def setup_callbacks(controller):
     )
     def handle_url(href: str):
         f = furl(href)
-        search_value = f.args['search']
-        manifest_value= f.args['manifest']
-        search_result = controller.query(search_value, manifest_value)
-        return search_result, search_value, manifest_value
+        if 'manifest' and 'search' in f.query.params:
+            search_value = f.args['search']
+            manifest_value= f.args['manifest']
+            search_result = controller.query(search_value, manifest_value)
+            return search_result, search_value, manifest_value
+        else:
+            raise PreventUpdate
 
 
     @callback(
