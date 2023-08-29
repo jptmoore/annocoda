@@ -47,7 +47,7 @@ image = (
             align="center",
             className="g-0",
         ),
-        href="https://plotly.com",
+        href="https://annocoda.onrender.com",
         style={"textDecoration": "none"},
     ),
 )
