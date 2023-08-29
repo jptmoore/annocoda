@@ -106,3 +106,6 @@ src/.vscode/
 
 # editor
 .vscode/
+
+# callback cache
+annocoda/callback_cache/

@@ -1,9 +1,13 @@
-from dash import Dash
+from dash import Dash, DiskcacheManager
 import dash_bootstrap_components as dbc
 from view import View
 from context import Context
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+import diskcache
+cache = diskcache.Cache("./callback_cache")
+background_callback_manager = DiskcacheManager(cache)
+
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], background_callback_manager=background_callback_manager)
 
 ctx = Context(logger=app.logger)
 

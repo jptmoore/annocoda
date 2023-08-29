@@ -65,6 +65,10 @@ def setup_callbacks(controller):
         State("annotation-table", "data"),
         State("storage", "data"),
         prevent_initial_call=True,
+        background=True,
+        running=[
+            (Output("tray", "close_button"), False, True),
+        ],
     )
     def display_selected_annotation_image(active_cell, table_data, storage_data):
         if active_cell:
