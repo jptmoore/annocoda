@@ -90,7 +90,7 @@ def setup_callbacks(controller):
         Output("storage", "data"),
         Input("search-button", "n_clicks"),
         State("search-input", "value"),
-        State("manifest-input", "value"),
+        State("manifest-input", "value"),        
     )
     def submit_button(n_clicks, search_value, manifest_value):
         if n_clicks and search_value != None and search_value != "":
@@ -107,6 +107,10 @@ def setup_callbacks(controller):
         Output("carousel", "active_index"),
         Input("storage", "data"),
         prevent_initial_call=True,
+        background=True,
+        running=[
+            (Output("search-button", "disabled"), True, False),
+        ],
     )
     def submit_button_worker(storage_data):
         match storage_data:
