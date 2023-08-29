@@ -1,7 +1,7 @@
 from dash import callback, State, Input, Output
 from dash import no_update
 from dash.exceptions import PreventUpdate
-
+from furl import furl
 
 def setup_callbacks(controller):
 
@@ -86,19 +86,34 @@ def setup_callbacks(controller):
         else:
             raise PreventUpdate
 
+
     @callback(
-        Output("storage", "data"),
+        Output("storage", "data"), 
+        Output("search-input", "value"),
+        Output("manifest-input", "value"),
+        Input('url', 'href'),
+        prevent_initial_call=True,
+    )
+    def handle_url(href: str):
+        f = furl(href)
+        search_value = f.args['search']
+        manifest_value= f.args['manifest']
+        search_result = controller.query(search_value, manifest_value)
+        return search_result, search_value, manifest_value
+
+
+    @callback(
+        Output('url', 'href'),
         Input("search-button", "n_clicks"),
         State("search-input", "value"),
-        State("manifest-input", "value"),        
+        State("manifest-input", "value"),    
     )
     def submit_button(n_clicks, search_value, manifest_value):
         if n_clicks and search_value != None and search_value != "":
-            result = controller.query(search_value, manifest_value)
-            return result
+            url = f"?manifest={manifest_value}&search={search_value}"
+            return url
         else:
             raise PreventUpdate
-
 
     @callback(
         Output("tabs", "active_tab", allow_duplicate=True),

@@ -8,6 +8,7 @@ from components.tabs import tabs
 def setup_layout():
     return dbc.Container(
         [
+            dcc.Location(id='url', refresh=False),
             dcc.Store(id='storage'),
             dbc.Row(navbar),
             dbc.Row(tabs),

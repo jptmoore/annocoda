@@ -10,19 +10,18 @@ class Controller:
         self.model = Model()
     
     def query(self, search_value, manifest_value):
-        annotation_search = AnnotationSearch(self.ctx)
-        parse = Parse(self.ctx)
         try:
+            annotation_search = AnnotationSearch(self.ctx)
+            parse = Parse(self.ctx)
             search_service, data = parse.run(url=manifest_value)
-        except (ParseError, ValidationError) as e: return {"error": repr(e)}
-        manifest = self.model.get_manifest(data)
-        try:
+            manifest = self.model.get_manifest(data)
             annotations = annotation_search.run(
                 url=f"{search_service}?q={search_value}"
             )
-        except (AnnotationSearchError, ValidationError) as e: return {"error": repr(e)}        
-        df = self.model.merge_annotation(manifest, annotations)
-        result = self.model.get_records(df)
+            df = self.model.merge_annotation(manifest, annotations)
+            result = self.model.get_records(df)
+        except Exception as e:
+            return {"error": repr(e)}        
         return result
     
 
@@ -36,9 +35,9 @@ class Controller:
         return self.model.get_image_details(items, target, row)
     
     def get_image_with_box(self, url, xywh):
-        polygon = Polygon(self.ctx)
         try:
+            polygon = Polygon(self.ctx)
             result = polygon.get_image_with_box(url, xywh)
-        except PolygonError as e: 
+        except Exception as e: 
             return None
         return result
