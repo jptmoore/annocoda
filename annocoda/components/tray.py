@@ -11,4 +11,6 @@ tray = dbc.Offcanvas(
     title="Annotations",
     is_open=False,
     placement="bottom",
+    backdrop="static",
+    keyboard=False
 )
