@@ -6,7 +6,7 @@ splash = html.Div(
         [
             html.H1("Getting started", className="display-3"),
             html.P(
-                "Try some of the examples below",
+                "Try searching the IIIF manifests referenced in the examples below:",
                 className="lead",
             ),
             dbc.ListGroup(
