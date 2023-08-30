@@ -69,16 +69,6 @@ class Parse:
                 raise ParseError("failed to find annotation")
 
 
-    def __match_annotation(self, x):
-        match x:
-            case Annotation(target=target, body=body):
-                if type(body) is list:
-                    raise ParseError("this type of annotation is currently not supported")
-                else:
-                    self.data.append((target, body.id))
-            case _:
-                raise ParseError("failed to find annotation")
-
     def __match_annotation_page_items(self, x):
         match x:
             case []:
