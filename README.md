@@ -13,7 +13,7 @@ You can select annotations to see where in the image they are located.
 
 ## Demo
 
-Current builds are deployed [here](https://annocoda.onrender.com/).
+Current builds are deployed [here](https://annocoda.onrender.com/) to a very low-spec infrastructure 💥 
 
 ## Requirements
 
