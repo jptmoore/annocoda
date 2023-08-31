@@ -9,6 +9,14 @@ More explicitly it uses the [IIIF Content Search 2.0 API](https://iiif.io/api/se
 
 Current builds are deployed [here](https://annocoda.onrender.com/).
 
+## Example
+
+You can select annotations to see where in the image they are located.
+
+![screenshot](./assets/screenshot.png)
+
+
+
 ## Requirements
 
 To use the service you need a IIIF manifest which [references a search service](https://iiif.io/api/search/2.0/#3-declaring-services). 
