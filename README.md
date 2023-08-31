@@ -1,13 +1,9 @@
 
 ## Introduction
 
-Annocoda is a web service that uses [IIIF](https://iiif.io/) standards to provide image search capabilities. 
+Annocoda is a web app that uses [IIIF](https://iiif.io/) standards to provide image search capabilities. 
 
 More explicitly it uses the [IIIF Content Search 2.0 API](https://iiif.io/api/search/2.0/) to match [web annotations](https://www.w3.org/TR/annotation-model/) with their corresponding images described within a [Presentation API 3.0](https://iiif.io/api/presentation/3.0/) manifest or collection.
-
-## Demo
-
-Current builds are deployed [here](https://annocoda.onrender.com/).
 
 ## Example
 
@@ -15,7 +11,9 @@ You can select annotations to see where in the image they are located.
 
 ![screenshot](./assets/screenshot.png)
 
+## Demo
 
+Current builds are deployed [here](https://annocoda.onrender.com/).
 
 ## Requirements
 
