@@ -3,6 +3,7 @@ from annotation_search import AnnotationSearch, AnnotationSearchError
 from polygon import Polygon, PolygonError
 from parse import Parse, ParseError
 from pydantic import ValidationError
+from highlight import Highlight
 
 class Controller:
     def __init__(self, ctx):
@@ -13,12 +14,14 @@ class Controller:
         try:
             annotation_search = AnnotationSearch(self.ctx)
             parse = Parse(self.ctx)
+            highlight = Highlight()
             search_service, data = parse.run(url=manifest_value)
             manifest = self.model.get_manifest(data)
             annotations = annotation_search.run(
                 url=f"{search_service}?q={search_value}"
             )
-            df = self.model.merge_annotation(manifest, annotations)
+            highlighted_annotations = highlight.run(search_value, annotations)
+            df = self.model.merge_annotation(manifest, highlighted_annotations)
             result = self.model.get_records(df)
         except Exception as e:
             return {"error": repr(e)}        
