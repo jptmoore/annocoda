@@ -17,7 +17,8 @@ def setup_callbacks(controller):
         if n_clicks and len(items) > 0:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(storage_data, target)
-            return annotations
+            highlighted_annotations = controller.highlight_annotations(search_value, annotations)
+            return highlighted_annotations
         else:
             raise PreventUpdate
 
