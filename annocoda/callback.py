@@ -8,15 +8,17 @@ def setup_callbacks(controller):
     @callback(
         Output("annotation-table", "data"),
         Input("annotation-button", "n_clicks"),
+        State("search-input", "value"),
         State("carousel", "active_index"),
         State("carousel", "items"),
         State("storage", "data"),
     )
-    def display_annotations(n_clicks, active_index, items, storage_data):
+    def display_annotations(n_clicks, search_value, active_index, items, storage_data):
         if n_clicks and len(items) > 0:
             target = items[active_index].get("key")
             annotations = controller.get_annotations(storage_data, target)
-            return annotations
+            highlighted_annotations = controller.highlight_annotations(search_value, annotations)
+            return highlighted_annotations
         else:
             raise PreventUpdate
 

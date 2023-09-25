@@ -3,6 +3,7 @@ from annotation_search import AnnotationSearch, AnnotationSearchError
 from polygon import Polygon, PolygonError
 from parse import Parse, ParseError
 from pydantic import ValidationError
+from highlight import Highlight
 
 class Controller:
     def __init__(self, ctx):
@@ -41,3 +42,7 @@ class Controller:
         except Exception as e: 
             return None
         return result
+    
+    def highlight_annotations(self, search_value, annotations):
+        highlight = Highlight()
+        return highlight.run(search_value, annotations)

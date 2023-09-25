@@ -5,6 +5,9 @@ annotation_table = (
     dash_table.DataTable(
         id="annotation-table",
         data=[],
+        columns=[
+            {"name": "value", "id": "value", 'type': 'text', 'presentation': 'markdown'},
+        ],
         style_header={"display": "none"},
         hidden_columns=["key"],
         css=[{"selector": ".show-hide", "rule": "display: none"}],
