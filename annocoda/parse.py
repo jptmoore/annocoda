@@ -9,6 +9,8 @@ from iiif_prezi3 import (
     AnnotationPage,
     ServiceItem
 )
+from pydantic import Extra, ValidationError
+Annotation.Config.extra = Extra.allow
 
 class ParseError(Exception):
     def __init__(self, message):
